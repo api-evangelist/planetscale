@@ -1,0 +1,407 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://planetscale.com/schemas/planetscale/database.json",
+  "title": "PlanetScale Database",
+  "description": "A PlanetScale serverless MySQL-compatible database with branching, deploy requests, and schema management capabilities.",
+  "type": "object",
+  "required": ["name"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The unique identifier of the database."
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the database. Must be unique within the organization.",
+      "pattern": "^[a-z0-9][a-z0-9-]*[a-z0-9]$",
+      "minLength": 3,
+      "maxLength": 63
+    },
+    "state": {
+      "type": "string",
+      "description": "The current operational state of the database.",
+      "enum": ["pending", "ready", "sleeping", "awaking"]
+    },
+    "plan": {
+      "type": "string",
+      "description": "The billing plan for the database.",
+      "enum": ["hobby", "scaler", "scaler_pro"]
+    },
+    "cluster_size": {
+      "type": "string",
+      "description": "The cluster size identifier for the production branch."
+    },
+    "region": {
+      "$ref": "#/$defs/Region"
+    },
+    "default_branch": {
+      "type": "string",
+      "description": "The name of the default production branch.",
+      "default": "main"
+    },
+    "production_branch_web_console": {
+      "type": "boolean",
+      "description": "Whether the web console is enabled for production branches.",
+      "default": false
+    },
+    "insights_enabled": {
+      "type": "boolean",
+      "description": "Whether PlanetScale Insights analytics is enabled for the database."
+    },
+    "migration_framework": {
+      "type": "string",
+      "description": "The migration framework configured for tracking schema changes."
+    },
+    "migration_table_name": {
+      "type": "string",
+      "description": "The name of the migration tracking table."
+    },
+    "require_approval_for_deploy": {
+      "type": "boolean",
+      "description": "Whether deploy requests require approval before deployment.",
+      "default": true
+    },
+    "allow_data_branching": {
+      "type": "boolean",
+      "description": "Whether data branching is enabled, allowing branches to include data copies."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The ISO 8601 timestamp when the database was created."
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The ISO 8601 timestamp when the database was last updated."
+    },
+    "html_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "The URL to the database in the PlanetScale dashboard."
+    }
+  },
+  "$defs": {
+    "Region": {
+      "type": "object",
+      "description": "A geographic region where PlanetScale databases and branches can be hosted.",
+      "properties": {
+        "slug": {
+          "type": "string",
+          "description": "The region slug identifier used in API requests."
+        },
+        "display_name": {
+          "type": "string",
+          "description": "The human-readable name of the region."
+        }
+      }
+    },
+    "Branch": {
+      "type": "object",
+      "description": "A database branch representing an isolated copy of the schema for development, testing, or production use.",
+      "required": ["name"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The unique identifier of the branch."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the branch.",
+          "pattern": "^[a-z0-9][a-z0-9-]*[a-z0-9]$",
+          "minLength": 3,
+          "maxLength": 63
+        },
+        "production": {
+          "type": "boolean",
+          "description": "Whether this is a production branch."
+        },
+        "ready": {
+          "type": "boolean",
+          "description": "Whether the branch is ready to accept connections."
+        },
+        "shard_count": {
+          "type": "integer",
+          "description": "The number of shards in the branch.",
+          "minimum": 1
+        },
+        "sharded": {
+          "type": "boolean",
+          "description": "Whether the branch uses sharding."
+        },
+        "cluster_rate_name": {
+          "type": "string",
+          "description": "The cluster size identifier for the branch."
+        },
+        "region": {
+          "$ref": "#/$defs/Region"
+        },
+        "parent_branch": {
+          "type": "string",
+          "description": "The name of the parent branch this was forked from."
+        },
+        "schema_last_updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The timestamp when the branch schema was last modified."
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The timestamp when the branch was created."
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The timestamp when the branch was last updated."
+        }
+      }
+    },
+    "DeployRequest": {
+      "type": "object",
+      "description": "A deploy request for applying schema changes from a development branch to a target branch, similar to a pull request workflow.",
+      "required": ["branch"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The unique identifier of the deploy request."
+        },
+        "number": {
+          "type": "integer",
+          "description": "The sequential deploy request number within the database.",
+          "minimum": 1
+        },
+        "branch": {
+          "type": "string",
+          "description": "The name of the source branch containing schema changes."
+        },
+        "into_branch": {
+          "type": "string",
+          "description": "The name of the target branch to deploy into."
+        },
+        "state": {
+          "type": "string",
+          "description": "The current state of the deploy request lifecycle.",
+          "enum": [
+            "open",
+            "closed",
+            "pending",
+            "queued",
+            "in_progress",
+            "complete",
+            "complete_pending_revert",
+            "complete_reverted",
+            "complete_error"
+          ]
+        },
+        "approved": {
+          "type": "boolean",
+          "description": "Whether the deploy request has been approved for deployment."
+        },
+        "notes": {
+          "type": "string",
+          "description": "Notes or description accompanying the deploy request."
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The timestamp when the deploy request was created."
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The timestamp when the deploy request was last updated."
+        },
+        "closed_at": {
+          "type": ["string", "null"],
+          "format": "date-time",
+          "description": "The timestamp when the deploy request was closed, or null if still open."
+        }
+      }
+    },
+    "Password": {
+      "type": "object",
+      "description": "A connection credential for authenticating to a database branch.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The unique identifier of the password."
+        },
+        "name": {
+          "type": "string",
+          "description": "A descriptive name for the password."
+        },
+        "role": {
+          "type": "string",
+          "description": "The access role that determines read/write permissions.",
+          "enum": ["admin", "reader", "writer", "readwriter"]
+        },
+        "hostname": {
+          "type": "string",
+          "description": "The hostname for connecting to the database with this password."
+        },
+        "username": {
+          "type": "string",
+          "description": "The username for the database connection."
+        },
+        "database_branch": {
+          "type": "string",
+          "description": "The branch this password provides access to."
+        },
+        "region": {
+          "$ref": "#/$defs/Region"
+        },
+        "expires_at": {
+          "type": ["string", "null"],
+          "format": "date-time",
+          "description": "The expiration timestamp, or null for non-expiring passwords."
+        },
+        "renewable": {
+          "type": "boolean",
+          "description": "Whether the password expiration can be renewed."
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The timestamp when the password was created."
+        }
+      }
+    },
+    "ServiceToken": {
+      "type": "object",
+      "description": "A service token for authenticating PlanetScale API requests programmatically.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The unique identifier of the service token."
+        },
+        "name": {
+          "type": "string",
+          "description": "A descriptive name for the service token."
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The timestamp when the service token was created."
+        }
+      }
+    },
+    "ServiceTokenAccess": {
+      "type": "object",
+      "description": "A permission grant associated with a service token, scoped to a database or organization.",
+      "required": ["access"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The unique identifier of the access grant."
+        },
+        "access": {
+          "type": "string",
+          "description": "The permission identifier, such as read_branch, write_branch, or delete_branch."
+        },
+        "database": {
+          "type": ["string", "null"],
+          "description": "The database the access is scoped to. Null for organization-wide access."
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The timestamp when the access was granted."
+        }
+      }
+    },
+    "Backup": {
+      "type": "object",
+      "description": "A point-in-time backup of a database branch.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The unique identifier of the backup."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the backup."
+        },
+        "state": {
+          "type": "string",
+          "description": "The current state of the backup process.",
+          "enum": ["pending", "running", "success", "failed"]
+        },
+        "size": {
+          "type": "integer",
+          "description": "The size of the backup in bytes.",
+          "minimum": 0
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The timestamp when the backup was initiated."
+        },
+        "completed_at": {
+          "type": ["string", "null"],
+          "format": "date-time",
+          "description": "The timestamp when the backup completed, or null if in progress."
+        },
+        "expires_at": {
+          "type": ["string", "null"],
+          "format": "date-time",
+          "description": "The timestamp when the backup will expire."
+        }
+      }
+    },
+    "WebhookConfig": {
+      "type": "object",
+      "description": "A webhook configuration for receiving event notifications from a PlanetScale database.",
+      "required": ["url", "events"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The unique identifier of the webhook."
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "The HTTPS URL that receives webhook POST callbacks."
+        },
+        "events": {
+          "type": "array",
+          "description": "The list of event types the webhook subscribes to.",
+          "items": {
+            "type": "string",
+            "enum": [
+              "branch.ready",
+              "branch.sleeping",
+              "branch.anomaly",
+              "branch.start_maintenance",
+              "branch.out_of_memory",
+              "deploy_request.opened",
+              "deploy_request.queued",
+              "deploy_request.in_progress",
+              "deploy_request.schema_applied",
+              "deploy_request.errored",
+              "deploy_request.reverted",
+              "deploy_request.closed",
+              "webhook.test"
+            ]
+          },
+          "minItems": 1,
+          "maxItems": 13
+        },
+        "active": {
+          "type": "boolean",
+          "description": "Whether the webhook is currently active."
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The timestamp when the webhook was created."
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The timestamp when the webhook was last updated."
+        }
+      }
+    }
+  }
+}

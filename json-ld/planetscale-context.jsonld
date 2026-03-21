@@ -1,0 +1,231 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "ps": "https://planetscale.com/schemas/",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+
+    "Organization": {
+      "@id": "ps:Organization",
+      "@context": {
+        "name": "schema:name",
+        "displayName": "schema:alternateName",
+        "plan": "ps:plan",
+        "billingEmail": {
+          "@id": "schema:email",
+          "@type": "xsd:string"
+        },
+        "createdAt": {
+          "@id": "dcterms:created",
+          "@type": "xsd:dateTime"
+        },
+        "updatedAt": {
+          "@id": "dcterms:modified",
+          "@type": "xsd:dateTime"
+        }
+      }
+    },
+
+    "Database": {
+      "@id": "ps:Database",
+      "@context": {
+        "name": "schema:name",
+        "description": "schema:description",
+        "state": "ps:state",
+        "plan": "ps:plan",
+        "clusterSize": "ps:clusterSize",
+        "region": "ps:region",
+        "defaultBranch": "ps:defaultBranch",
+        "insightsEnabled": "ps:insightsEnabled",
+        "migrationFramework": "ps:migrationFramework",
+        "requireApprovalForDeploy": "ps:requireApprovalForDeploy",
+        "allowDataBranching": "ps:allowDataBranching",
+        "url": {
+          "@id": "schema:url",
+          "@type": "@id"
+        },
+        "createdAt": {
+          "@id": "dcterms:created",
+          "@type": "xsd:dateTime"
+        },
+        "updatedAt": {
+          "@id": "dcterms:modified",
+          "@type": "xsd:dateTime"
+        },
+        "branches": {
+          "@id": "ps:branches",
+          "@container": "@set"
+        }
+      }
+    },
+
+    "Branch": {
+      "@id": "ps:Branch",
+      "@context": {
+        "name": "schema:name",
+        "production": "ps:production",
+        "ready": "ps:ready",
+        "shardCount": "ps:shardCount",
+        "sharded": "ps:sharded",
+        "clusterRateName": "ps:clusterRateName",
+        "region": "ps:region",
+        "parentBranch": {
+          "@id": "ps:parentBranch",
+          "@type": "@id"
+        },
+        "schemaLastUpdatedAt": {
+          "@id": "ps:schemaLastUpdatedAt",
+          "@type": "xsd:dateTime"
+        },
+        "createdAt": {
+          "@id": "dcterms:created",
+          "@type": "xsd:dateTime"
+        },
+        "updatedAt": {
+          "@id": "dcterms:modified",
+          "@type": "xsd:dateTime"
+        }
+      }
+    },
+
+    "DeployRequest": {
+      "@id": "ps:DeployRequest",
+      "@context": {
+        "number": "schema:serialNumber",
+        "branch": {
+          "@id": "ps:sourceBranch",
+          "@type": "@id"
+        },
+        "intoBranch": {
+          "@id": "ps:targetBranch",
+          "@type": "@id"
+        },
+        "state": "ps:state",
+        "approved": "ps:approved",
+        "notes": "schema:description",
+        "createdAt": {
+          "@id": "dcterms:created",
+          "@type": "xsd:dateTime"
+        },
+        "updatedAt": {
+          "@id": "dcterms:modified",
+          "@type": "xsd:dateTime"
+        },
+        "closedAt": {
+          "@id": "ps:closedAt",
+          "@type": "xsd:dateTime"
+        }
+      }
+    },
+
+    "Password": {
+      "@id": "ps:Password",
+      "@context": {
+        "name": "schema:name",
+        "role": "ps:role",
+        "hostname": "ps:hostname",
+        "username": "ps:username",
+        "databaseBranch": {
+          "@id": "ps:databaseBranch",
+          "@type": "@id"
+        },
+        "region": "ps:region",
+        "expiresAt": {
+          "@id": "ps:expiresAt",
+          "@type": "xsd:dateTime"
+        },
+        "renewable": "ps:renewable",
+        "createdAt": {
+          "@id": "dcterms:created",
+          "@type": "xsd:dateTime"
+        }
+      }
+    },
+
+    "ServiceToken": {
+      "@id": "ps:ServiceToken",
+      "@context": {
+        "name": "schema:name",
+        "accesses": {
+          "@id": "ps:accesses",
+          "@container": "@set"
+        },
+        "createdAt": {
+          "@id": "dcterms:created",
+          "@type": "xsd:dateTime"
+        }
+      }
+    },
+
+    "Backup": {
+      "@id": "ps:Backup",
+      "@context": {
+        "name": "schema:name",
+        "state": "ps:state",
+        "size": "schema:contentSize",
+        "createdAt": {
+          "@id": "dcterms:created",
+          "@type": "xsd:dateTime"
+        },
+        "completedAt": {
+          "@id": "ps:completedAt",
+          "@type": "xsd:dateTime"
+        },
+        "expiresAt": {
+          "@id": "ps:expiresAt",
+          "@type": "xsd:dateTime"
+        }
+      }
+    },
+
+    "Team": {
+      "@id": "ps:Team",
+      "@context": {
+        "name": "schema:name",
+        "slug": "ps:slug",
+        "description": "schema:description",
+        "membersCount": "ps:membersCount",
+        "createdAt": {
+          "@id": "dcterms:created",
+          "@type": "xsd:dateTime"
+        },
+        "updatedAt": {
+          "@id": "dcterms:modified",
+          "@type": "xsd:dateTime"
+        }
+      }
+    },
+
+    "Webhook": {
+      "@id": "ps:Webhook",
+      "@context": {
+        "url": {
+          "@id": "schema:url",
+          "@type": "@id"
+        },
+        "events": {
+          "@id": "ps:events",
+          "@container": "@set"
+        },
+        "active": "ps:active",
+        "createdAt": {
+          "@id": "dcterms:created",
+          "@type": "xsd:dateTime"
+        },
+        "updatedAt": {
+          "@id": "dcterms:modified",
+          "@type": "xsd:dateTime"
+        }
+      }
+    },
+
+    "Region": {
+      "@id": "ps:Region",
+      "@context": {
+        "slug": "ps:slug",
+        "displayName": "schema:name"
+      }
+    }
+  }
+}

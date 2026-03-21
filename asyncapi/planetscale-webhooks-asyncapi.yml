@@ -1,0 +1,567 @@
+asyncapi: 2.6.0
+info:
+  title: PlanetScale Webhook Events
+  description: >-
+    PlanetScale webhooks deliver HTTP POST callbacks to a configured URL
+    when specific events occur within a PlanetScale organization. Webhooks
+    enable real-time notifications for database branch lifecycle events,
+    deploy request state changes, anomaly detection, and maintenance
+    windows. Each database can have up to 5 webhooks configured, and all
+    payloads are signed with an HMAC SHA-256 signature for verification.
+  version: '1.0.0'
+  contact:
+    name: PlanetScale Support
+    url: https://support.planetscale.com
+  license:
+    name: Proprietary
+    url: https://planetscale.com/legal/tos
+externalDocs:
+  description: PlanetScale Webhook Events Reference
+  url: https://planetscale.com/docs/reference/webhook-events
+servers:
+  planetscale:
+    url: '{webhookUrl}'
+    protocol: https
+    description: >-
+      Your HTTPS endpoint that receives PlanetScale webhook POST
+      callbacks. Must respond with a 2xx status code.
+    variables:
+      webhookUrl:
+        description: >-
+          The HTTPS URL configured in your PlanetScale webhook settings.
+    security:
+      - hmacSignature: []
+channels:
+  /webhook:
+    description: >-
+      PlanetScale sends HTTP POST requests to your configured webhook
+      URL when subscribed events occur. All requests include an
+      X-PlanetScale-Signature header for payload verification.
+    publish:
+      operationId: receivePlanetScaleEvent
+      summary: Receive PlanetScale webhook events
+      description: >-
+        Receives event notifications from PlanetScale when database
+        branch, deploy request, or other organizational events occur.
+        Your server must respond with a 2xx status code to acknowledge
+        receipt.
+      message:
+        oneOf:
+          - $ref: '#/components/messages/BranchReady'
+          - $ref: '#/components/messages/BranchSleeping'
+          - $ref: '#/components/messages/BranchAnomaly'
+          - $ref: '#/components/messages/BranchStartMaintenance'
+          - $ref: '#/components/messages/BranchOutOfMemory'
+          - $ref: '#/components/messages/DeployRequestOpened'
+          - $ref: '#/components/messages/DeployRequestQueued'
+          - $ref: '#/components/messages/DeployRequestInProgress'
+          - $ref: '#/components/messages/DeployRequestSchemaApplied'
+          - $ref: '#/components/messages/DeployRequestErrored'
+          - $ref: '#/components/messages/DeployRequestReverted'
+          - $ref: '#/components/messages/DeployRequestClosed'
+          - $ref: '#/components/messages/WebhookTest'
+components:
+  securitySchemes:
+    hmacSignature:
+      type: httpApiKey
+      in: header
+      name: X-PlanetScale-Signature
+      description: >-
+        SHA-256 HMAC hex digest of the request body, using the webhook
+        secret as the key. Used to verify that the payload was sent by
+        PlanetScale. Compute the HMAC of the raw request body and compare
+        it to this header value.
+  messages:
+    BranchReady:
+      name: branch.ready
+      title: Branch Ready
+      summary: >-
+        Triggered when a database branch has been created and is ready
+        to accept connections.
+      contentType: application/json
+      headers:
+        type: object
+        properties:
+          X-PlanetScale-Signature:
+            type: string
+            description: >-
+              SHA-256 HMAC hex digest of the request body.
+          X-PlanetScale-Event:
+            type: string
+            const: branch.ready
+            description: >-
+              The event type identifier.
+      payload:
+        $ref: '#/components/schemas/BranchEventPayload'
+    BranchSleeping:
+      name: branch.sleeping
+      title: Branch Sleeping
+      summary: >-
+        Triggered when a database branch transitions to a sleeping state
+        due to inactivity.
+      contentType: application/json
+      headers:
+        type: object
+        properties:
+          X-PlanetScale-Signature:
+            type: string
+            description: >-
+              SHA-256 HMAC hex digest of the request body.
+          X-PlanetScale-Event:
+            type: string
+            const: branch.sleeping
+            description: >-
+              The event type identifier.
+      payload:
+        $ref: '#/components/schemas/BranchEventPayload'
+    BranchAnomaly:
+      name: branch.anomaly
+      title: Branch Anomaly
+      summary: >-
+        Triggered when a branch has a new anomaly event detected by
+        PlanetScale Insights, such as unusual query performance or
+        resource usage.
+      contentType: application/json
+      headers:
+        type: object
+        properties:
+          X-PlanetScale-Signature:
+            type: string
+            description: >-
+              SHA-256 HMAC hex digest of the request body.
+          X-PlanetScale-Event:
+            type: string
+            const: branch.anomaly
+            description: >-
+              The event type identifier.
+      payload:
+        $ref: '#/components/schemas/BranchEventPayload'
+    BranchStartMaintenance:
+      name: branch.start_maintenance
+      title: Branch Start Maintenance
+      summary: >-
+        Triggered right before maintenance for a production branch is
+        about to start, providing advance notice for preparation.
+      contentType: application/json
+      headers:
+        type: object
+        properties:
+          X-PlanetScale-Signature:
+            type: string
+            description: >-
+              SHA-256 HMAC hex digest of the request body.
+          X-PlanetScale-Event:
+            type: string
+            const: branch.start_maintenance
+            description: >-
+              The event type identifier.
+      payload:
+        $ref: '#/components/schemas/BranchEventPayload'
+    BranchOutOfMemory:
+      name: branch.out_of_memory
+      title: Branch Out of Memory
+      summary: >-
+        Triggered when a Postgres database branch experiences an out of
+        memory event and has to restart. Only applies to Postgres databases.
+      contentType: application/json
+      headers:
+        type: object
+        properties:
+          X-PlanetScale-Signature:
+            type: string
+            description: >-
+              SHA-256 HMAC hex digest of the request body.
+          X-PlanetScale-Event:
+            type: string
+            const: branch.out_of_memory
+            description: >-
+              The event type identifier.
+      payload:
+        $ref: '#/components/schemas/BranchEventPayload'
+    DeployRequestOpened:
+      name: deploy_request.opened
+      title: Deploy Request Opened
+      summary: >-
+        Triggered when a new deploy request has been opened for a
+        database.
+      contentType: application/json
+      headers:
+        type: object
+        properties:
+          X-PlanetScale-Signature:
+            type: string
+            description: >-
+              SHA-256 HMAC hex digest of the request body.
+          X-PlanetScale-Event:
+            type: string
+            const: deploy_request.opened
+            description: >-
+              The event type identifier.
+      payload:
+        $ref: '#/components/schemas/DeployRequestEventPayload'
+    DeployRequestQueued:
+      name: deploy_request.queued
+      title: Deploy Request Queued
+      summary: >-
+        Triggered when a deploy request has been queued for deployment.
+      contentType: application/json
+      headers:
+        type: object
+        properties:
+          X-PlanetScale-Signature:
+            type: string
+            description: >-
+              SHA-256 HMAC hex digest of the request body.
+          X-PlanetScale-Event:
+            type: string
+            const: deploy_request.queued
+            description: >-
+              The event type identifier.
+      payload:
+        $ref: '#/components/schemas/DeployRequestEventPayload'
+    DeployRequestInProgress:
+      name: deploy_request.in_progress
+      title: Deploy Request In Progress
+      summary: >-
+        Triggered when a deploy request deployment is actively in
+        progress.
+      contentType: application/json
+      headers:
+        type: object
+        properties:
+          X-PlanetScale-Signature:
+            type: string
+            description: >-
+              SHA-256 HMAC hex digest of the request body.
+          X-PlanetScale-Event:
+            type: string
+            const: deploy_request.in_progress
+            description: >-
+              The event type identifier.
+      payload:
+        $ref: '#/components/schemas/DeployRequestEventPayload'
+    DeployRequestSchemaApplied:
+      name: deploy_request.schema_applied
+      title: Deploy Request Schema Applied
+      summary: >-
+        Triggered when a deploy request has successfully applied schema
+        changes to the target branch.
+      contentType: application/json
+      headers:
+        type: object
+        properties:
+          X-PlanetScale-Signature:
+            type: string
+            description: >-
+              SHA-256 HMAC hex digest of the request body.
+          X-PlanetScale-Event:
+            type: string
+            const: deploy_request.schema_applied
+            description: >-
+              The event type identifier.
+      payload:
+        $ref: '#/components/schemas/DeployRequestEventPayload'
+    DeployRequestErrored:
+      name: deploy_request.errored
+      title: Deploy Request Errored
+      summary: >-
+        Triggered when a deploy request deployment has encountered an
+        error.
+      contentType: application/json
+      headers:
+        type: object
+        properties:
+          X-PlanetScale-Signature:
+            type: string
+            description: >-
+              SHA-256 HMAC hex digest of the request body.
+          X-PlanetScale-Event:
+            type: string
+            const: deploy_request.errored
+            description: >-
+              The event type identifier.
+      payload:
+        $ref: '#/components/schemas/DeployRequestEventPayload'
+    DeployRequestReverted:
+      name: deploy_request.reverted
+      title: Deploy Request Reverted
+      summary: >-
+        Triggered when a deployed schema change has been reverted to
+        the previous state.
+      contentType: application/json
+      headers:
+        type: object
+        properties:
+          X-PlanetScale-Signature:
+            type: string
+            description: >-
+              SHA-256 HMAC hex digest of the request body.
+          X-PlanetScale-Event:
+            type: string
+            const: deploy_request.reverted
+            description: >-
+              The event type identifier.
+      payload:
+        $ref: '#/components/schemas/DeployRequestEventPayload'
+    DeployRequestClosed:
+      name: deploy_request.closed
+      title: Deploy Request Closed
+      summary: >-
+        Triggered when a deploy request has been closed without
+        deploying.
+      contentType: application/json
+      headers:
+        type: object
+        properties:
+          X-PlanetScale-Signature:
+            type: string
+            description: >-
+              SHA-256 HMAC hex digest of the request body.
+          X-PlanetScale-Event:
+            type: string
+            const: deploy_request.closed
+            description: >-
+              The event type identifier.
+      payload:
+        $ref: '#/components/schemas/DeployRequestEventPayload'
+    WebhookTest:
+      name: webhook.test
+      title: Webhook Test
+      summary: >-
+        Triggered when a webhook is tested from the PlanetScale
+        dashboard to verify the endpoint is receiving events correctly.
+      contentType: application/json
+      headers:
+        type: object
+        properties:
+          X-PlanetScale-Signature:
+            type: string
+            description: >-
+              SHA-256 HMAC hex digest of the request body.
+          X-PlanetScale-Event:
+            type: string
+            const: webhook.test
+            description: >-
+              The event type identifier.
+      payload:
+        $ref: '#/components/schemas/WebhookTestPayload'
+  schemas:
+    BranchEventPayload:
+      type: object
+      description: >-
+        The webhook payload for branch-related events. The resource body
+        matches the response from the Get a branch API endpoint.
+      required:
+        - event
+        - timestamp
+        - organization
+        - database
+        - resource
+      properties:
+        event:
+          type: string
+          description: >-
+            The event type identifier.
+          enum:
+            - branch.ready
+            - branch.sleeping
+            - branch.anomaly
+            - branch.start_maintenance
+            - branch.out_of_memory
+        timestamp:
+          type: string
+          format: date-time
+          description: >-
+            The ISO 8601 timestamp when the event occurred.
+        organization:
+          type: string
+          description: >-
+            The name of the organization the database belongs to.
+        database:
+          type: string
+          description: >-
+            The name of the database the branch belongs to.
+        resource:
+          $ref: '#/components/schemas/BranchResource'
+    DeployRequestEventPayload:
+      type: object
+      description: >-
+        The webhook payload for deploy request events. The resource body
+        matches the response from the Get a deploy request API endpoint.
+      required:
+        - event
+        - timestamp
+        - organization
+        - database
+        - resource
+      properties:
+        event:
+          type: string
+          description: >-
+            The event type identifier.
+          enum:
+            - deploy_request.opened
+            - deploy_request.queued
+            - deploy_request.in_progress
+            - deploy_request.schema_applied
+            - deploy_request.errored
+            - deploy_request.reverted
+            - deploy_request.closed
+        timestamp:
+          type: string
+          format: date-time
+          description: >-
+            The ISO 8601 timestamp when the event occurred.
+        organization:
+          type: string
+          description: >-
+            The name of the organization the database belongs to.
+        database:
+          type: string
+          description: >-
+            The name of the database the deploy request belongs to.
+        resource:
+          $ref: '#/components/schemas/DeployRequestResource'
+    WebhookTestPayload:
+      type: object
+      description: >-
+        The webhook payload for test events, sent when testing a
+        webhook configuration from the dashboard.
+      required:
+        - event
+        - timestamp
+        - organization
+        - database
+      properties:
+        event:
+          type: string
+          const: webhook.test
+          description: >-
+            The event type identifier.
+        timestamp:
+          type: string
+          format: date-time
+          description: >-
+            The ISO 8601 timestamp when the test event was sent.
+        organization:
+          type: string
+          description: >-
+            The name of the organization.
+        database:
+          type: string
+          description: >-
+            The name of the database the webhook is configured for.
+    BranchResource:
+      type: object
+      description: >-
+        Branch resource data included in webhook payloads, matching the
+        Get a branch API response structure.
+      properties:
+        id:
+          type: string
+          description: >-
+            The unique identifier of the branch.
+        name:
+          type: string
+          description: >-
+            The name of the branch.
+        production:
+          type: boolean
+          description: >-
+            Whether this is a production branch.
+        ready:
+          type: boolean
+          description: >-
+            Whether the branch is ready for connections.
+        shard_count:
+          type: integer
+          description: >-
+            The number of shards in the branch.
+        cluster_rate_name:
+          type: string
+          description: >-
+            The cluster size identifier for the branch.
+        region:
+          type: object
+          properties:
+            slug:
+              type: string
+              description: >-
+                The region slug identifier.
+            display_name:
+              type: string
+              description: >-
+                The human-readable region name.
+        parent_branch:
+          type: string
+          description: >-
+            The name of the parent branch.
+        created_at:
+          type: string
+          format: date-time
+          description: >-
+            The timestamp when the branch was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: >-
+            The timestamp when the branch was last updated.
+    DeployRequestResource:
+      type: object
+      description: >-
+        Deploy request resource data included in webhook payloads,
+        matching the Get a deploy request API response structure.
+      properties:
+        id:
+          type: string
+          description: >-
+            The unique identifier of the deploy request.
+        number:
+          type: integer
+          description: >-
+            The deploy request number within the database.
+        branch:
+          type: string
+          description: >-
+            The name of the source branch.
+        into_branch:
+          type: string
+          description: >-
+            The name of the target branch.
+        state:
+          type: string
+          description: >-
+            The current state of the deploy request.
+          enum:
+            - open
+            - closed
+            - pending
+            - queued
+            - in_progress
+            - complete
+            - complete_pending_revert
+            - complete_reverted
+            - complete_error
+        approved:
+          type: boolean
+          description: >-
+            Whether the deploy request has been approved.
+        notes:
+          type: string
+          description: >-
+            Notes or description for the deploy request.
+        created_at:
+          type: string
+          format: date-time
+          description: >-
+            The timestamp when the deploy request was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: >-
+            The timestamp when the deploy request was last updated.
+        closed_at:
+          type: string
+          format: date-time
+          description: >-
+            The timestamp when the deploy request was closed.
