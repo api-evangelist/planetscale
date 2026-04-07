@@ -1,24 +1,20 @@
 aid: planetscale
-url: 
-  https://raw.githubusercontent.com/api-evangelist/planetscale/refs/heads/main/apis.yml
+url: https://raw.githubusercontent.com/api-evangelist/planetscale/refs/heads/main/apis.yml
 apis:
   - aid: planetscale:platform-api
     name: PlanetScale Platform API
     tags:
+      - Branching
+      - Cloud
       - Databases
+      - Deploy Requests
       - MySQL
       - Serverless
-      - Branching
-      - Deploy Requests
-      - Cloud
-    image: 
-      https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     baseURL: https://api.planetscale.com/v1
-    humanURL: 
-      https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
+    humanURL: https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
     properties:
-      - url: 
-          https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
+      - url: https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
         type: Documentation
       - url: openapi/planetscale-platform-api-openapi.yml
         type: OpenAPI
@@ -36,15 +32,13 @@ apis:
   - aid: planetscale:oauth
     name: PlanetScale OAuth
     tags:
-      - OAuth
+      - Applications
       - Authentication
       - Authorization
-      - Applications
-    image: 
-      https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+      - OAuth
+    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     baseURL: https://api.planetscale.com
-    humanURL: 
-      https://planetscale.com/docs/api/planetscale-api-oauth-applications
+    humanURL: https://planetscale.com/docs/api/planetscale-api-oauth-applications
     properties:
       - url: https://planetscale.com/docs/api/planetscale-api-oauth-applications
         type: Documentation
@@ -59,14 +53,13 @@ apis:
   - aid: planetscale:serverless-driver
     name: PlanetScale Serverless Driver for JavaScript
     tags:
-      - JavaScript
-      - Serverless
-      - Edge Computing
-      - SDK
       - Driver
+      - Edge Computing
+      - JavaScript
       - MySQL
-    image: 
-      https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+      - SDK
+      - Serverless
+    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     baseURL: https://api.example.com
     humanURL: https://planetscale.com/docs/tutorials/using-the-serverless-driver
     properties:
@@ -83,10 +76,9 @@ apis:
     tags:
       - CLI
       - Command Line
-      - Developer Tools
       - Database Management
-    image: 
-      https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+      - Developer Tools
+    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     baseURL: https://api.example.com
     humanURL: https://planetscale.com/docs/reference/planetscale-cli
     properties:

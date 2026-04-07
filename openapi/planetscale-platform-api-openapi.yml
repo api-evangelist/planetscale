@@ -24,68 +24,68 @@ servers:
   - url: https://api.planetscale.com/v1
     description: PlanetScale Production API
 tags:
-  - name: Organizations
+  - name: Backups
     description: >-
-      Manage PlanetScale organizations, including listing organizations
-      and retrieving organization details.
-  - name: Organization Members
+      Manage database branch backups, including listing, creating, and
+      retrieving backup details.
+  - name: Billing
     description: >-
-      Manage members within an organization, including listing, retrieving,
-      updating roles, and removing members.
-  - name: Teams
+      Access organization billing data and invoices programmatically.
+  - name: Bouncers
     description: >-
-      Manage teams within an organization, including creating teams, adding
-      members, and controlling database access.
-  - name: Databases
-    description: >-
-      Manage PlanetScale databases, including creating, listing, updating
-      settings, and deleting databases.
+      Manage PgBouncer connection pooling instances for database branches,
+      including creating, listing, resizing, and deleting bouncers.
   - name: Branches
     description: >-
       Manage database branches for schema development and safe migrations,
       including creating, listing, updating, and deleting branches.
+  - name: Cluster Sizes
+    description: >-
+      Retrieve available cluster size SKUs for Vitess and Postgres
+      database branches.
+  - name: Databases
+    description: >-
+      Manage PlanetScale databases, including creating, listing, updating
+      settings, and deleting databases.
   - name: Deploy Requests
     description: >-
       Manage deploy requests for applying schema changes from development
       branches to production, including creating, reviewing, queueing,
       and completing deployments.
-  - name: Passwords
-    description: >-
-      Manage branch passwords and connection credentials for connecting
-      applications to database branches.
-  - name: Backups
-    description: >-
-      Manage database branch backups, including listing, creating, and
-      retrieving backup details.
-  - name: Service Tokens
-    description: >-
-      Manage service tokens for API authentication, including creating,
-      listing, and deleting tokens and their access grants.
-  - name: Bouncers
-    description: >-
-      Manage PgBouncer connection pooling instances for database branches,
-      including creating, listing, resizing, and deleting bouncers.
-  - name: Cluster Sizes
-    description: >-
-      Retrieve available cluster size SKUs for Vitess and Postgres
-      database branches.
-  - name: Schema Recommendations
-    description: >-
-      View and manage schema recommendations for optimizing database
-      performance and structure.
-  - name: Billing
-    description: >-
-      Access organization billing data and invoices programmatically.
-  - name: Roles
-    description: >-
-      Manage role-based credentials for database access.
   - name: IP Restrictions
     description: >-
       Manage IP restriction entries for controlling database access
       by IP address.
+  - name: Organization Members
+    description: >-
+      Manage members within an organization, including listing, retrieving,
+      updating roles, and removing members.
+  - name: Organizations
+    description: >-
+      Manage PlanetScale organizations, including listing organizations
+      and retrieving organization details.
+  - name: Passwords
+    description: >-
+      Manage branch passwords and connection credentials for connecting
+      applications to database branches.
   - name: Query Patterns
     description: >-
       Analyze and report on query patterns for database branches.
+  - name: Roles
+    description: >-
+      Manage role-based credentials for database access.
+  - name: Schema Recommendations
+    description: >-
+      View and manage schema recommendations for optimizing database
+      performance and structure.
+  - name: Service Tokens
+    description: >-
+      Manage service tokens for API authentication, including creating,
+      listing, and deleting tokens and their access grants.
+  - name: Teams
+    description: >-
+      Manage teams within an organization, including creating teams, adding
+      members, and controlling database access.
   - name: Webhooks
     description: >-
       Manage webhook configurations for database event notifications.
