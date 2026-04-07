@@ -1,5 +1,6 @@
 aid: planetscale
-url: https://raw.githubusercontent.com/api-evangelist/planetscale/refs/heads/main/apis.yml
+url: 
+  https://raw.githubusercontent.com/api-evangelist/planetscale/refs/heads/main/apis.yml
 apis:
   - aid: planetscale:platform-api
     name: PlanetScale Platform API
@@ -10,11 +11,14 @@ apis:
       - Branching
       - Deploy Requests
       - Cloud
-    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: 
+      https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     baseURL: https://api.planetscale.com/v1
-    humanURL: https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
+    humanURL: 
+      https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
     properties:
-      - url: https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
+      - url: 
+          https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
         type: Documentation
       - url: openapi/planetscale-platform-api-openapi.yml
         type: OpenAPI
@@ -36,9 +40,11 @@ apis:
       - Authentication
       - Authorization
       - Applications
-    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: 
+      https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     baseURL: https://api.planetscale.com
-    humanURL: https://planetscale.com/docs/api/planetscale-api-oauth-applications
+    humanURL: 
+      https://planetscale.com/docs/api/planetscale-api-oauth-applications
     properties:
       - url: https://planetscale.com/docs/api/planetscale-api-oauth-applications
         type: Documentation
@@ -59,22 +65,19 @@ apis:
       - SDK
       - Driver
       - MySQL
-    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: 
+      https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     baseURL: https://api.example.com
     humanURL: https://planetscale.com/docs/tutorials/using-the-serverless-driver
     properties:
       - url: https://planetscale.com/docs/tutorials/using-the-serverless-driver
         type: Documentation
     description: >-
-      The PlanetScale Serverless Driver for JavaScript is a Fetch
-      API-compatible database driver designed for serverless and edge compute
-      platforms such as Cloudflare Workers, Vercel Edge Functions, and
-      Netlify Edge Functions. It enables developers to query PlanetScale
-      databases over HTTP connections, bypassing the TCP restrictions common
-      in edge environments. The driver is available as the
-      @planetscale/database npm package and provides features like TLS 1.3,
-      HTTP/2 connection multiplexing, protocol compression, and global
-      routing for reduced latency.
+      The PlanetScale Serverless Driver for JavaScript is a Fetch API-compatible database
+      driver designed for serverless and edge compute platforms such as Cloudflare
+      Workers, Vercel Edge Functions, and Netlify Edge Functions. It enables developers
+      to query PlanetScale databases over HTTP connections, bypassing the TCP restrictions
+      common in edge environments.
   - aid: planetscale:cli
     name: PlanetScale CLI
     tags:
@@ -82,7 +85,8 @@ apis:
       - Command Line
       - Developer Tools
       - Database Management
-    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: 
+      https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     baseURL: https://api.example.com
     humanURL: https://planetscale.com/docs/reference/planetscale-cli
     properties:
@@ -103,3 +107,7 @@ common:
   - type: JSONSchema
     url: json-schema/planetscale-database-schema.json
 modified: '2026-03-20'
+description: >-
+  PlanetScale is a serverless MySQL database platform powered by Vitess, providing
+  horizontal scaling, branching workflows, non-blocking schema changes, and other
+  developer-friendly database features.
