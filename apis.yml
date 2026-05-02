@@ -98,7 +98,7 @@ common:
     url: json-ld/planetscale-context.jsonld
   - type: JSONSchema
     url: json-schema/planetscale-database-schema.json
-modified: '2026-03-20'
+modified: '2026-04-28'
 description: >-
   PlanetScale is a serverless MySQL database platform powered by Vitess, providing
   horizontal scaling, branching workflows, non-blocking schema changes, and other
