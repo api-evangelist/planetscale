@@ -1,0 +1,112 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: PlanetScale
+providerId: planetscale
+created: '2026-05-04'
+modified: '2026-05-04'
+reconciled: true
+tags:
+  - Database
+  - MySQL
+  - Postgres
+  - Vitess
+description: PlanetScale SKU-based pricing for Postgres and Vitess clusters.
+sources:
+  - https://planetscale.com/pricing
+plans:
+  - id: planetscale-postgres-ebs-single
+    name: Postgres EBS (single-node)
+    type: usage-based
+    description: From $5/month (PS-5 arm64).
+    entries:
+      - label: Monthly minimum
+        name: monthly
+        type: subscription
+        metric: month
+        limit: -1
+        timeFrame: month
+        geo: global
+        unit: 1
+        price: '5.00'
+        userMultiplied: false
+    elements:
+      - name: Single node
+      - name: EBS storage
+      - name: Best for dev
+  - id: planetscale-postgres-ebs-ha
+    name: Postgres EBS HA (3-node)
+    type: usage-based
+    description: From $15/month (PS-5 arm64).
+    entries:
+      - label: Monthly minimum
+        name: monthly
+        type: subscription
+        metric: month
+        limit: -1
+        timeFrame: month
+        geo: global
+        unit: 1
+        price: '15.00'
+        userMultiplied: false
+    elements:
+      - name: 3-node HA
+      - name: EBS storage
+      - name: Production-ready
+  - id: planetscale-postgres-metal
+    name: Postgres Metal (3-node)
+    type: usage-based
+    description: From $50/month (M-10 arm64, 10 GB).
+    entries:
+      - label: Monthly minimum
+        name: monthly
+        type: subscription
+        metric: month
+        limit: -1
+        timeFrame: month
+        geo: global
+        unit: 1
+        price: '50.00'
+        userMultiplied: false
+    elements:
+      - name: Bare metal performance
+      - name: Local NVMe storage
+      - name: 3-node HA
+  - id: planetscale-vitess-cloud
+    name: Vitess Non-Metal (3-node)
+    type: usage-based
+    description: From $39/month (PS-10 x86-64).
+    entries:
+      - label: Monthly minimum
+        name: monthly
+        type: subscription
+        metric: month
+        limit: -1
+        timeFrame: month
+        geo: global
+        unit: 1
+        price: '39.00'
+        userMultiplied: false
+    elements:
+      - name: Vitess MySQL with sharding
+      - name: EBS storage
+      - name: Cloud-native
+  - id: planetscale-vitess-metal
+    name: Vitess Metal (3-node)
+    type: usage-based
+    description: From $609/month (M-160 x86-64, 110 GB).
+    entries:
+      - label: Monthly minimum
+        name: monthly
+        type: subscription
+        metric: month
+        limit: -1
+        timeFrame: month
+        geo: global
+        unit: 1
+        price: '609.00'
+        userMultiplied: false
+    elements:
+      - name: Bare metal Vitess
+      - name: Largest scale
+      - name: Local NVMe
