@@ -1,0 +1,1825 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: PlanetScale Platform API
+  description: The PlanetScale Platform API provides programmatic access to manage PlanetScale serverless MySQL-compatible
+    databases. It allows developers to create and manage databases, branches, deploy requests, passwords, backups, service
+    tokens, organization members, teams, bouncers, and billing data. The API supports authentication via service tokens and
+    OAuth, enabling integration into CI/CD pipelines and infrastructure-as-code workflows.
+  tags:
+  - Planetscale
+  - API
+  created: '2026-05-06'
+  modified: '2026-05-06'
+capability:
+  consumes:
+  - type: http
+    namespace: planetscale
+    baseUri: https://api.planetscale.com/v1
+    description: PlanetScale Platform API HTTP API.
+    authentication:
+      type: apikey
+      in: header
+      name: Authorization
+      value: '{{PLANETSCALE_TOKEN}}'
+    resources:
+    - name: organizations
+      path: /organizations
+      operations:
+      - name: listorganizations
+        method: GET
+        description: List organizations
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: organizations-organization
+      path: /organizations/{organization}
+      operations:
+      - name: getorganization
+        method: GET
+        description: Get an organization
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: organizations-organization-members
+      path: /organizations/{organization}/members
+      operations:
+      - name: listorganizationmembers
+        method: GET
+        description: List organization members
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: organizations-organization-members-member-id
+      path: /organizations/{organization}/members/{member_id}
+      operations:
+      - name: getorganizationmember
+        method: GET
+        description: Get an organization member
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updateorganizationmember
+        method: PATCH
+        description: Update an organization member
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deleteorganizationmember
+        method: DELETE
+        description: Remove an organization member
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: organizations-organization-teams
+      path: /organizations/{organization}/teams
+      operations:
+      - name: listteams
+        method: GET
+        description: List teams
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createteam
+        method: POST
+        description: Create a team
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: organizations-organization-teams-team-slug
+      path: /organizations/{organization}/teams/{team_slug}
+      operations:
+      - name: getteam
+        method: GET
+        description: Get a team
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updateteam
+        method: PATCH
+        description: Update a team
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deleteteam
+        method: DELETE
+        description: Delete a team
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: organizations-organization-databases
+      path: /organizations/{organization}/databases
+      operations:
+      - name: listdatabases
+        method: GET
+        description: List databases
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createdatabase
+        method: POST
+        description: Create a database
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: organizations-organization-databases-database
+      path: /organizations/{organization}/databases/{database}
+      operations:
+      - name: getdatabase
+        method: GET
+        description: Get a database
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updatedatabasesettings
+        method: PATCH
+        description: Update database settings
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deletedatabase
+        method: DELETE
+        description: Delete a database
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: organizations-organization-databases-database-br
+      path: /organizations/{organization}/databases/{database}/branches
+      operations:
+      - name: listbranches
+        method: GET
+        description: List branches
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createbranch
+        method: POST
+        description: Create a branch
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: organizations-organization-databases-database-br
+      path: /organizations/{organization}/databases/{database}/branches/{branch}
+      operations:
+      - name: getbranch
+        method: GET
+        description: Get a branch
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updatebranch
+        method: PATCH
+        description: Update a branch
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deletebranch
+        method: DELETE
+        description: Delete a branch
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: organizations-organization-databases-database-br
+      path: /organizations/{organization}/databases/{database}/branches/{branch}/schema-lint
+      operations:
+      - name: lintbranchschema
+        method: GET
+        description: Lint a branch schema
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: organizations-organization-databases-database-de
+      path: /organizations/{organization}/databases/{database}/deploy-requests
+      operations:
+      - name: listdeployrequests
+        method: GET
+        description: List deploy requests
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createdeployrequest
+        method: POST
+        description: Create a deploy request
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: organizations-organization-databases-database-de
+      path: /organizations/{organization}/databases/{database}/deploy-requests/{deploy_request_number}
+      operations:
+      - name: getdeployrequest
+        method: GET
+        description: Get a deploy request
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: closedeployrequest
+        method: PATCH
+        description: Close a deploy request
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: organizations-organization-databases-database-de
+      path: /organizations/{organization}/databases/{database}/deploy-requests/{deploy_request_number}/deploy
+      operations:
+      - name: queuedeployrequest
+        method: POST
+        description: Queue a deploy request
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: organizations-organization-databases-database-de
+      path: /organizations/{organization}/databases/{database}/deploy-requests/{deploy_request_number}/reviews
+      operations:
+      - name: listdeployrequestreviews
+        method: GET
+        description: List deploy request reviews
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: reviewdeployrequest
+        method: POST
+        description: Review a deploy request
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: organizations-organization-databases-database-de
+      path: /organizations/{organization}/databases/{database}/deploy-requests/{deploy_request_number}/skip-revert
+      operations:
+      - name: skipdeployrequestrevert
+        method: POST
+        description: Skip revert period
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: organizations-organization-databases-database-de
+      path: /organizations/{organization}/databases/{database}/deploy-requests/{deploy_request_number}/complete-revert
+      operations:
+      - name: completedeployrequestrevert
+        method: POST
+        description: Complete a revert
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: organizations-organization-databases-database-de
+      path: /organizations/{organization}/databases/{database}/deploy-queue
+      operations:
+      - name: getdeployqueue
+        method: GET
+        description: Get the deploy queue
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: organizations-organization-databases-database-br
+      path: /organizations/{organization}/databases/{database}/branches/{branch}/passwords
+      operations:
+      - name: listpasswords
+        method: GET
+        description: List passwords
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createpassword
+        method: POST
+        description: Create a password
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: organizations-organization-databases-database-br
+      path: /organizations/{organization}/databases/{database}/branches/{branch}/passwords/{password_id}
+      operations:
+      - name: getpassword
+        method: GET
+        description: Get a password
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deletepassword
+        method: DELETE
+        description: Delete a password
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: organizations-organization-databases-database-br
+      path: /organizations/{organization}/databases/{database}/branches/{branch}/passwords/{password_id}/renew
+      operations:
+      - name: renewpassword
+        method: POST
+        description: Renew a password
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: organizations-organization-databases-database-br
+      path: /organizations/{organization}/databases/{database}/branches/{branch}/backups
+      operations:
+      - name: listbackups
+        method: GET
+        description: List backups
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createbackup
+        method: POST
+        description: Create a backup
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: organizations-organization-databases-database-br
+      path: /organizations/{organization}/databases/{database}/branches/{branch}/backups/{backup_id}
+      operations:
+      - name: getbackup
+        method: GET
+        description: Get a backup
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deletebackup
+        method: DELETE
+        description: Delete a backup
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: organizations-organization-service-tokens
+      path: /organizations/{organization}/service-tokens
+      operations:
+      - name: listservicetokens
+        method: GET
+        description: List service tokens
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createservicetoken
+        method: POST
+        description: Create a service token
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: organizations-organization-service-tokens-servic
+      path: /organizations/{organization}/service-tokens/{service_token_id}
+      operations:
+      - name: getservicetoken
+        method: GET
+        description: Get a service token
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deleteservicetoken
+        method: DELETE
+        description: Delete a service token
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: organizations-organization-service-tokens-servic
+      path: /organizations/{organization}/service-tokens/{service_token_id}/accesses
+      operations:
+      - name: listservicetokenaccesses
+        method: GET
+        description: List service token accesses
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createservicetokenaccess
+        method: POST
+        description: Grant service token access
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: organizations-organization-databases-database-br
+      path: /organizations/{organization}/databases/{database}/branches/{branch}/bouncers
+      operations:
+      - name: listbouncers
+        method: GET
+        description: List bouncers
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createbouncer
+        method: POST
+        description: Create a bouncer
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: organizations-organization-databases-database-br
+      path: /organizations/{organization}/databases/{database}/branches/{branch}/bouncers/{bouncer_name}
+      operations:
+      - name: getbouncer
+        method: GET
+        description: Get a bouncer
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deletebouncer
+        method: DELETE
+        description: Delete a bouncer
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: organizations-organization-cluster-size-skus
+      path: /organizations/{organization}/cluster-size-skus
+      operations:
+      - name: listclustersizes
+        method: GET
+        description: List cluster sizes
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: organizations-organization-databases-database-br
+      path: /organizations/{organization}/databases/{database}/branches/{branch}/roles
+      operations:
+      - name: createrole
+        method: POST
+        description: Create role credentials
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: organizations-organization-databases-database-po
+      path: /organizations/{organization}/databases/{database}/postgres-cidrs
+      operations:
+      - name: listiprestrictions
+        method: GET
+        description: List IP restrictions
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createiprestriction
+        method: POST
+        description: Create an IP restriction entry
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: organizations-organization-databases-database-br
+      path: /organizations/{organization}/databases/{database}/branches/{branch}/query-patterns-report
+      operations:
+      - name: getquerypatternsreportstatus
+        method: GET
+        description: Show the status of a query patterns report
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: organizations-organization-databases-database-we
+      path: /organizations/{organization}/databases/{database}/webhooks
+      operations:
+      - name: listwebhooks
+        method: GET
+        description: List webhooks
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createwebhook
+        method: POST
+        description: Create a webhook
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: organizations-organization-invoices
+      path: /organizations/{organization}/invoices
+      operations:
+      - name: listinvoices
+        method: GET
+        description: List invoices
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: organizations-organization-databases-database-sc
+      path: /organizations/{organization}/databases/{database}/schema-recommendations
+      operations:
+      - name: listschemarecommendations
+        method: GET
+        description: List schema recommendations
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: rest
+    port: 8080
+    namespace: planetscale-rest
+    description: REST adapter for PlanetScale Platform API.
+    resources:
+    - path: /organizations
+      name: listorganizations
+      operations:
+      - method: GET
+        name: listorganizations
+        description: List organizations
+        call: planetscale.listorganizations
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}
+      name: getorganization
+      operations:
+      - method: GET
+        name: getorganization
+        description: Get an organization
+        call: planetscale.getorganization
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/members
+      name: listorganizationmembers
+      operations:
+      - method: GET
+        name: listorganizationmembers
+        description: List organization members
+        call: planetscale.listorganizationmembers
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/members/{member_id}
+      name: getorganizationmember
+      operations:
+      - method: GET
+        name: getorganizationmember
+        description: Get an organization member
+        call: planetscale.getorganizationmember
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/members/{member_id}
+      name: updateorganizationmember
+      operations:
+      - method: PATCH
+        name: updateorganizationmember
+        description: Update an organization member
+        call: planetscale.updateorganizationmember
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/members/{member_id}
+      name: deleteorganizationmember
+      operations:
+      - method: DELETE
+        name: deleteorganizationmember
+        description: Remove an organization member
+        call: planetscale.deleteorganizationmember
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/teams
+      name: listteams
+      operations:
+      - method: GET
+        name: listteams
+        description: List teams
+        call: planetscale.listteams
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/teams
+      name: createteam
+      operations:
+      - method: POST
+        name: createteam
+        description: Create a team
+        call: planetscale.createteam
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/teams/{team_slug}
+      name: getteam
+      operations:
+      - method: GET
+        name: getteam
+        description: Get a team
+        call: planetscale.getteam
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/teams/{team_slug}
+      name: updateteam
+      operations:
+      - method: PATCH
+        name: updateteam
+        description: Update a team
+        call: planetscale.updateteam
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/teams/{team_slug}
+      name: deleteteam
+      operations:
+      - method: DELETE
+        name: deleteteam
+        description: Delete a team
+        call: planetscale.deleteteam
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/databases
+      name: listdatabases
+      operations:
+      - method: GET
+        name: listdatabases
+        description: List databases
+        call: planetscale.listdatabases
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/databases
+      name: createdatabase
+      operations:
+      - method: POST
+        name: createdatabase
+        description: Create a database
+        call: planetscale.createdatabase
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/databases/{database}
+      name: getdatabase
+      operations:
+      - method: GET
+        name: getdatabase
+        description: Get a database
+        call: planetscale.getdatabase
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/databases/{database}
+      name: updatedatabasesettings
+      operations:
+      - method: PATCH
+        name: updatedatabasesettings
+        description: Update database settings
+        call: planetscale.updatedatabasesettings
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/databases/{database}
+      name: deletedatabase
+      operations:
+      - method: DELETE
+        name: deletedatabase
+        description: Delete a database
+        call: planetscale.deletedatabase
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/databases/{database}/branches
+      name: listbranches
+      operations:
+      - method: GET
+        name: listbranches
+        description: List branches
+        call: planetscale.listbranches
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/databases/{database}/branches
+      name: createbranch
+      operations:
+      - method: POST
+        name: createbranch
+        description: Create a branch
+        call: planetscale.createbranch
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/databases/{database}/branches/{branch}
+      name: getbranch
+      operations:
+      - method: GET
+        name: getbranch
+        description: Get a branch
+        call: planetscale.getbranch
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/databases/{database}/branches/{branch}
+      name: updatebranch
+      operations:
+      - method: PATCH
+        name: updatebranch
+        description: Update a branch
+        call: planetscale.updatebranch
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/databases/{database}/branches/{branch}
+      name: deletebranch
+      operations:
+      - method: DELETE
+        name: deletebranch
+        description: Delete a branch
+        call: planetscale.deletebranch
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/databases/{database}/branches/{branch}/schema-lint
+      name: lintbranchschema
+      operations:
+      - method: GET
+        name: lintbranchschema
+        description: Lint a branch schema
+        call: planetscale.lintbranchschema
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/databases/{database}/deploy-requests
+      name: listdeployrequests
+      operations:
+      - method: GET
+        name: listdeployrequests
+        description: List deploy requests
+        call: planetscale.listdeployrequests
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/databases/{database}/deploy-requests
+      name: createdeployrequest
+      operations:
+      - method: POST
+        name: createdeployrequest
+        description: Create a deploy request
+        call: planetscale.createdeployrequest
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/databases/{database}/deploy-requests/{deploy_request_number}
+      name: getdeployrequest
+      operations:
+      - method: GET
+        name: getdeployrequest
+        description: Get a deploy request
+        call: planetscale.getdeployrequest
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/databases/{database}/deploy-requests/{deploy_request_number}
+      name: closedeployrequest
+      operations:
+      - method: PATCH
+        name: closedeployrequest
+        description: Close a deploy request
+        call: planetscale.closedeployrequest
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/databases/{database}/deploy-requests/{deploy_request_number}/deploy
+      name: queuedeployrequest
+      operations:
+      - method: POST
+        name: queuedeployrequest
+        description: Queue a deploy request
+        call: planetscale.queuedeployrequest
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/databases/{database}/deploy-requests/{deploy_request_number}/reviews
+      name: listdeployrequestreviews
+      operations:
+      - method: GET
+        name: listdeployrequestreviews
+        description: List deploy request reviews
+        call: planetscale.listdeployrequestreviews
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/databases/{database}/deploy-requests/{deploy_request_number}/reviews
+      name: reviewdeployrequest
+      operations:
+      - method: POST
+        name: reviewdeployrequest
+        description: Review a deploy request
+        call: planetscale.reviewdeployrequest
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/databases/{database}/deploy-requests/{deploy_request_number}/skip-revert
+      name: skipdeployrequestrevert
+      operations:
+      - method: POST
+        name: skipdeployrequestrevert
+        description: Skip revert period
+        call: planetscale.skipdeployrequestrevert
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/databases/{database}/deploy-requests/{deploy_request_number}/complete-revert
+      name: completedeployrequestrevert
+      operations:
+      - method: POST
+        name: completedeployrequestrevert
+        description: Complete a revert
+        call: planetscale.completedeployrequestrevert
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/databases/{database}/deploy-queue
+      name: getdeployqueue
+      operations:
+      - method: GET
+        name: getdeployqueue
+        description: Get the deploy queue
+        call: planetscale.getdeployqueue
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/databases/{database}/branches/{branch}/passwords
+      name: listpasswords
+      operations:
+      - method: GET
+        name: listpasswords
+        description: List passwords
+        call: planetscale.listpasswords
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/databases/{database}/branches/{branch}/passwords
+      name: createpassword
+      operations:
+      - method: POST
+        name: createpassword
+        description: Create a password
+        call: planetscale.createpassword
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/databases/{database}/branches/{branch}/passwords/{password_id}
+      name: getpassword
+      operations:
+      - method: GET
+        name: getpassword
+        description: Get a password
+        call: planetscale.getpassword
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/databases/{database}/branches/{branch}/passwords/{password_id}
+      name: deletepassword
+      operations:
+      - method: DELETE
+        name: deletepassword
+        description: Delete a password
+        call: planetscale.deletepassword
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/databases/{database}/branches/{branch}/passwords/{password_id}/renew
+      name: renewpassword
+      operations:
+      - method: POST
+        name: renewpassword
+        description: Renew a password
+        call: planetscale.renewpassword
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/databases/{database}/branches/{branch}/backups
+      name: listbackups
+      operations:
+      - method: GET
+        name: listbackups
+        description: List backups
+        call: planetscale.listbackups
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/databases/{database}/branches/{branch}/backups
+      name: createbackup
+      operations:
+      - method: POST
+        name: createbackup
+        description: Create a backup
+        call: planetscale.createbackup
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/databases/{database}/branches/{branch}/backups/{backup_id}
+      name: getbackup
+      operations:
+      - method: GET
+        name: getbackup
+        description: Get a backup
+        call: planetscale.getbackup
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/databases/{database}/branches/{branch}/backups/{backup_id}
+      name: deletebackup
+      operations:
+      - method: DELETE
+        name: deletebackup
+        description: Delete a backup
+        call: planetscale.deletebackup
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/service-tokens
+      name: listservicetokens
+      operations:
+      - method: GET
+        name: listservicetokens
+        description: List service tokens
+        call: planetscale.listservicetokens
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/service-tokens
+      name: createservicetoken
+      operations:
+      - method: POST
+        name: createservicetoken
+        description: Create a service token
+        call: planetscale.createservicetoken
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/service-tokens/{service_token_id}
+      name: getservicetoken
+      operations:
+      - method: GET
+        name: getservicetoken
+        description: Get a service token
+        call: planetscale.getservicetoken
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/service-tokens/{service_token_id}
+      name: deleteservicetoken
+      operations:
+      - method: DELETE
+        name: deleteservicetoken
+        description: Delete a service token
+        call: planetscale.deleteservicetoken
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/service-tokens/{service_token_id}/accesses
+      name: listservicetokenaccesses
+      operations:
+      - method: GET
+        name: listservicetokenaccesses
+        description: List service token accesses
+        call: planetscale.listservicetokenaccesses
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/service-tokens/{service_token_id}/accesses
+      name: createservicetokenaccess
+      operations:
+      - method: POST
+        name: createservicetokenaccess
+        description: Grant service token access
+        call: planetscale.createservicetokenaccess
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/databases/{database}/branches/{branch}/bouncers
+      name: listbouncers
+      operations:
+      - method: GET
+        name: listbouncers
+        description: List bouncers
+        call: planetscale.listbouncers
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/databases/{database}/branches/{branch}/bouncers
+      name: createbouncer
+      operations:
+      - method: POST
+        name: createbouncer
+        description: Create a bouncer
+        call: planetscale.createbouncer
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/databases/{database}/branches/{branch}/bouncers/{bouncer_name}
+      name: getbouncer
+      operations:
+      - method: GET
+        name: getbouncer
+        description: Get a bouncer
+        call: planetscale.getbouncer
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/databases/{database}/branches/{branch}/bouncers/{bouncer_name}
+      name: deletebouncer
+      operations:
+      - method: DELETE
+        name: deletebouncer
+        description: Delete a bouncer
+        call: planetscale.deletebouncer
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/cluster-size-skus
+      name: listclustersizes
+      operations:
+      - method: GET
+        name: listclustersizes
+        description: List cluster sizes
+        call: planetscale.listclustersizes
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/databases/{database}/branches/{branch}/roles
+      name: createrole
+      operations:
+      - method: POST
+        name: createrole
+        description: Create role credentials
+        call: planetscale.createrole
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/databases/{database}/postgres-cidrs
+      name: listiprestrictions
+      operations:
+      - method: GET
+        name: listiprestrictions
+        description: List IP restrictions
+        call: planetscale.listiprestrictions
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/databases/{database}/postgres-cidrs
+      name: createiprestriction
+      operations:
+      - method: POST
+        name: createiprestriction
+        description: Create an IP restriction entry
+        call: planetscale.createiprestriction
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/databases/{database}/branches/{branch}/query-patterns-report
+      name: getquerypatternsreportstatus
+      operations:
+      - method: GET
+        name: getquerypatternsreportstatus
+        description: Show the status of a query patterns report
+        call: planetscale.getquerypatternsreportstatus
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/databases/{database}/webhooks
+      name: listwebhooks
+      operations:
+      - method: GET
+        name: listwebhooks
+        description: List webhooks
+        call: planetscale.listwebhooks
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/databases/{database}/webhooks
+      name: createwebhook
+      operations:
+      - method: POST
+        name: createwebhook
+        description: Create a webhook
+        call: planetscale.createwebhook
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/invoices
+      name: listinvoices
+      operations:
+      - method: GET
+        name: listinvoices
+        description: List invoices
+        call: planetscale.listinvoices
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /organizations/{organization}/databases/{database}/schema-recommendations
+      name: listschemarecommendations
+      operations:
+      - method: GET
+        name: listschemarecommendations
+        description: List schema recommendations
+        call: planetscale.listschemarecommendations
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    port: 9090
+    namespace: planetscale-mcp
+    transport: http
+    description: MCP adapter for PlanetScale Platform API for AI agent use.
+    tools:
+    - name: listorganizations
+      description: List organizations
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: planetscale.listorganizations
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getorganization
+      description: Get an organization
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: planetscale.getorganization
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listorganizationmembers
+      description: List organization members
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: planetscale.listorganizationmembers
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getorganizationmember
+      description: Get an organization member
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: planetscale.getorganizationmember
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: updateorganizationmember
+      description: Update an organization member
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: planetscale.updateorganizationmember
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deleteorganizationmember
+      description: Remove an organization member
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: planetscale.deleteorganizationmember
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listteams
+      description: List teams
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: planetscale.listteams
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createteam
+      description: Create a team
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: planetscale.createteam
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getteam
+      description: Get a team
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: planetscale.getteam
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: updateteam
+      description: Update a team
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: planetscale.updateteam
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deleteteam
+      description: Delete a team
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: planetscale.deleteteam
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listdatabases
+      description: List databases
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: planetscale.listdatabases
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createdatabase
+      description: Create a database
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: planetscale.createdatabase
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getdatabase
+      description: Get a database
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: planetscale.getdatabase
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: updatedatabasesettings
+      description: Update database settings
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: planetscale.updatedatabasesettings
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deletedatabase
+      description: Delete a database
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: planetscale.deletedatabase
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listbranches
+      description: List branches
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: planetscale.listbranches
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createbranch
+      description: Create a branch
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: planetscale.createbranch
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getbranch
+      description: Get a branch
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: planetscale.getbranch
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: updatebranch
+      description: Update a branch
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: planetscale.updatebranch
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deletebranch
+      description: Delete a branch
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: planetscale.deletebranch
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lintbranchschema
+      description: Lint a branch schema
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: planetscale.lintbranchschema
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listdeployrequests
+      description: List deploy requests
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: planetscale.listdeployrequests
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createdeployrequest
+      description: Create a deploy request
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: planetscale.createdeployrequest
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getdeployrequest
+      description: Get a deploy request
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: planetscale.getdeployrequest
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: closedeployrequest
+      description: Close a deploy request
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: planetscale.closedeployrequest
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: queuedeployrequest
+      description: Queue a deploy request
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: planetscale.queuedeployrequest
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listdeployrequestreviews
+      description: List deploy request reviews
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: planetscale.listdeployrequestreviews
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: reviewdeployrequest
+      description: Review a deploy request
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: planetscale.reviewdeployrequest
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: skipdeployrequestrevert
+      description: Skip revert period
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: planetscale.skipdeployrequestrevert
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: completedeployrequestrevert
+      description: Complete a revert
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: planetscale.completedeployrequestrevert
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getdeployqueue
+      description: Get the deploy queue
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: planetscale.getdeployqueue
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listpasswords
+      description: List passwords
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: planetscale.listpasswords
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createpassword
+      description: Create a password
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: planetscale.createpassword
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getpassword
+      description: Get a password
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: planetscale.getpassword
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deletepassword
+      description: Delete a password
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: planetscale.deletepassword
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: renewpassword
+      description: Renew a password
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: planetscale.renewpassword
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listbackups
+      description: List backups
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: planetscale.listbackups
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createbackup
+      description: Create a backup
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: planetscale.createbackup
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getbackup
+      description: Get a backup
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: planetscale.getbackup
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deletebackup
+      description: Delete a backup
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: planetscale.deletebackup
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listservicetokens
+      description: List service tokens
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: planetscale.listservicetokens
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createservicetoken
+      description: Create a service token
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: planetscale.createservicetoken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getservicetoken
+      description: Get a service token
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: planetscale.getservicetoken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deleteservicetoken
+      description: Delete a service token
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: planetscale.deleteservicetoken
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listservicetokenaccesses
+      description: List service token accesses
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: planetscale.listservicetokenaccesses
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createservicetokenaccess
+      description: Grant service token access
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: planetscale.createservicetokenaccess
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listbouncers
+      description: List bouncers
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: planetscale.listbouncers
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createbouncer
+      description: Create a bouncer
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: planetscale.createbouncer
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getbouncer
+      description: Get a bouncer
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: planetscale.getbouncer
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: deletebouncer
+      description: Delete a bouncer
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: planetscale.deletebouncer
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listclustersizes
+      description: List cluster sizes
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: planetscale.listclustersizes
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createrole
+      description: Create role credentials
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: planetscale.createrole
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listiprestrictions
+      description: List IP restrictions
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: planetscale.listiprestrictions
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createiprestriction
+      description: Create an IP restriction entry
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: planetscale.createiprestriction
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getquerypatternsreportstatus
+      description: Show the status of a query patterns report
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: planetscale.getquerypatternsreportstatus
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listwebhooks
+      description: List webhooks
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: planetscale.listwebhooks
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createwebhook
+      description: Create a webhook
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: planetscale.createwebhook
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listinvoices
+      description: List invoices
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: planetscale.listinvoices
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listschemarecommendations
+      description: List schema recommendations
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: planetscale.listschemarecommendations
+      outputParameters:
+      - type: object
+        mapping: $.
+binds:
+- namespace: env
+  keys:
+    PLANETSCALE_TOKEN: PLANETSCALE_TOKEN
