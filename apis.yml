@@ -82,7 +82,7 @@ apis:
       command line. The CLI is available via Homebrew and as a downloadable binary, and includes a Model
       Context Protocol (MCP) server that provides AI tools with direct access to PlanetScale databases.
 common:
-  - type: JSON-LD
+  - type: JSONLD
     url: json-ld/planetscale-context.jsonld
   - type: JSONSchema
     url: json-schema/planetscale-database-schema.json
