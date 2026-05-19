@@ -1,0 +1,70 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: PlanetScale Platform API — Query Patterns
+  description: 'PlanetScale Platform API — Query Patterns. 1 operations. Lead operation: Show the status of a query patterns
+    report. Self-contained Naftiko capability covering one Planetscale business surface.'
+  tags:
+  - Planetscale
+  - Query Patterns
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    PLANETSCALE_API_KEY: PLANETSCALE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: platform-query-patterns
+    baseUri: https://api.planetscale.com/v1
+    description: PlanetScale Platform API — Query Patterns business capability. Self-contained, no shared references.
+    resources:
+    - name: organizations-organization-databases-database-branches-branch-query-patterns-rep
+      path: /organizations/{organization}/databases/{database}/branches/{branch}/query-patterns-report
+      operations:
+      - name: getquerypatternsreportstatus
+        method: GET
+        description: Show the status of a query patterns report
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: bearer
+      token: '{{env.PLANETSCALE_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: platform-query-patterns-rest
+    port: 8080
+    description: REST adapter for PlanetScale Platform API — Query Patterns. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/organizations/{organization}/databases/{database}/branches/{branch}/query-patterns-report
+      name: organizations-organization-databases-database-branches-branch-query-patterns-rep
+      description: REST surface for organizations-organization-databases-database-branches-branch-query-patterns-rep.
+      operations:
+      - method: GET
+        name: getquerypatternsreportstatus
+        description: Show the status of a query patterns report
+        call: platform-query-patterns.getquerypatternsreportstatus
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: platform-query-patterns-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for PlanetScale Platform API — Query Patterns. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: show-status-query-patterns-report
+      description: Show the status of a query patterns report
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: platform-query-patterns.getquerypatternsreportstatus
+      outputParameters:
+      - type: object
+        mapping: $.

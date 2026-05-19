@@ -1,0 +1,152 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: PlanetScale Platform API — Backups
+  description: 'PlanetScale Platform API — Backups. 4 operations. Lead operation: List backups. Self-contained Naftiko capability
+    covering one Planetscale business surface.'
+  tags:
+  - Planetscale
+  - Backups
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    PLANETSCALE_API_KEY: PLANETSCALE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: platform-backups
+    baseUri: https://api.planetscale.com/v1
+    description: PlanetScale Platform API — Backups business capability. Self-contained, no shared references.
+    resources:
+    - name: organizations-organization-databases-database-branches-branch-backups
+      path: /organizations/{organization}/databases/{database}/branches/{branch}/backups
+      operations:
+      - name: listbackups
+        method: GET
+        description: List backups
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createbackup
+        method: POST
+        description: Create a backup
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: organizations-organization-databases-database-branches-branch-backups-backup_id
+      path: /organizations/{organization}/databases/{database}/branches/{branch}/backups/{backup_id}
+      operations:
+      - name: getbackup
+        method: GET
+        description: Get a backup
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: deletebackup
+        method: DELETE
+        description: Delete a backup
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: bearer
+      token: '{{env.PLANETSCALE_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: platform-backups-rest
+    port: 8080
+    description: REST adapter for PlanetScale Platform API — Backups. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/organizations/{organization}/databases/{database}/branches/{branch}/backups
+      name: organizations-organization-databases-database-branches-branch-backups
+      description: REST surface for organizations-organization-databases-database-branches-branch-backups.
+      operations:
+      - method: GET
+        name: listbackups
+        description: List backups
+        call: platform-backups.listbackups
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createbackup
+        description: Create a backup
+        call: platform-backups.createbackup
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/organizations/{organization}/databases/{database}/branches/{branch}/backups/{backup-id}
+      name: organizations-organization-databases-database-branches-branch-backups-backup-id
+      description: REST surface for organizations-organization-databases-database-branches-branch-backups-backup_id.
+      operations:
+      - method: GET
+        name: getbackup
+        description: Get a backup
+        call: platform-backups.getbackup
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletebackup
+        description: Delete a backup
+        call: platform-backups.deletebackup
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: platform-backups-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for PlanetScale Platform API — Backups. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: list-backups
+      description: List backups
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: platform-backups.listbackups
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-backup
+      description: Create a backup
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: platform-backups.createbackup
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-backup
+      description: Get a backup
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: platform-backups.getbackup
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: delete-backup
+      description: Delete a backup
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: platform-backups.deletebackup
+      outputParameters:
+      - type: object
+        mapping: $.

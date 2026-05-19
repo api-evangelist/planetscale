@@ -1,0 +1,70 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: PlanetScale Platform API — Schema Recommendations
+  description: 'PlanetScale Platform API — Schema Recommendations. 1 operations. Lead operation: List schema recommendations.
+    Self-contained Naftiko capability covering one Planetscale business surface.'
+  tags:
+  - Planetscale
+  - Schema Recommendations
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    PLANETSCALE_API_KEY: PLANETSCALE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: platform-schema-recommendations
+    baseUri: https://api.planetscale.com/v1
+    description: PlanetScale Platform API — Schema Recommendations business capability. Self-contained, no shared references.
+    resources:
+    - name: organizations-organization-databases-database-schema-recommendations
+      path: /organizations/{organization}/databases/{database}/schema-recommendations
+      operations:
+      - name: listschemarecommendations
+        method: GET
+        description: List schema recommendations
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: bearer
+      token: '{{env.PLANETSCALE_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: platform-schema-recommendations-rest
+    port: 8080
+    description: REST adapter for PlanetScale Platform API — Schema Recommendations. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/organizations/{organization}/databases/{database}/schema-recommendations
+      name: organizations-organization-databases-database-schema-recommendations
+      description: REST surface for organizations-organization-databases-database-schema-recommendations.
+      operations:
+      - method: GET
+        name: listschemarecommendations
+        description: List schema recommendations
+        call: platform-schema-recommendations.listschemarecommendations
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: platform-schema-recommendations-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for PlanetScale Platform API — Schema Recommendations. One tool per consumed operation, routed
+      inline through this capability's consumes block.
+    tools:
+    - name: list-schema-recommendations
+      description: List schema recommendations
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: platform-schema-recommendations.listschemarecommendations
+      outputParameters:
+      - type: object
+        mapping: $.

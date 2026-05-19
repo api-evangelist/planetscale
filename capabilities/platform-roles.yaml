@@ -1,0 +1,80 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: PlanetScale Platform API — Roles
+  description: 'PlanetScale Platform API — Roles. 1 operations. Lead operation: Create role credentials. Self-contained Naftiko
+    capability covering one Planetscale business surface.'
+  tags:
+  - Planetscale
+  - Roles
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    PLANETSCALE_API_KEY: PLANETSCALE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: platform-roles
+    baseUri: https://api.planetscale.com/v1
+    description: PlanetScale Platform API — Roles business capability. Self-contained, no shared references.
+    resources:
+    - name: organizations-organization-databases-database-branches-branch-roles
+      path: /organizations/{organization}/databases/{database}/branches/{branch}/roles
+      operations:
+      - name: createrole
+        method: POST
+        description: Create role credentials
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.PLANETSCALE_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: platform-roles-rest
+    port: 8080
+    description: REST adapter for PlanetScale Platform API — Roles. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/organizations/{organization}/databases/{database}/branches/{branch}/roles
+      name: organizations-organization-databases-database-branches-branch-roles
+      description: REST surface for organizations-organization-databases-database-branches-branch-roles.
+      operations:
+      - method: POST
+        name: createrole
+        description: Create role credentials
+        call: platform-roles.createrole
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: platform-roles-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for PlanetScale Platform API — Roles. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: create-role-credentials
+      description: Create role credentials
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: platform-roles.createrole
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

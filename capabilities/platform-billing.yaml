@@ -1,0 +1,70 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: PlanetScale Platform API — Billing
+  description: 'PlanetScale Platform API — Billing. 1 operations. Lead operation: List invoices. Self-contained Naftiko capability
+    covering one Planetscale business surface.'
+  tags:
+  - Planetscale
+  - Billing
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    PLANETSCALE_API_KEY: PLANETSCALE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: platform-billing
+    baseUri: https://api.planetscale.com/v1
+    description: PlanetScale Platform API — Billing business capability. Self-contained, no shared references.
+    resources:
+    - name: organizations-organization-invoices
+      path: /organizations/{organization}/invoices
+      operations:
+      - name: listinvoices
+        method: GET
+        description: List invoices
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: bearer
+      token: '{{env.PLANETSCALE_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: platform-billing-rest
+    port: 8080
+    description: REST adapter for PlanetScale Platform API — Billing. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/organizations/{organization}/invoices
+      name: organizations-organization-invoices
+      description: REST surface for organizations-organization-invoices.
+      operations:
+      - method: GET
+        name: listinvoices
+        description: List invoices
+        call: platform-billing.listinvoices
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: platform-billing-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for PlanetScale Platform API — Billing. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: list-invoices
+      description: List invoices
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: platform-billing.listinvoices
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,102 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: PlanetScale Platform API — Organizations
+  description: 'PlanetScale Platform API — Organizations. 2 operations. Lead operation: List organizations. Self-contained
+    Naftiko capability covering one Planetscale business surface.'
+  tags:
+  - Planetscale
+  - Organizations
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    PLANETSCALE_API_KEY: PLANETSCALE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: platform-organizations
+    baseUri: https://api.planetscale.com/v1
+    description: PlanetScale Platform API — Organizations business capability. Self-contained, no shared references.
+    resources:
+    - name: organizations
+      path: /organizations
+      operations:
+      - name: listorganizations
+        method: GET
+        description: List organizations
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: organizations-organization
+      path: /organizations/{organization}
+      operations:
+      - name: getorganization
+        method: GET
+        description: Get an organization
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: bearer
+      token: '{{env.PLANETSCALE_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: platform-organizations-rest
+    port: 8080
+    description: REST adapter for PlanetScale Platform API — Organizations. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/organizations
+      name: organizations
+      description: REST surface for organizations.
+      operations:
+      - method: GET
+        name: listorganizations
+        description: List organizations
+        call: platform-organizations.listorganizations
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/organizations/{organization}
+      name: organizations-organization
+      description: REST surface for organizations-organization.
+      operations:
+      - method: GET
+        name: getorganization
+        description: Get an organization
+        call: platform-organizations.getorganization
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: platform-organizations-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for PlanetScale Platform API — Organizations. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: list-organizations
+      description: List organizations
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: platform-organizations.listorganizations
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-organization
+      description: Get an organization
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: platform-organizations.getorganization
+      outputParameters:
+      - type: object
+        mapping: $.
