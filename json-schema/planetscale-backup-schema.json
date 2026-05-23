@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/Backup",
+  "title": "Backup",
+  "type": "object",
+  "description": "A backup of a database branch.",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The unique identifier of the backup."
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the backup."
+    },
+    "state": {
+      "type": "string",
+      "description": "The current state of the backup.",
+      "enum": [
+        "pending",
+        "running",
+        "success",
+        "failed"
+      ]
+    },
+    "size": {
+      "type": "integer",
+      "description": "The size of the backup in bytes."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The timestamp when the backup was created."
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The timestamp when the backup was last updated."
+    },
+    "completed_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The timestamp when the backup completed."
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The timestamp when the backup expires."
+    }
+  }
+}

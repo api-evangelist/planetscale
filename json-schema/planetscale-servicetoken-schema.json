@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ServiceToken",
+  "title": "ServiceToken",
+  "type": "object",
+  "description": "A service token for authenticating API requests.",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The unique identifier of the service token."
+    },
+    "name": {
+      "type": "string",
+      "description": "The descriptive name of the service token."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The timestamp when the service token was created."
+    }
+  }
+}

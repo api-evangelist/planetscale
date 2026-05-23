@@ -1,0 +1,43 @@
+name: Planetscale Domain Vocabulary
+provider: Planetscale
+providerId: planetscale
+description: Tag-derived vocabulary for the Planetscale API surface; sourced from openapi/ tags.
+terms:
+- term: Backups
+  description: Manage database branch backups, including listing, creating, and retrieving backup details.
+- term: Billing
+  description: Access organization billing data and invoices programmatically.
+- term: Bouncers
+  description: Manage PgBouncer connection pooling instances for database branches, including creating, listing, resizing,
+    and deleting bouncers.
+- term: Branches
+  description: Manage database branches for schema development and safe migrations, including creating, listing, updating,
+    and deleting branches.
+- term: Cluster Sizes
+  description: Retrieve available cluster size SKUs for Vitess and Postgres database branches.
+- term: Databases
+  description: Manage PlanetScale databases, including creating, listing, updating settings, and deleting databases.
+- term: Deploy Requests
+  description: Manage deploy requests for applying schema changes from development branches to production, including creating,
+    reviewing, queueing, and completing deployments.
+- term: IP Restrictions
+  description: Manage IP restriction entries for controlling database access by IP address.
+- term: Organization Members
+  description: Manage members within an organization, including listing, retrieving, updating roles, and removing members.
+- term: Organizations
+  description: Manage PlanetScale organizations, including listing organizations and retrieving organization details.
+- term: Passwords
+  description: Manage branch passwords and connection credentials for connecting applications to database branches.
+- term: Query Patterns
+  description: Analyze and report on query patterns for database branches.
+- term: Roles
+  description: Manage role-based credentials for database access.
+- term: Schema Recommendations
+  description: View and manage schema recommendations for optimizing database performance and structure.
+- term: Service Tokens
+  description: Manage service tokens for API authentication, including creating, listing, and deleting tokens and their access
+    grants.
+- term: Teams
+  description: Manage teams within an organization, including creating teams, adding members, and controlling database access.
+- term: Webhooks
+  description: Manage webhook configurations for database event notifications.

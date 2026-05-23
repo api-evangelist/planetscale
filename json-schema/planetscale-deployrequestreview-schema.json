@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/DeployRequestReview",
+  "title": "DeployRequestReview",
+  "type": "object",
+  "description": "A review submitted for a deploy request.",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The unique identifier of the review."
+    },
+    "state": {
+      "type": "string",
+      "description": "The review state.",
+      "enum": [
+        "approved",
+        "changes_requested",
+        "commented"
+      ]
+    },
+    "body": {
+      "type": "string",
+      "description": "The review comment body."
+    },
+    "actor": {
+      "type": "object",
+      "description": "The user who submitted the review.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The user ID."
+        },
+        "display_name": {
+          "type": "string",
+          "description": "The display name of the user."
+        }
+      }
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The timestamp when the review was created."
+    }
+  }
+}

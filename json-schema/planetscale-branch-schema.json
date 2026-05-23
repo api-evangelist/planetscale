@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/Branch",
+  "title": "Branch",
+  "type": "object",
+  "description": "A database branch representing an isolated copy of the schema for development, testing, or production use.",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The unique identifier of the branch."
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the branch."
+    },
+    "production": {
+      "type": "boolean",
+      "description": "Whether this is a production branch."
+    },
+    "ready": {
+      "type": "boolean",
+      "description": "Whether the branch is ready for connections."
+    },
+    "shard_count": {
+      "type": "integer",
+      "description": "The number of shards in the branch."
+    },
+    "sharded": {
+      "type": "boolean",
+      "description": "Whether the branch is sharded."
+    },
+    "cluster_rate_name": {
+      "type": "string",
+      "description": "The cluster size identifier for the branch."
+    },
+    "region": {
+      "type": "object",
+      "description": "The region where the branch is hosted.",
+      "properties": {
+        "slug": {
+          "type": "string",
+          "description": "The region slug identifier."
+        },
+        "display_name": {
+          "type": "string",
+          "description": "The human-readable region name."
+        }
+      }
+    },
+    "parent_branch": {
+      "type": "string",
+      "description": "The name of the parent branch this was forked from."
+    },
+    "schema_last_updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The timestamp when the schema was last modified."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The timestamp when the branch was created."
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The timestamp when the branch was last updated."
+    },
+    "html_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "The URL to the branch in the PlanetScale dashboard."
+    }
+  }
+}

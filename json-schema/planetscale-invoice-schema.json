@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/Invoice",
+  "title": "Invoice",
+  "type": "object",
+  "description": "A billing invoice for an organization.",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The unique identifier of the invoice."
+    },
+    "period_start": {
+      "type": "string",
+      "format": "date",
+      "description": "The start date of the billing period."
+    },
+    "period_end": {
+      "type": "string",
+      "format": "date",
+      "description": "The end date of the billing period."
+    },
+    "total": {
+      "type": "number",
+      "description": "The total invoice amount in cents."
+    },
+    "currency": {
+      "type": "string",
+      "description": "The currency code for the invoice."
+    },
+    "status": {
+      "type": "string",
+      "description": "The payment status of the invoice.",
+      "enum": [
+        "draft",
+        "open",
+        "paid",
+        "void"
+      ]
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The timestamp when the invoice was generated."
+    }
+  }
+}

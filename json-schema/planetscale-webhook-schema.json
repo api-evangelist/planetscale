@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/Webhook",
+  "title": "Webhook",
+  "type": "object",
+  "description": "A webhook configuration for receiving event notifications from a PlanetScale database.",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The unique identifier of the webhook."
+    },
+    "url": {
+      "type": "string",
+      "format": "uri",
+      "description": "The HTTPS URL that receives webhook callbacks."
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "The list of event types the webhook subscribes to."
+    },
+    "active": {
+      "type": "boolean",
+      "description": "Whether the webhook is currently active."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The timestamp when the webhook was created."
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The timestamp when the webhook was last updated."
+    }
+  }
+}

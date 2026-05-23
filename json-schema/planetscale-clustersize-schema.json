@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ClusterSize",
+  "title": "ClusterSize",
+  "type": "object",
+  "description": "An available cluster size SKU for database branches.",
+  "properties": {
+    "slug": {
+      "type": "string",
+      "description": "The slug identifier for the cluster size."
+    },
+    "display_name": {
+      "type": "string",
+      "description": "The human-readable name of the cluster size."
+    },
+    "vcpus": {
+      "type": "number",
+      "description": "The number of virtual CPUs."
+    },
+    "memory_gb": {
+      "type": "number",
+      "description": "The amount of memory in gigabytes."
+    },
+    "storage_gb": {
+      "type": "number",
+      "description": "The amount of storage in gigabytes."
+    },
+    "engine": {
+      "type": "string",
+      "description": "The database engine type.",
+      "enum": [
+        "vitess",
+        "postgres"
+      ]
+    }
+  }
+}

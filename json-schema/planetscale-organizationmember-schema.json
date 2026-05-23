@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/OrganizationMember",
+  "title": "OrganizationMember",
+  "type": "object",
+  "description": "A member of a PlanetScale organization with a specific role.",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The unique identifier of the member."
+    },
+    "name": {
+      "type": "string",
+      "description": "The display name of the member."
+    },
+    "email": {
+      "type": "string",
+      "format": "email",
+      "description": "The email address of the member."
+    },
+    "role": {
+      "type": "string",
+      "description": "The role of the member within the organization.",
+      "enum": [
+        "admin",
+        "member",
+        "database_admin"
+      ]
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The timestamp when the member was added."
+    }
+  }
+}

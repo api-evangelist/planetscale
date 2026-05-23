@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/Bouncer",
+  "title": "Bouncer",
+  "type": "object",
+  "description": "A PgBouncer connection pooling instance for a database branch.",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The unique identifier of the bouncer."
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the bouncer instance."
+    },
+    "state": {
+      "type": "string",
+      "description": "The current state of the bouncer.",
+      "enum": [
+        "pending",
+        "ready",
+        "resizing"
+      ]
+    },
+    "pool_size": {
+      "type": "integer",
+      "description": "The connection pool size."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The timestamp when the bouncer was created."
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The timestamp when the bouncer was last updated."
+    }
+  }
+}

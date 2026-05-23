@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/SchemaLintError",
+  "title": "SchemaLintError",
+  "type": "object",
+  "description": "A schema lint error or warning for a database branch.",
+  "properties": {
+    "lint_error": {
+      "type": "string",
+      "description": "The lint error identifier."
+    },
+    "subject_type": {
+      "type": "string",
+      "description": "The type of schema element with the error."
+    },
+    "table_name": {
+      "type": "string",
+      "description": "The table name associated with the error."
+    },
+    "column_name": {
+      "type": "string",
+      "description": "The column name associated with the error, if applicable."
+    },
+    "error_description": {
+      "type": "string",
+      "description": "A human-readable description of the lint error."
+    },
+    "docs_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "A URL to documentation about the lint error."
+    }
+  }
+}

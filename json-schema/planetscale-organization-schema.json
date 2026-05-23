@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/Organization",
+  "title": "Organization",
+  "type": "object",
+  "description": "A PlanetScale organization that contains databases, members, and billing configuration.",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The unique identifier of the organization."
+    },
+    "name": {
+      "type": "string",
+      "description": "The URL-safe name of the organization."
+    },
+    "display_name": {
+      "type": "string",
+      "description": "The human-readable display name of the organization."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The timestamp when the organization was created."
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The timestamp when the organization was last updated."
+    },
+    "plan": {
+      "type": "string",
+      "description": "The billing plan for the organization."
+    },
+    "billing_email": {
+      "type": "string",
+      "format": "email",
+      "description": "The email address used for billing communications."
+    }
+  }
+}

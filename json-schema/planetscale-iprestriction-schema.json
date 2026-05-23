@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/IpRestriction",
+  "title": "IpRestriction",
+  "type": "object",
+  "description": "An IP restriction entry for controlling database access.",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The unique identifier of the restriction."
+    },
+    "cidr": {
+      "type": "string",
+      "description": "The IP address or CIDR range."
+    },
+    "description": {
+      "type": "string",
+      "description": "A description of the restriction."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The timestamp when the restriction was created."
+    }
+  }
+}

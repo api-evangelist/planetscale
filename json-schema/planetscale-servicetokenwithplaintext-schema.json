@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ServiceTokenWithPlaintext",
+  "title": "ServiceTokenWithPlaintext",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/ServiceToken"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string",
+          "description": "The plaintext token value. Only returned during creation."
+        }
+      }
+    }
+  ]
+}

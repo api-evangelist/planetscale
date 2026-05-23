@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/Team",
+  "title": "Team",
+  "type": "object",
+  "description": "A team within an organization for managing database access at the group level.",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The unique identifier of the team."
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the team."
+    },
+    "slug": {
+      "type": "string",
+      "description": "The URL-safe slug of the team."
+    },
+    "description": {
+      "type": "string",
+      "description": "A description of the team."
+    },
+    "members_count": {
+      "type": "integer",
+      "description": "The number of members in the team."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The timestamp when the team was created."
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The timestamp when the team was last updated."
+    }
+  }
+}

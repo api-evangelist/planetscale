@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/DeployRequest",
+  "title": "DeployRequest",
+  "type": "object",
+  "description": "A deploy request for applying schema changes from a development branch to a target branch.",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The unique identifier of the deploy request."
+    },
+    "number": {
+      "type": "integer",
+      "description": "The deploy request number within the database."
+    },
+    "branch": {
+      "type": "string",
+      "description": "The name of the source branch with schema changes."
+    },
+    "into_branch": {
+      "type": "string",
+      "description": "The name of the target branch to deploy into."
+    },
+    "state": {
+      "type": "string",
+      "description": "The current state of the deploy request.",
+      "enum": [
+        "open",
+        "closed",
+        "pending",
+        "queued",
+        "in_progress",
+        "complete",
+        "complete_pending_revert",
+        "complete_reverted",
+        "complete_error"
+      ]
+    },
+    "approved": {
+      "type": "boolean",
+      "description": "Whether the deploy request has been approved."
+    },
+    "deployment": {
+      "type": "object",
+      "description": "Information about the active or completed deployment.",
+      "properties": {
+        "state": {
+          "type": "string",
+          "description": "The state of the deployment."
+        },
+        "started_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The timestamp when deployment started."
+        },
+        "finished_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The timestamp when deployment finished."
+        }
+      }
+    },
+    "notes": {
+      "type": "string",
+      "description": "Notes or description for the deploy request."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The timestamp when the deploy request was created."
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The timestamp when the deploy request was last updated."
+    },
+    "closed_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The timestamp when the deploy request was closed."
+    },
+    "html_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "The URL to the deploy request in the PlanetScale dashboard."
+    }
+  }
+}

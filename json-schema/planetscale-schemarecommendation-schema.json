@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/SchemaRecommendation",
+  "title": "SchemaRecommendation",
+  "type": "object",
+  "description": "A schema optimization recommendation for a database.",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The unique identifier of the recommendation."
+    },
+    "type": {
+      "type": "string",
+      "description": "The type of recommendation."
+    },
+    "table_name": {
+      "type": "string",
+      "description": "The table the recommendation applies to."
+    },
+    "description": {
+      "type": "string",
+      "description": "A human-readable description of the recommendation."
+    },
+    "severity": {
+      "type": "string",
+      "description": "The severity level of the recommendation.",
+      "enum": [
+        "info",
+        "warning",
+        "critical"
+      ]
+    },
+    "dismissed": {
+      "type": "boolean",
+      "description": "Whether the recommendation has been dismissed."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The timestamp when the recommendation was generated."
+    }
+  }
+}

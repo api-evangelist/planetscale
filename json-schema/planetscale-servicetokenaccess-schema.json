@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ServiceTokenAccess",
+  "title": "ServiceTokenAccess",
+  "type": "object",
+  "description": "An access permission granted to a service token.",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The unique identifier of the access grant."
+    },
+    "access": {
+      "type": "string",
+      "description": "The permission that is granted."
+    },
+    "database": {
+      "type": "string",
+      "description": "The database the access is scoped to. Null for organization-wide access."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The timestamp when the access was granted."
+    }
+  }
+}

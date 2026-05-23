@@ -1,0 +1,690 @@
+{
+  "provider": "Planetscale",
+  "providerId": "planetscale",
+  "kind": "json-structure",
+  "description": "Structural overview of the Planetscale API surface; extracted from openapi/.",
+  "schemaCount": 23,
+  "operationCount": 60,
+  "schemas": [
+    {
+      "name": "Organization",
+      "type": "object",
+      "propertyCount": 7,
+      "required": []
+    },
+    {
+      "name": "OrganizationMember",
+      "type": "object",
+      "propertyCount": 5,
+      "required": []
+    },
+    {
+      "name": "Team",
+      "type": "object",
+      "propertyCount": 7,
+      "required": []
+    },
+    {
+      "name": "Database",
+      "type": "object",
+      "propertyCount": 15,
+      "required": []
+    },
+    {
+      "name": "Branch",
+      "type": "object",
+      "propertyCount": 13,
+      "required": []
+    },
+    {
+      "name": "DeployRequest",
+      "type": "object",
+      "propertyCount": 12,
+      "required": []
+    },
+    {
+      "name": "DeployRequestReview",
+      "type": "object",
+      "propertyCount": 5,
+      "required": []
+    },
+    {
+      "name": "Password",
+      "type": "object",
+      "propertyCount": 10,
+      "required": []
+    },
+    {
+      "name": "PasswordWithPlaintext",
+      "type": null,
+      "propertyCount": 0,
+      "required": []
+    },
+    {
+      "name": "Backup",
+      "type": "object",
+      "propertyCount": 8,
+      "required": []
+    },
+    {
+      "name": "ServiceToken",
+      "type": "object",
+      "propertyCount": 3,
+      "required": []
+    },
+    {
+      "name": "ServiceTokenWithPlaintext",
+      "type": null,
+      "propertyCount": 0,
+      "required": []
+    },
+    {
+      "name": "ServiceTokenAccess",
+      "type": "object",
+      "propertyCount": 4,
+      "required": []
+    },
+    {
+      "name": "Bouncer",
+      "type": "object",
+      "propertyCount": 6,
+      "required": []
+    },
+    {
+      "name": "ClusterSize",
+      "type": "object",
+      "propertyCount": 6,
+      "required": []
+    },
+    {
+      "name": "RoleCredentials",
+      "type": "object",
+      "propertyCount": 7,
+      "required": []
+    },
+    {
+      "name": "IpRestriction",
+      "type": "object",
+      "propertyCount": 4,
+      "required": []
+    },
+    {
+      "name": "QueryPatternsReport",
+      "type": "object",
+      "propertyCount": 4,
+      "required": []
+    },
+    {
+      "name": "SchemaLintError",
+      "type": "object",
+      "propertyCount": 6,
+      "required": []
+    },
+    {
+      "name": "Webhook",
+      "type": "object",
+      "propertyCount": 6,
+      "required": []
+    },
+    {
+      "name": "SchemaRecommendation",
+      "type": "object",
+      "propertyCount": 7,
+      "required": []
+    },
+    {
+      "name": "Invoice",
+      "type": "object",
+      "propertyCount": 7,
+      "required": []
+    },
+    {
+      "name": "Error",
+      "type": "object",
+      "propertyCount": 2,
+      "required": []
+    }
+  ],
+  "operations": [
+    {
+      "method": "GET",
+      "path": "/organizations",
+      "operationId": "listOrganizations",
+      "summary": "List organizations",
+      "tags": [
+        "Organizations"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/organizations/{organization}",
+      "operationId": "getOrganization",
+      "summary": "Get an organization",
+      "tags": [
+        "Organizations"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/organizations/{organization}/members",
+      "operationId": "listOrganizationMembers",
+      "summary": "List organization members",
+      "tags": [
+        "Organization Members"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/organizations/{organization}/members/{member_id}",
+      "operationId": "getOrganizationMember",
+      "summary": "Get an organization member",
+      "tags": [
+        "Organization Members"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/organizations/{organization}/members/{member_id}",
+      "operationId": "deleteOrganizationMember",
+      "summary": "Remove an organization member",
+      "tags": [
+        "Organization Members"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "path": "/organizations/{organization}/members/{member_id}",
+      "operationId": "updateOrganizationMember",
+      "summary": "Update an organization member",
+      "tags": [
+        "Organization Members"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/organizations/{organization}/teams",
+      "operationId": "listTeams",
+      "summary": "List teams",
+      "tags": [
+        "Teams"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/organizations/{organization}/teams",
+      "operationId": "createTeam",
+      "summary": "Create a team",
+      "tags": [
+        "Teams"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/organizations/{organization}/teams/{team_slug}",
+      "operationId": "getTeam",
+      "summary": "Get a team",
+      "tags": [
+        "Teams"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/organizations/{organization}/teams/{team_slug}",
+      "operationId": "deleteTeam",
+      "summary": "Delete a team",
+      "tags": [
+        "Teams"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "path": "/organizations/{organization}/teams/{team_slug}",
+      "operationId": "updateTeam",
+      "summary": "Update a team",
+      "tags": [
+        "Teams"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/organizations/{organization}/databases",
+      "operationId": "listDatabases",
+      "summary": "List databases",
+      "tags": [
+        "Databases"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/organizations/{organization}/databases",
+      "operationId": "createDatabase",
+      "summary": "Create a database",
+      "tags": [
+        "Databases"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/organizations/{organization}/databases/{database}",
+      "operationId": "getDatabase",
+      "summary": "Get a database",
+      "tags": [
+        "Databases"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/organizations/{organization}/databases/{database}",
+      "operationId": "deleteDatabase",
+      "summary": "Delete a database",
+      "tags": [
+        "Databases"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "path": "/organizations/{organization}/databases/{database}",
+      "operationId": "updateDatabaseSettings",
+      "summary": "Update database settings",
+      "tags": [
+        "Databases"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/organizations/{organization}/databases/{database}/branches",
+      "operationId": "listBranches",
+      "summary": "List branches",
+      "tags": [
+        "Branches"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/organizations/{organization}/databases/{database}/branches",
+      "operationId": "createBranch",
+      "summary": "Create a branch",
+      "tags": [
+        "Branches"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/organizations/{organization}/databases/{database}/branches/{branch}",
+      "operationId": "getBranch",
+      "summary": "Get a branch",
+      "tags": [
+        "Branches"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/organizations/{organization}/databases/{database}/branches/{branch}",
+      "operationId": "deleteBranch",
+      "summary": "Delete a branch",
+      "tags": [
+        "Branches"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "path": "/organizations/{organization}/databases/{database}/branches/{branch}",
+      "operationId": "updateBranch",
+      "summary": "Update a branch",
+      "tags": [
+        "Branches"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/organizations/{organization}/databases/{database}/branches/{branch}/schema-lint",
+      "operationId": "lintBranchSchema",
+      "summary": "Lint a branch schema",
+      "tags": [
+        "Branches"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/organizations/{organization}/databases/{database}/deploy-requests",
+      "operationId": "listDeployRequests",
+      "summary": "List deploy requests",
+      "tags": [
+        "Deploy Requests"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/organizations/{organization}/databases/{database}/deploy-requests",
+      "operationId": "createDeployRequest",
+      "summary": "Create a deploy request",
+      "tags": [
+        "Deploy Requests"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/organizations/{organization}/databases/{database}/deploy-requests/{deploy_request_number}",
+      "operationId": "getDeployRequest",
+      "summary": "Get a deploy request",
+      "tags": [
+        "Deploy Requests"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "path": "/organizations/{organization}/databases/{database}/deploy-requests/{deploy_request_number}",
+      "operationId": "closeDeployRequest",
+      "summary": "Close a deploy request",
+      "tags": [
+        "Deploy Requests"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/organizations/{organization}/databases/{database}/deploy-requests/{deploy_request_number}/deploy",
+      "operationId": "queueDeployRequest",
+      "summary": "Queue a deploy request",
+      "tags": [
+        "Deploy Requests"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/organizations/{organization}/databases/{database}/deploy-requests/{deploy_request_number}/reviews",
+      "operationId": "listDeployRequestReviews",
+      "summary": "List deploy request reviews",
+      "tags": [
+        "Deploy Requests"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/organizations/{organization}/databases/{database}/deploy-requests/{deploy_request_number}/reviews",
+      "operationId": "reviewDeployRequest",
+      "summary": "Review a deploy request",
+      "tags": [
+        "Deploy Requests"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/organizations/{organization}/databases/{database}/deploy-requests/{deploy_request_number}/skip-revert",
+      "operationId": "skipDeployRequestRevert",
+      "summary": "Skip revert period",
+      "tags": [
+        "Deploy Requests"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/organizations/{organization}/databases/{database}/deploy-requests/{deploy_request_number}/complete-revert",
+      "operationId": "completeDeployRequestRevert",
+      "summary": "Complete a revert",
+      "tags": [
+        "Deploy Requests"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/organizations/{organization}/databases/{database}/deploy-queue",
+      "operationId": "getDeployQueue",
+      "summary": "Get the deploy queue",
+      "tags": [
+        "Deploy Requests"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/organizations/{organization}/databases/{database}/branches/{branch}/passwords",
+      "operationId": "listPasswords",
+      "summary": "List passwords",
+      "tags": [
+        "Passwords"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/organizations/{organization}/databases/{database}/branches/{branch}/passwords",
+      "operationId": "createPassword",
+      "summary": "Create a password",
+      "tags": [
+        "Passwords"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/organizations/{organization}/databases/{database}/branches/{branch}/passwords/{password_id}",
+      "operationId": "getPassword",
+      "summary": "Get a password",
+      "tags": [
+        "Passwords"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/organizations/{organization}/databases/{database}/branches/{branch}/passwords/{password_id}",
+      "operationId": "deletePassword",
+      "summary": "Delete a password",
+      "tags": [
+        "Passwords"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/organizations/{organization}/databases/{database}/branches/{branch}/passwords/{password_id}/renew",
+      "operationId": "renewPassword",
+      "summary": "Renew a password",
+      "tags": [
+        "Passwords"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/organizations/{organization}/databases/{database}/branches/{branch}/backups",
+      "operationId": "listBackups",
+      "summary": "List backups",
+      "tags": [
+        "Backups"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/organizations/{organization}/databases/{database}/branches/{branch}/backups",
+      "operationId": "createBackup",
+      "summary": "Create a backup",
+      "tags": [
+        "Backups"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/organizations/{organization}/databases/{database}/branches/{branch}/backups/{backup_id}",
+      "operationId": "getBackup",
+      "summary": "Get a backup",
+      "tags": [
+        "Backups"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/organizations/{organization}/databases/{database}/branches/{branch}/backups/{backup_id}",
+      "operationId": "deleteBackup",
+      "summary": "Delete a backup",
+      "tags": [
+        "Backups"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/organizations/{organization}/service-tokens",
+      "operationId": "listServiceTokens",
+      "summary": "List service tokens",
+      "tags": [
+        "Service Tokens"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/organizations/{organization}/service-tokens",
+      "operationId": "createServiceToken",
+      "summary": "Create a service token",
+      "tags": [
+        "Service Tokens"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/organizations/{organization}/service-tokens/{service_token_id}",
+      "operationId": "getServiceToken",
+      "summary": "Get a service token",
+      "tags": [
+        "Service Tokens"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/organizations/{organization}/service-tokens/{service_token_id}",
+      "operationId": "deleteServiceToken",
+      "summary": "Delete a service token",
+      "tags": [
+        "Service Tokens"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/organizations/{organization}/service-tokens/{service_token_id}/accesses",
+      "operationId": "listServiceTokenAccesses",
+      "summary": "List service token accesses",
+      "tags": [
+        "Service Tokens"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/organizations/{organization}/service-tokens/{service_token_id}/accesses",
+      "operationId": "createServiceTokenAccess",
+      "summary": "Grant service token access",
+      "tags": [
+        "Service Tokens"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/organizations/{organization}/databases/{database}/branches/{branch}/bouncers",
+      "operationId": "listBouncers",
+      "summary": "List bouncers",
+      "tags": [
+        "Bouncers"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/organizations/{organization}/databases/{database}/branches/{branch}/bouncers",
+      "operationId": "createBouncer",
+      "summary": "Create a bouncer",
+      "tags": [
+        "Bouncers"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/organizations/{organization}/databases/{database}/branches/{branch}/bouncers/{bouncer_name}",
+      "operationId": "getBouncer",
+      "summary": "Get a bouncer",
+      "tags": [
+        "Bouncers"
+      ]
+    },
+    {
+      "method": "DELETE",
+      "path": "/organizations/{organization}/databases/{database}/branches/{branch}/bouncers/{bouncer_name}",
+      "operationId": "deleteBouncer",
+      "summary": "Delete a bouncer",
+      "tags": [
+        "Bouncers"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/organizations/{organization}/cluster-size-skus",
+      "operationId": "listClusterSizes",
+      "summary": "List cluster sizes",
+      "tags": [
+        "Cluster Sizes"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/organizations/{organization}/databases/{database}/branches/{branch}/roles",
+      "operationId": "createRole",
+      "summary": "Create role credentials",
+      "tags": [
+        "Roles"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/organizations/{organization}/databases/{database}/postgres-cidrs",
+      "operationId": "listIpRestrictions",
+      "summary": "List IP restrictions",
+      "tags": [
+        "IP Restrictions"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/organizations/{organization}/databases/{database}/postgres-cidrs",
+      "operationId": "createIpRestriction",
+      "summary": "Create an IP restriction entry",
+      "tags": [
+        "IP Restrictions"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/organizations/{organization}/databases/{database}/branches/{branch}/query-patterns-report",
+      "operationId": "getQueryPatternsReportStatus",
+      "summary": "Show the status of a query patterns report",
+      "tags": [
+        "Query Patterns"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/organizations/{organization}/databases/{database}/webhooks",
+      "operationId": "listWebhooks",
+      "summary": "List webhooks",
+      "tags": [
+        "Webhooks"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/organizations/{organization}/databases/{database}/webhooks",
+      "operationId": "createWebhook",
+      "summary": "Create a webhook",
+      "tags": [
+        "Webhooks"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/organizations/{organization}/invoices",
+      "operationId": "listInvoices",
+      "summary": "List invoices",
+      "tags": [
+        "Billing"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/organizations/{organization}/databases/{database}/schema-recommendations",
+      "operationId": "listSchemaRecommendations",
+      "summary": "List schema recommendations",
+      "tags": [
+        "Schema Recommendations"
+      ]
+    }
+  ]
+}
