@@ -1,0 +1,1930 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "PlanetScale Platform API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Authorization",
+      "value": "{{Authorization}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Organizations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List organizations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.planetscale.com/v1/organizations"
+          },
+          "docs": "Returns a list of all organizations the authenticated user or service token has access to."
+        },
+        {
+          "info": {
+            "name": "Get an organization",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.planetscale.com/v1/organizations/:organization",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              }
+            ]
+          },
+          "docs": "Returns details about a specific organization by name."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Organization Members",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List organization members",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/members",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page number for pagination."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "The number of results per page."
+              }
+            ]
+          },
+          "docs": "Returns a list of all members in the specified organization. Requires the read_organization permission on the service token."
+        },
+        {
+          "info": {
+            "name": "Get an organization member",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/members/:member_id",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "member_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the organization member."
+              }
+            ]
+          },
+          "docs": "Returns details about a specific member in the organization. Requires the read_organization permission."
+        },
+        {
+          "info": {
+            "name": "Update an organization member",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/members/:member_id",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "member_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the organization member."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the role or properties of a specific member in the organization. Requires the write_organization permission."
+        },
+        {
+          "info": {
+            "name": "Remove an organization member",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/members/:member_id",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "member_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the organization member."
+              }
+            ]
+          },
+          "docs": "Removes a member from the organization. Requires the write_organization permission."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Teams",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List teams",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/teams",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page number for pagination."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "The number of results per page."
+              }
+            ]
+          },
+          "docs": "Returns a list of all teams in the specified organization."
+        },
+        {
+          "info": {
+            "name": "Create a team",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/teams",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new team in the specified organization."
+        },
+        {
+          "info": {
+            "name": "Get a team",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/teams/:team_slug",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "team_slug",
+                "value": "",
+                "type": "path",
+                "description": "The slug of the team."
+              }
+            ]
+          },
+          "docs": "Returns details about a specific team in the organization."
+        },
+        {
+          "info": {
+            "name": "Update a team",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/teams/:team_slug",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "team_slug",
+                "value": "",
+                "type": "path",
+                "description": "The slug of the team."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the name or description of a specific team."
+        },
+        {
+          "info": {
+            "name": "Delete a team",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/teams/:team_slug",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "team_slug",
+                "value": "",
+                "type": "path",
+                "description": "The slug of the team."
+              }
+            ]
+          },
+          "docs": "Deletes a team from the organization."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Databases",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List databases",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page number for pagination."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "The number of results per page."
+              }
+            ]
+          },
+          "docs": "Returns a list of all databases in the specified organization."
+        },
+        {
+          "info": {
+            "name": "Create a database",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new database in the specified organization."
+        },
+        {
+          "info": {
+            "name": "Get a database",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              }
+            ]
+          },
+          "docs": "Returns details about a specific database, including its configuration, state, and production branch information."
+        },
+        {
+          "info": {
+            "name": "Update database settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates settings for a specific database, such as production branch protection, insights, and default branch."
+        },
+        {
+          "info": {
+            "name": "Delete a database",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              }
+            ]
+          },
+          "docs": "Deletes a database and all of its branches. This action is irreversible."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Branches",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List branches",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database/branches",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page number for pagination."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "The number of results per page."
+              }
+            ]
+          },
+          "docs": "Returns a list of all branches for a specific database."
+        },
+        {
+          "info": {
+            "name": "Create a branch",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database/branches",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new branch for the specified database. Branches are isolated copies of the database schema used for development and testing."
+        },
+        {
+          "info": {
+            "name": "Get a branch",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database/branches/:branch",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              },
+              {
+                "name": "branch",
+                "value": "",
+                "type": "path",
+                "description": "The name of the branch."
+              }
+            ]
+          },
+          "docs": "Returns details about a specific branch, including its schema status, cluster configuration, and readiness state."
+        },
+        {
+          "info": {
+            "name": "Update a branch",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database/branches/:branch",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              },
+              {
+                "name": "branch",
+                "value": "",
+                "type": "path",
+                "description": "The name of the branch."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates properties of a specific branch, such as its cluster configuration."
+        },
+        {
+          "info": {
+            "name": "Delete a branch",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database/branches/:branch",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              },
+              {
+                "name": "branch",
+                "value": "",
+                "type": "path",
+                "description": "The name of the branch."
+              }
+            ]
+          },
+          "docs": "Deletes a database branch. Production branches cannot be deleted."
+        },
+        {
+          "info": {
+            "name": "Lint a branch schema",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database/branches/:branch/schema-lint",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              },
+              {
+                "name": "branch",
+                "value": "",
+                "type": "path",
+                "description": "The name of the branch."
+              }
+            ]
+          },
+          "docs": "Returns schema lint results for the specified branch, identifying potential issues and recommendations."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Deploy Requests",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List deploy requests",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database/deploy-requests",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page number for pagination."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "The number of results per page."
+              }
+            ]
+          },
+          "docs": "Returns a list of all deploy requests for a specific database."
+        },
+        {
+          "info": {
+            "name": "Create a deploy request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database/deploy-requests",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new deploy request to merge schema changes from a development branch into the target branch."
+        },
+        {
+          "info": {
+            "name": "Get a deploy request",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database/deploy-requests/:deploy_request_number",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              },
+              {
+                "name": "deploy_request_number",
+                "value": "",
+                "type": "path",
+                "description": "The number of the deploy request."
+              }
+            ]
+          },
+          "docs": "Returns details about a specific deploy request, including its status, schema changes, and deployment history."
+        },
+        {
+          "info": {
+            "name": "Close a deploy request",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database/deploy-requests/:deploy_request_number",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              },
+              {
+                "name": "deploy_request_number",
+                "value": "",
+                "type": "path",
+                "description": "The number of the deploy request."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Closes an open deploy request without deploying the changes."
+        },
+        {
+          "info": {
+            "name": "Queue a deploy request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database/deploy-requests/:deploy_request_number/deploy",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              },
+              {
+                "name": "deploy_request_number",
+                "value": "",
+                "type": "path",
+                "description": "The number of the deploy request."
+              }
+            ]
+          },
+          "docs": "Queues a deploy request for deployment, applying the schema changes to the target branch."
+        },
+        {
+          "info": {
+            "name": "List deploy request reviews",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database/deploy-requests/:deploy_request_number/reviews",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              },
+              {
+                "name": "deploy_request_number",
+                "value": "",
+                "type": "path",
+                "description": "The number of the deploy request."
+              }
+            ]
+          },
+          "docs": "Returns a list of reviews for a specific deploy request."
+        },
+        {
+          "info": {
+            "name": "Review a deploy request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database/deploy-requests/:deploy_request_number/reviews",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              },
+              {
+                "name": "deploy_request_number",
+                "value": "",
+                "type": "path",
+                "description": "The number of the deploy request."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Submits a review for a deploy request, approving or requesting changes."
+        },
+        {
+          "info": {
+            "name": "Skip revert period",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database/deploy-requests/:deploy_request_number/skip-revert",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              },
+              {
+                "name": "deploy_request_number",
+                "value": "",
+                "type": "path",
+                "description": "The number of the deploy request."
+              }
+            ]
+          },
+          "docs": "Skips the revert period for a completed deploy request, finalizing the schema changes."
+        },
+        {
+          "info": {
+            "name": "Complete a revert",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database/deploy-requests/:deploy_request_number/complete-revert",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              },
+              {
+                "name": "deploy_request_number",
+                "value": "",
+                "type": "path",
+                "description": "The number of the deploy request."
+              }
+            ]
+          },
+          "docs": "Completes a revert of a deployed schema change, rolling back to the previous schema."
+        },
+        {
+          "info": {
+            "name": "Get the deploy queue",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database/deploy-queue",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              }
+            ]
+          },
+          "docs": "Returns the current deploy queue for a database, showing pending and active deployments."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Passwords",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List passwords",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database/branches/:branch/passwords",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              },
+              {
+                "name": "branch",
+                "value": "",
+                "type": "path",
+                "description": "The name of the branch."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page number for pagination."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "The number of results per page."
+              }
+            ]
+          },
+          "docs": "Returns a list of all passwords for a specific branch. Passwords are connection credentials used to connect to the branch."
+        },
+        {
+          "info": {
+            "name": "Create a password",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database/branches/:branch/passwords",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              },
+              {
+                "name": "branch",
+                "value": "",
+                "type": "path",
+                "description": "The name of the branch."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new password for a specific branch. The plaintext password is only returned once in the creation response."
+        },
+        {
+          "info": {
+            "name": "Get a password",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database/branches/:branch/passwords/:password_id",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              },
+              {
+                "name": "branch",
+                "value": "",
+                "type": "path",
+                "description": "The name of the branch."
+              },
+              {
+                "name": "password_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the password."
+              }
+            ]
+          },
+          "docs": "Returns details about a specific password. The plaintext password value is not included."
+        },
+        {
+          "info": {
+            "name": "Delete a password",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database/branches/:branch/passwords/:password_id",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              },
+              {
+                "name": "branch",
+                "value": "",
+                "type": "path",
+                "description": "The name of the branch."
+              },
+              {
+                "name": "password_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the password."
+              }
+            ]
+          },
+          "docs": "Deletes a password, revoking its access to the branch."
+        },
+        {
+          "info": {
+            "name": "Renew a password",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database/branches/:branch/passwords/:password_id/renew",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              },
+              {
+                "name": "branch",
+                "value": "",
+                "type": "path",
+                "description": "The name of the branch."
+              },
+              {
+                "name": "password_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the password."
+              }
+            ]
+          },
+          "docs": "Renews a password, extending its expiration time."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Backups",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List backups",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database/branches/:branch/backups",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              },
+              {
+                "name": "branch",
+                "value": "",
+                "type": "path",
+                "description": "The name of the branch."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page number for pagination."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "The number of results per page."
+              }
+            ]
+          },
+          "docs": "Returns a list of all backups for a specific branch."
+        },
+        {
+          "info": {
+            "name": "Create a backup",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database/branches/:branch/backups",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              },
+              {
+                "name": "branch",
+                "value": "",
+                "type": "path",
+                "description": "The name of the branch."
+              }
+            ]
+          },
+          "docs": "Creates a new backup of the specified branch."
+        },
+        {
+          "info": {
+            "name": "Get a backup",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database/branches/:branch/backups/:backup_id",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              },
+              {
+                "name": "branch",
+                "value": "",
+                "type": "path",
+                "description": "The name of the branch."
+              },
+              {
+                "name": "backup_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the backup."
+              }
+            ]
+          },
+          "docs": "Returns details about a specific backup."
+        },
+        {
+          "info": {
+            "name": "Delete a backup",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database/branches/:branch/backups/:backup_id",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              },
+              {
+                "name": "branch",
+                "value": "",
+                "type": "path",
+                "description": "The name of the branch."
+              },
+              {
+                "name": "backup_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the backup."
+              }
+            ]
+          },
+          "docs": "Deletes a specific backup."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Service Tokens",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List service tokens",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/service-tokens",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              }
+            ]
+          },
+          "docs": "Returns a list of all service tokens for the specified organization."
+        },
+        {
+          "info": {
+            "name": "Create a service token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/service-tokens",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new service token for API authentication. The token value is only returned once during creation."
+        },
+        {
+          "info": {
+            "name": "Get a service token",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/service-tokens/:service_token_id",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "service_token_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the service token."
+              }
+            ]
+          },
+          "docs": "Returns details about a specific service token. The token value is not included."
+        },
+        {
+          "info": {
+            "name": "Delete a service token",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/service-tokens/:service_token_id",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "service_token_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the service token."
+              }
+            ]
+          },
+          "docs": "Deletes a service token, revoking all API access associated with it."
+        },
+        {
+          "info": {
+            "name": "List service token accesses",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/service-tokens/:service_token_id/accesses",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "service_token_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the service token."
+              }
+            ]
+          },
+          "docs": "Returns a list of access grants for a specific service token."
+        },
+        {
+          "info": {
+            "name": "Grant service token access",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/service-tokens/:service_token_id/accesses",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "service_token_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the service token."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Grants a specific access permission to a service token for a database or organization resource."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Bouncers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List bouncers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database/branches/:branch/bouncers",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              },
+              {
+                "name": "branch",
+                "value": "",
+                "type": "path",
+                "description": "The name of the branch."
+              }
+            ]
+          },
+          "docs": "Returns a list of PgBouncer connection pooling instances for the specified branch."
+        },
+        {
+          "info": {
+            "name": "Create a bouncer",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database/branches/:branch/bouncers",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              },
+              {
+                "name": "branch",
+                "value": "",
+                "type": "path",
+                "description": "The name of the branch."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new PgBouncer connection pooling instance for the specified branch."
+        },
+        {
+          "info": {
+            "name": "Get a bouncer",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database/branches/:branch/bouncers/:bouncer_name",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              },
+              {
+                "name": "branch",
+                "value": "",
+                "type": "path",
+                "description": "The name of the branch."
+              },
+              {
+                "name": "bouncer_name",
+                "value": "",
+                "type": "path",
+                "description": "The name of the PgBouncer instance."
+              }
+            ]
+          },
+          "docs": "Returns details about a specific PgBouncer instance."
+        },
+        {
+          "info": {
+            "name": "Delete a bouncer",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database/branches/:branch/bouncers/:bouncer_name",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              },
+              {
+                "name": "branch",
+                "value": "",
+                "type": "path",
+                "description": "The name of the branch."
+              },
+              {
+                "name": "bouncer_name",
+                "value": "",
+                "type": "path",
+                "description": "The name of the PgBouncer instance."
+              }
+            ]
+          },
+          "docs": "Deletes a PgBouncer connection pooling instance."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Cluster Sizes",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List cluster sizes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/cluster-size-skus",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              }
+            ]
+          },
+          "docs": "Returns a list of available cluster size SKUs for Vitess and Postgres database branches in the specified organization."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Roles",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create role credentials",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database/branches/:branch/roles",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              },
+              {
+                "name": "branch",
+                "value": "",
+                "type": "path",
+                "description": "The name of the branch."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates role-based credentials for accessing a database branch with specific permissions."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "IP Restrictions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List IP restrictions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database/postgres-cidrs",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              }
+            ]
+          },
+          "docs": "Returns a list of IP restriction entries for a database."
+        },
+        {
+          "info": {
+            "name": "Create an IP restriction entry",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database/postgres-cidrs",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new IP restriction entry to control database access by IP address or CIDR range."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Query Patterns",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Show the status of a query patterns report",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database/branches/:branch/query-patterns-report",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              },
+              {
+                "name": "branch",
+                "value": "",
+                "type": "path",
+                "description": "The name of the branch."
+              }
+            ]
+          },
+          "docs": "Returns the status of a query patterns report for the specified branch."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Webhooks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List webhooks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database/webhooks",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              }
+            ]
+          },
+          "docs": "Returns a list of webhook configurations for the specified database. Each database can have up to 5 webhooks."
+        },
+        {
+          "info": {
+            "name": "Create a webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database/webhooks",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new webhook configuration for the specified database to receive event notifications via HTTP POST callbacks."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Billing",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List invoices",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/invoices",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              }
+            ]
+          },
+          "docs": "Returns a list of invoices for the specified organization. Requires OAuth or service token with billing access."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Schema Recommendations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List schema recommendations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database/schema-recommendations",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              }
+            ]
+          },
+          "docs": "Returns a list of schema recommendations for the specified database, identifying potential optimization opportunities."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
