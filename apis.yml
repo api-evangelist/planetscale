@@ -10,7 +10,7 @@ apis:
       - Deploy Requests
       - MySQL
       - Serverless
-    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
     baseURL: https://api.planetscale.com/v1
     humanURL: https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
     properties:
@@ -33,7 +33,7 @@ apis:
       - Authentication
       - Authorization
       - OAuth
-    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
     baseURL: https://api.planetscale.com
     humanURL: https://planetscale.com/docs/api/planetscale-api-oauth-applications
     properties:
@@ -54,7 +54,7 @@ apis:
       - MySQL
       - SDK
       - Serverless
-    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
     baseURL: https://api.example.com
     humanURL: https://planetscale.com/docs/tutorials/using-the-serverless-driver
     properties:
@@ -72,7 +72,7 @@ apis:
       - Command Line
       - Database Management
       - Developer Tools
-    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
     baseURL: https://api.example.com
     humanURL: https://planetscale.com/docs/reference/planetscale-cli
     properties:
