@@ -85,6 +85,12 @@ apis:
       and as a downloadable binary, and includes a Model Context Protocol (MCP) server that provides AI tools with
       direct access to PlanetScale databases.
 common:
+  - type: DomainSecurity
+    url: security/planetscale-domain-security.yml
+  - type: Authentication
+    url: authentication/planetscale-authentication.yml
+  - url: https://planetscale.com/blog
+    type: Blog
   - type: GitHubOrganization
     url: https://github.com/planetscale
   - type: LinkedIn

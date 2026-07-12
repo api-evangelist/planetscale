@@ -1,0 +1,25 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/planetscale-platform-api-openapi.yml
+summary:
+  types:
+  - apiKey
+  - http
+  api_key_in:
+  - header
+schemes:
+- name: serviceToken
+  type: apiKey
+  in: header
+  parameter: Authorization
+  description: Service token authentication. Use the format 'ServiceToken {token_id}:{token_value}'
+    in the Authorization header.
+  sources:
+  - openapi/planetscale-platform-api-openapi.yml
+- name: bearerAuth
+  type: http
+  scheme: bearer
+  description: OAuth 2.0 bearer token authentication. Obtain tokens via the PlanetScale OAuth
+    authorization code flow.
+  sources:
+  - openapi/planetscale-platform-api-openapi.yml
