@@ -85,6 +85,8 @@ apis:
       and as a downloadable binary, and includes a Model Context Protocol (MCP) server that provides AI tools with
       direct access to PlanetScale databases.
 common:
+  - type: AgenticAccess
+    url: agentic-access/planetscale-agentic-access.yml
   - type: DomainSecurity
     url: security/planetscale-domain-security.yml
   - type: Authentication
