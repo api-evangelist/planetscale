@@ -1,0 +1,167 @@
+openapi: 3.1.0
+info:
+  title: PlanetScale Platform Backups Webhooks API
+  description: The PlanetScale Platform API provides programmatic access to manage PlanetScale serverless MySQL-compatible databases. It allows developers to create and manage databases, branches, deploy requests, passwords, backups, service tokens, organization members, teams, bouncers, and billing data. The API supports authentication via service tokens and OAuth, enabling integration into CI/CD pipelines and infrastructure-as-code workflows.
+  version: 1.0.0
+  contact:
+    name: PlanetScale Support
+    url: https://support.planetscale.com
+  termsOfService: https://planetscale.com/legal/tos
+  license:
+    name: Proprietary
+    url: https://planetscale.com/legal/tos
+servers:
+- url: https://api.planetscale.com/v1
+  description: PlanetScale Production API
+security:
+- serviceToken: []
+tags:
+- name: Webhooks
+  description: Manage webhook configurations for database event notifications.
+paths:
+  /organizations/{organization}/databases/{database}/webhooks:
+    get:
+      operationId: listWebhooks
+      summary: List webhooks
+      description: Returns a list of webhook configurations for the specified database. Each database can have up to 5 webhooks.
+      tags:
+      - Webhooks
+      parameters:
+      - $ref: '#/components/parameters/OrganizationParam'
+      - $ref: '#/components/parameters/DatabaseParam'
+      responses:
+        '200':
+          description: Successful response with list of webhooks
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Webhook'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createWebhook
+      summary: Create a webhook
+      description: Creates a new webhook configuration for the specified database to receive event notifications via HTTP POST callbacks.
+      tags:
+      - Webhooks
+      parameters:
+      - $ref: '#/components/parameters/OrganizationParam'
+      - $ref: '#/components/parameters/DatabaseParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - url
+              - events
+              properties:
+                url:
+                  type: string
+                  format: uri
+                  description: The HTTPS URL to receive webhook POST callbacks.
+                events:
+                  type: array
+                  items:
+                    type: string
+                  description: The list of event types to subscribe to.
+                secret:
+                  type: string
+                  description: The shared secret used to sign webhook payloads for verification.
+      responses:
+        '201':
+          description: Webhook created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Webhook'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+components:
+  responses:
+    Unauthorized:
+      description: Authentication failed. The service token or OAuth token is missing, invalid, or lacks the required permissions.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    UnprocessableEntity:
+      description: The request was well-formed but contains invalid parameters or violates business rules.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Webhook:
+      type: object
+      description: A webhook configuration for receiving event notifications from a PlanetScale database.
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the webhook.
+        url:
+          type: string
+          format: uri
+          description: The HTTPS URL that receives webhook callbacks.
+        events:
+          type: array
+          items:
+            type: string
+          description: The list of event types the webhook subscribes to.
+        active:
+          type: boolean
+          description: Whether the webhook is currently active.
+        created_at:
+          type: string
+          format: date-time
+          description: The timestamp when the webhook was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: The timestamp when the webhook was last updated.
+    Error:
+      type: object
+      description: An error response from the PlanetScale API.
+      properties:
+        code:
+          type: string
+          description: A machine-readable error code.
+        message:
+          type: string
+          description: A human-readable error message.
+  parameters:
+    OrganizationParam:
+      name: organization
+      in: path
+      required: true
+      description: The name of the organization.
+      schema:
+        type: string
+    DatabaseParam:
+      name: database
+      in: path
+      required: true
+      description: The name of the database.
+      schema:
+        type: string
+  securitySchemes:
+    serviceToken:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Service token authentication. Use the format 'ServiceToken {token_id}:{token_value}' in the Authorization header.
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 bearer token authentication. Obtain tokens via the PlanetScale OAuth authorization code flow.
+externalDocs:
+  description: PlanetScale API Documentation
+  url: https://planetscale.com/docs/api/reference/getting-started-with-planetscale-api

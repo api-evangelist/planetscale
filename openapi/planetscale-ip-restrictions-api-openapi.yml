@@ -1,0 +1,151 @@
+openapi: 3.1.0
+info:
+  title: PlanetScale Platform Backups IP Restrictions API
+  description: The PlanetScale Platform API provides programmatic access to manage PlanetScale serverless MySQL-compatible databases. It allows developers to create and manage databases, branches, deploy requests, passwords, backups, service tokens, organization members, teams, bouncers, and billing data. The API supports authentication via service tokens and OAuth, enabling integration into CI/CD pipelines and infrastructure-as-code workflows.
+  version: 1.0.0
+  contact:
+    name: PlanetScale Support
+    url: https://support.planetscale.com
+  termsOfService: https://planetscale.com/legal/tos
+  license:
+    name: Proprietary
+    url: https://planetscale.com/legal/tos
+servers:
+- url: https://api.planetscale.com/v1
+  description: PlanetScale Production API
+security:
+- serviceToken: []
+tags:
+- name: IP Restrictions
+  description: Manage IP restriction entries for controlling database access by IP address.
+paths:
+  /organizations/{organization}/databases/{database}/postgres-cidrs:
+    get:
+      operationId: listIpRestrictions
+      summary: List IP restrictions
+      description: Returns a list of IP restriction entries for a database.
+      tags:
+      - IP Restrictions
+      parameters:
+      - $ref: '#/components/parameters/OrganizationParam'
+      - $ref: '#/components/parameters/DatabaseParam'
+      responses:
+        '200':
+          description: Successful response with list of IP restrictions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/IpRestriction'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createIpRestriction
+      summary: Create an IP restriction entry
+      description: Creates a new IP restriction entry to control database access by IP address or CIDR range.
+      tags:
+      - IP Restrictions
+      parameters:
+      - $ref: '#/components/parameters/OrganizationParam'
+      - $ref: '#/components/parameters/DatabaseParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - cidr
+              properties:
+                cidr:
+                  type: string
+                  description: The IP address or CIDR range to restrict.
+                  example: 10.0.0.0/24
+                description:
+                  type: string
+                  description: A description for the IP restriction entry.
+      responses:
+        '201':
+          description: IP restriction created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IpRestriction'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+components:
+  responses:
+    Unauthorized:
+      description: Authentication failed. The service token or OAuth token is missing, invalid, or lacks the required permissions.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    UnprocessableEntity:
+      description: The request was well-formed but contains invalid parameters or violates business rules.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    IpRestriction:
+      type: object
+      description: An IP restriction entry for controlling database access.
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the restriction.
+        cidr:
+          type: string
+          description: The IP address or CIDR range.
+        description:
+          type: string
+          description: A description of the restriction.
+        created_at:
+          type: string
+          format: date-time
+          description: The timestamp when the restriction was created.
+    Error:
+      type: object
+      description: An error response from the PlanetScale API.
+      properties:
+        code:
+          type: string
+          description: A machine-readable error code.
+        message:
+          type: string
+          description: A human-readable error message.
+  parameters:
+    OrganizationParam:
+      name: organization
+      in: path
+      required: true
+      description: The name of the organization.
+      schema:
+        type: string
+    DatabaseParam:
+      name: database
+      in: path
+      required: true
+      description: The name of the database.
+      schema:
+        type: string
+  securitySchemes:
+    serviceToken:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Service token authentication. Use the format 'ServiceToken {token_id}:{token_value}' in the Authorization header.
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 bearer token authentication. Obtain tokens via the PlanetScale OAuth authorization code flow.
+externalDocs:
+  description: PlanetScale API Documentation
+  url: https://planetscale.com/docs/api/reference/getting-started-with-planetscale-api

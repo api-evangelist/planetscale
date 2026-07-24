@@ -1,0 +1,136 @@
+openapi: 3.1.0
+info:
+  title: PlanetScale Platform Backups Organizations API
+  description: The PlanetScale Platform API provides programmatic access to manage PlanetScale serverless MySQL-compatible databases. It allows developers to create and manage databases, branches, deploy requests, passwords, backups, service tokens, organization members, teams, bouncers, and billing data. The API supports authentication via service tokens and OAuth, enabling integration into CI/CD pipelines and infrastructure-as-code workflows.
+  version: 1.0.0
+  contact:
+    name: PlanetScale Support
+    url: https://support.planetscale.com
+  termsOfService: https://planetscale.com/legal/tos
+  license:
+    name: Proprietary
+    url: https://planetscale.com/legal/tos
+servers:
+- url: https://api.planetscale.com/v1
+  description: PlanetScale Production API
+security:
+- serviceToken: []
+tags:
+- name: Organizations
+  description: Manage PlanetScale organizations, including listing organizations and retrieving organization details.
+paths:
+  /organizations:
+    get:
+      operationId: listOrganizations
+      summary: List organizations
+      description: Returns a list of all organizations the authenticated user or service token has access to.
+      tags:
+      - Organizations
+      responses:
+        '200':
+          description: Successful response with list of organizations
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Organization'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /organizations/{organization}:
+    get:
+      operationId: getOrganization
+      summary: Get an organization
+      description: Returns details about a specific organization by name.
+      tags:
+      - Organizations
+      parameters:
+      - $ref: '#/components/parameters/OrganizationParam'
+      responses:
+        '200':
+          description: Successful response with organization details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organization'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  responses:
+    Unauthorized:
+      description: Authentication failed. The service token or OAuth token is missing, invalid, or lacks the required permissions.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    OrganizationParam:
+      name: organization
+      in: path
+      required: true
+      description: The name of the organization.
+      schema:
+        type: string
+  schemas:
+    Error:
+      type: object
+      description: An error response from the PlanetScale API.
+      properties:
+        code:
+          type: string
+          description: A machine-readable error code.
+        message:
+          type: string
+          description: A human-readable error message.
+    Organization:
+      type: object
+      description: A PlanetScale organization that contains databases, members, and billing configuration.
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the organization.
+        name:
+          type: string
+          description: The URL-safe name of the organization.
+        display_name:
+          type: string
+          description: The human-readable display name of the organization.
+        created_at:
+          type: string
+          format: date-time
+          description: The timestamp when the organization was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: The timestamp when the organization was last updated.
+        plan:
+          type: string
+          description: The billing plan for the organization.
+        billing_email:
+          type: string
+          format: email
+          description: The email address used for billing communications.
+  securitySchemes:
+    serviceToken:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Service token authentication. Use the format 'ServiceToken {token_id}:{token_value}' in the Authorization header.
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 bearer token authentication. Obtain tokens via the PlanetScale OAuth authorization code flow.
+externalDocs:
+  description: PlanetScale API Documentation
+  url: https://planetscale.com/docs/api/reference/getting-started-with-planetscale-api

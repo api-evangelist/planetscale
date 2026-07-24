@@ -1,0 +1,117 @@
+openapi: 3.1.0
+info:
+  title: PlanetScale Platform Backups Billing API
+  description: The PlanetScale Platform API provides programmatic access to manage PlanetScale serverless MySQL-compatible databases. It allows developers to create and manage databases, branches, deploy requests, passwords, backups, service tokens, organization members, teams, bouncers, and billing data. The API supports authentication via service tokens and OAuth, enabling integration into CI/CD pipelines and infrastructure-as-code workflows.
+  version: 1.0.0
+  contact:
+    name: PlanetScale Support
+    url: https://support.planetscale.com
+  termsOfService: https://planetscale.com/legal/tos
+  license:
+    name: Proprietary
+    url: https://planetscale.com/legal/tos
+servers:
+- url: https://api.planetscale.com/v1
+  description: PlanetScale Production API
+security:
+- serviceToken: []
+tags:
+- name: Billing
+  description: Access organization billing data and invoices programmatically.
+paths:
+  /organizations/{organization}/invoices:
+    get:
+      operationId: listInvoices
+      summary: List invoices
+      description: Returns a list of invoices for the specified organization. Requires OAuth or service token with billing access.
+      tags:
+      - Billing
+      parameters:
+      - $ref: '#/components/parameters/OrganizationParam'
+      responses:
+        '200':
+          description: Successful response with list of invoices
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Invoice'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  parameters:
+    OrganizationParam:
+      name: organization
+      in: path
+      required: true
+      description: The name of the organization.
+      schema:
+        type: string
+  schemas:
+    Invoice:
+      type: object
+      description: A billing invoice for an organization.
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the invoice.
+        period_start:
+          type: string
+          format: date
+          description: The start date of the billing period.
+        period_end:
+          type: string
+          format: date
+          description: The end date of the billing period.
+        total:
+          type: number
+          description: The total invoice amount in cents.
+        currency:
+          type: string
+          description: The currency code for the invoice.
+        status:
+          type: string
+          description: The payment status of the invoice.
+          enum:
+          - draft
+          - open
+          - paid
+          - void
+        created_at:
+          type: string
+          format: date-time
+          description: The timestamp when the invoice was generated.
+    Error:
+      type: object
+      description: An error response from the PlanetScale API.
+      properties:
+        code:
+          type: string
+          description: A machine-readable error code.
+        message:
+          type: string
+          description: A human-readable error message.
+  responses:
+    Unauthorized:
+      description: Authentication failed. The service token or OAuth token is missing, invalid, or lacks the required permissions.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    serviceToken:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Service token authentication. Use the format 'ServiceToken {token_id}:{token_value}' in the Authorization header.
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 bearer token authentication. Obtain tokens via the PlanetScale OAuth authorization code flow.
+externalDocs:
+  description: PlanetScale API Documentation
+  url: https://planetscale.com/docs/api/reference/getting-started-with-planetscale-api

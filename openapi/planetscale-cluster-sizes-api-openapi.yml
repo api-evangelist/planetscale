@@ -1,0 +1,109 @@
+openapi: 3.1.0
+info:
+  title: PlanetScale Platform Backups Cluster Sizes API
+  description: The PlanetScale Platform API provides programmatic access to manage PlanetScale serverless MySQL-compatible databases. It allows developers to create and manage databases, branches, deploy requests, passwords, backups, service tokens, organization members, teams, bouncers, and billing data. The API supports authentication via service tokens and OAuth, enabling integration into CI/CD pipelines and infrastructure-as-code workflows.
+  version: 1.0.0
+  contact:
+    name: PlanetScale Support
+    url: https://support.planetscale.com
+  termsOfService: https://planetscale.com/legal/tos
+  license:
+    name: Proprietary
+    url: https://planetscale.com/legal/tos
+servers:
+- url: https://api.planetscale.com/v1
+  description: PlanetScale Production API
+security:
+- serviceToken: []
+tags:
+- name: Cluster Sizes
+  description: Retrieve available cluster size SKUs for Vitess and Postgres database branches.
+paths:
+  /organizations/{organization}/cluster-size-skus:
+    get:
+      operationId: listClusterSizes
+      summary: List cluster sizes
+      description: Returns a list of available cluster size SKUs for Vitess and Postgres database branches in the specified organization.
+      tags:
+      - Cluster Sizes
+      parameters:
+      - $ref: '#/components/parameters/OrganizationParam'
+      responses:
+        '200':
+          description: Successful response with list of cluster sizes
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ClusterSize'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  parameters:
+    OrganizationParam:
+      name: organization
+      in: path
+      required: true
+      description: The name of the organization.
+      schema:
+        type: string
+  responses:
+    Unauthorized:
+      description: Authentication failed. The service token or OAuth token is missing, invalid, or lacks the required permissions.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Error:
+      type: object
+      description: An error response from the PlanetScale API.
+      properties:
+        code:
+          type: string
+          description: A machine-readable error code.
+        message:
+          type: string
+          description: A human-readable error message.
+    ClusterSize:
+      type: object
+      description: An available cluster size SKU for database branches.
+      properties:
+        slug:
+          type: string
+          description: The slug identifier for the cluster size.
+        display_name:
+          type: string
+          description: The human-readable name of the cluster size.
+        vcpus:
+          type: number
+          description: The number of virtual CPUs.
+        memory_gb:
+          type: number
+          description: The amount of memory in gigabytes.
+        storage_gb:
+          type: number
+          description: The amount of storage in gigabytes.
+        engine:
+          type: string
+          description: The database engine type.
+          enum:
+          - vitess
+          - postgres
+  securitySchemes:
+    serviceToken:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Service token authentication. Use the format 'ServiceToken {token_id}:{token_value}' in the Authorization header.
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 bearer token authentication. Obtain tokens via the PlanetScale OAuth authorization code flow.
+externalDocs:
+  description: PlanetScale API Documentation
+  url: https://planetscale.com/docs/api/reference/getting-started-with-planetscale-api

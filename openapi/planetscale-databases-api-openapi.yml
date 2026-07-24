@@ -1,0 +1,317 @@
+openapi: 3.1.0
+info:
+  title: PlanetScale Platform Backups Databases API
+  description: The PlanetScale Platform API provides programmatic access to manage PlanetScale serverless MySQL-compatible databases. It allows developers to create and manage databases, branches, deploy requests, passwords, backups, service tokens, organization members, teams, bouncers, and billing data. The API supports authentication via service tokens and OAuth, enabling integration into CI/CD pipelines and infrastructure-as-code workflows.
+  version: 1.0.0
+  contact:
+    name: PlanetScale Support
+    url: https://support.planetscale.com
+  termsOfService: https://planetscale.com/legal/tos
+  license:
+    name: Proprietary
+    url: https://planetscale.com/legal/tos
+servers:
+- url: https://api.planetscale.com/v1
+  description: PlanetScale Production API
+security:
+- serviceToken: []
+tags:
+- name: Databases
+  description: Manage PlanetScale databases, including creating, listing, updating settings, and deleting databases.
+paths:
+  /organizations/{organization}/databases:
+    get:
+      operationId: listDatabases
+      summary: List databases
+      description: Returns a list of all databases in the specified organization.
+      tags:
+      - Databases
+      parameters:
+      - $ref: '#/components/parameters/OrganizationParam'
+      - $ref: '#/components/parameters/PageParam'
+      - $ref: '#/components/parameters/PerPageParam'
+      responses:
+        '200':
+          description: Successful response with list of databases
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Database'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createDatabase
+      summary: Create a database
+      description: Creates a new database in the specified organization.
+      tags:
+      - Databases
+      parameters:
+      - $ref: '#/components/parameters/OrganizationParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - name
+              properties:
+                name:
+                  type: string
+                  description: The name of the database.
+                plan:
+                  type: string
+                  description: The billing plan for the database.
+                  enum:
+                  - hobby
+                  - scaler
+                  - scaler_pro
+                cluster_size:
+                  type: string
+                  description: The cluster size for the production branch.
+                region:
+                  type: string
+                  description: The region slug where the database will be created.
+      responses:
+        '201':
+          description: Database created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Database'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /organizations/{organization}/databases/{database}:
+    get:
+      operationId: getDatabase
+      summary: Get a database
+      description: Returns details about a specific database, including its configuration, state, and production branch information.
+      tags:
+      - Databases
+      parameters:
+      - $ref: '#/components/parameters/OrganizationParam'
+      - $ref: '#/components/parameters/DatabaseParam'
+      responses:
+        '200':
+          description: Successful response with database details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Database'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      operationId: updateDatabaseSettings
+      summary: Update database settings
+      description: Updates settings for a specific database, such as production branch protection, insights, and default branch.
+      tags:
+      - Databases
+      parameters:
+      - $ref: '#/components/parameters/OrganizationParam'
+      - $ref: '#/components/parameters/DatabaseParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                default_branch:
+                  type: string
+                  description: The name of the default branch.
+                production_branch_web_console:
+                  type: boolean
+                  description: Whether the web console is enabled for production branches.
+                insights_enabled:
+                  type: boolean
+                  description: Whether PlanetScale Insights is enabled.
+                migration_framework:
+                  type: string
+                  description: The migration framework used for schema changes.
+                migration_table_name:
+                  type: string
+                  description: The name of the migration tracking table.
+                require_approval_for_deploy:
+                  type: boolean
+                  description: Whether deploy requests require approval before deployment.
+                allow_data_branching:
+                  type: boolean
+                  description: Whether data branching is enabled.
+      responses:
+        '200':
+          description: Database settings updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Database'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteDatabase
+      summary: Delete a database
+      description: Deletes a database and all of its branches. This action is irreversible.
+      tags:
+      - Databases
+      parameters:
+      - $ref: '#/components/parameters/OrganizationParam'
+      - $ref: '#/components/parameters/DatabaseParam'
+      responses:
+        '204':
+          description: Database deleted successfully
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  responses:
+    Unauthorized:
+      description: Authentication failed. The service token or OAuth token is missing, invalid, or lacks the required permissions.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    UnprocessableEntity:
+      description: The request was well-formed but contains invalid parameters or violates business rules.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    PageParam:
+      name: page
+      in: query
+      required: false
+      description: The page number for pagination.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+    DatabaseParam:
+      name: database
+      in: path
+      required: true
+      description: The name of the database.
+      schema:
+        type: string
+    OrganizationParam:
+      name: organization
+      in: path
+      required: true
+      description: The name of the organization.
+      schema:
+        type: string
+    PerPageParam:
+      name: per_page
+      in: query
+      required: false
+      description: The number of results per page.
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 25
+  schemas:
+    Database:
+      type: object
+      description: A PlanetScale serverless MySQL-compatible database with branching and deploy request support.
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the database.
+        name:
+          type: string
+          description: The name of the database.
+        state:
+          type: string
+          description: The current state of the database.
+          enum:
+          - pending
+          - ready
+          - sleeping
+          - awaking
+        plan:
+          type: string
+          description: The billing plan for the database.
+        cluster_size:
+          type: string
+          description: The cluster size of the production branch.
+        region:
+          type: object
+          description: The region where the database is hosted.
+          properties:
+            slug:
+              type: string
+              description: The region slug identifier.
+            display_name:
+              type: string
+              description: The human-readable region name.
+        default_branch:
+          type: string
+          description: The name of the default production branch.
+        production_branch_web_console:
+          type: boolean
+          description: Whether the web console is enabled on production branches.
+        insights_enabled:
+          type: boolean
+          description: Whether PlanetScale Insights analytics is enabled.
+        migration_framework:
+          type: string
+          description: The migration framework configured for schema changes.
+        require_approval_for_deploy:
+          type: boolean
+          description: Whether deploy requests require approval before deployment.
+        allow_data_branching:
+          type: boolean
+          description: Whether data branching is enabled.
+        created_at:
+          type: string
+          format: date-time
+          description: The timestamp when the database was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: The timestamp when the database was last updated.
+        html_url:
+          type: string
+          format: uri
+          description: The URL to the database in the PlanetScale dashboard.
+    Error:
+      type: object
+      description: An error response from the PlanetScale API.
+      properties:
+        code:
+          type: string
+          description: A machine-readable error code.
+        message:
+          type: string
+          description: A human-readable error message.
+  securitySchemes:
+    serviceToken:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Service token authentication. Use the format 'ServiceToken {token_id}:{token_value}' in the Authorization header.
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 bearer token authentication. Obtain tokens via the PlanetScale OAuth authorization code flow.
+externalDocs:
+  description: PlanetScale API Documentation
+  url: https://planetscale.com/docs/api/reference/getting-started-with-planetscale-api

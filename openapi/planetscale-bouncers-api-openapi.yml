@@ -1,0 +1,226 @@
+openapi: 3.1.0
+info:
+  title: PlanetScale Platform Backups Bouncers API
+  description: The PlanetScale Platform API provides programmatic access to manage PlanetScale serverless MySQL-compatible databases. It allows developers to create and manage databases, branches, deploy requests, passwords, backups, service tokens, organization members, teams, bouncers, and billing data. The API supports authentication via service tokens and OAuth, enabling integration into CI/CD pipelines and infrastructure-as-code workflows.
+  version: 1.0.0
+  contact:
+    name: PlanetScale Support
+    url: https://support.planetscale.com
+  termsOfService: https://planetscale.com/legal/tos
+  license:
+    name: Proprietary
+    url: https://planetscale.com/legal/tos
+servers:
+- url: https://api.planetscale.com/v1
+  description: PlanetScale Production API
+security:
+- serviceToken: []
+tags:
+- name: Bouncers
+  description: Manage PgBouncer connection pooling instances for database branches, including creating, listing, resizing, and deleting bouncers.
+paths:
+  /organizations/{organization}/databases/{database}/branches/{branch}/bouncers:
+    get:
+      operationId: listBouncers
+      summary: List bouncers
+      description: Returns a list of PgBouncer connection pooling instances for the specified branch.
+      tags:
+      - Bouncers
+      parameters:
+      - $ref: '#/components/parameters/OrganizationParam'
+      - $ref: '#/components/parameters/DatabaseParam'
+      - $ref: '#/components/parameters/BranchParam'
+      responses:
+        '200':
+          description: Successful response with list of bouncers
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Bouncer'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    post:
+      operationId: createBouncer
+      summary: Create a bouncer
+      description: Creates a new PgBouncer connection pooling instance for the specified branch.
+      tags:
+      - Bouncers
+      parameters:
+      - $ref: '#/components/parameters/OrganizationParam'
+      - $ref: '#/components/parameters/DatabaseParam'
+      - $ref: '#/components/parameters/BranchParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - name
+              properties:
+                name:
+                  type: string
+                  description: The name of the bouncer instance.
+                pool_size:
+                  type: integer
+                  description: The connection pool size.
+      responses:
+        '201':
+          description: Bouncer created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bouncer'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /organizations/{organization}/databases/{database}/branches/{branch}/bouncers/{bouncer_name}:
+    get:
+      operationId: getBouncer
+      summary: Get a bouncer
+      description: Returns details about a specific PgBouncer instance.
+      tags:
+      - Bouncers
+      parameters:
+      - $ref: '#/components/parameters/OrganizationParam'
+      - $ref: '#/components/parameters/DatabaseParam'
+      - $ref: '#/components/parameters/BranchParam'
+      - $ref: '#/components/parameters/BouncerNameParam'
+      responses:
+        '200':
+          description: Successful response with bouncer details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bouncer'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteBouncer
+      summary: Delete a bouncer
+      description: Deletes a PgBouncer connection pooling instance.
+      tags:
+      - Bouncers
+      parameters:
+      - $ref: '#/components/parameters/OrganizationParam'
+      - $ref: '#/components/parameters/DatabaseParam'
+      - $ref: '#/components/parameters/BranchParam'
+      - $ref: '#/components/parameters/BouncerNameParam'
+      responses:
+        '204':
+          description: Bouncer deleted successfully
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  responses:
+    Unauthorized:
+      description: Authentication failed. The service token or OAuth token is missing, invalid, or lacks the required permissions.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    UnprocessableEntity:
+      description: The request was well-formed but contains invalid parameters or violates business rules.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    BranchParam:
+      name: branch
+      in: path
+      required: true
+      description: The name of the branch.
+      schema:
+        type: string
+    BouncerNameParam:
+      name: bouncer_name
+      in: path
+      required: true
+      description: The name of the PgBouncer instance.
+      schema:
+        type: string
+    OrganizationParam:
+      name: organization
+      in: path
+      required: true
+      description: The name of the organization.
+      schema:
+        type: string
+    DatabaseParam:
+      name: database
+      in: path
+      required: true
+      description: The name of the database.
+      schema:
+        type: string
+  schemas:
+    Bouncer:
+      type: object
+      description: A PgBouncer connection pooling instance for a database branch.
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the bouncer.
+        name:
+          type: string
+          description: The name of the bouncer instance.
+        state:
+          type: string
+          description: The current state of the bouncer.
+          enum:
+          - pending
+          - ready
+          - resizing
+        pool_size:
+          type: integer
+          description: The connection pool size.
+        created_at:
+          type: string
+          format: date-time
+          description: The timestamp when the bouncer was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: The timestamp when the bouncer was last updated.
+    Error:
+      type: object
+      description: An error response from the PlanetScale API.
+      properties:
+        code:
+          type: string
+          description: A machine-readable error code.
+        message:
+          type: string
+          description: A human-readable error message.
+  securitySchemes:
+    serviceToken:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Service token authentication. Use the format 'ServiceToken {token_id}:{token_value}' in the Authorization header.
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 bearer token authentication. Obtain tokens via the PlanetScale OAuth authorization code flow.
+externalDocs:
+  description: PlanetScale API Documentation
+  url: https://planetscale.com/docs/api/reference/getting-started-with-planetscale-api

@@ -1,0 +1,355 @@
+openapi: 3.1.0
+info:
+  title: PlanetScale Platform Backups Branches API
+  description: The PlanetScale Platform API provides programmatic access to manage PlanetScale serverless MySQL-compatible databases. It allows developers to create and manage databases, branches, deploy requests, passwords, backups, service tokens, organization members, teams, bouncers, and billing data. The API supports authentication via service tokens and OAuth, enabling integration into CI/CD pipelines and infrastructure-as-code workflows.
+  version: 1.0.0
+  contact:
+    name: PlanetScale Support
+    url: https://support.planetscale.com
+  termsOfService: https://planetscale.com/legal/tos
+  license:
+    name: Proprietary
+    url: https://planetscale.com/legal/tos
+servers:
+- url: https://api.planetscale.com/v1
+  description: PlanetScale Production API
+security:
+- serviceToken: []
+tags:
+- name: Branches
+  description: Manage database branches for schema development and safe migrations, including creating, listing, updating, and deleting branches.
+paths:
+  /organizations/{organization}/databases/{database}/branches:
+    get:
+      operationId: listBranches
+      summary: List branches
+      description: Returns a list of all branches for a specific database.
+      tags:
+      - Branches
+      parameters:
+      - $ref: '#/components/parameters/OrganizationParam'
+      - $ref: '#/components/parameters/DatabaseParam'
+      - $ref: '#/components/parameters/PageParam'
+      - $ref: '#/components/parameters/PerPageParam'
+      responses:
+        '200':
+          description: Successful response with list of branches
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Branch'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    post:
+      operationId: createBranch
+      summary: Create a branch
+      description: Creates a new branch for the specified database. Branches are isolated copies of the database schema used for development and testing.
+      tags:
+      - Branches
+      parameters:
+      - $ref: '#/components/parameters/OrganizationParam'
+      - $ref: '#/components/parameters/DatabaseParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - name
+              properties:
+                name:
+                  type: string
+                  description: The name of the branch.
+                parent_branch:
+                  type: string
+                  description: The name of the parent branch to fork from.
+                backup_id:
+                  type: string
+                  description: The ID of a backup to restore the branch from.
+                seed_data:
+                  type: string
+                  description: The seed data configuration for the branch.
+                cluster_size:
+                  type: string
+                  description: The cluster size for the branch.
+                region:
+                  type: string
+                  description: The region where the branch will be created.
+      responses:
+        '201':
+          description: Branch created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Branch'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /organizations/{organization}/databases/{database}/branches/{branch}:
+    get:
+      operationId: getBranch
+      summary: Get a branch
+      description: Returns details about a specific branch, including its schema status, cluster configuration, and readiness state.
+      tags:
+      - Branches
+      parameters:
+      - $ref: '#/components/parameters/OrganizationParam'
+      - $ref: '#/components/parameters/DatabaseParam'
+      - $ref: '#/components/parameters/BranchParam'
+      responses:
+        '200':
+          description: Successful response with branch details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Branch'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      operationId: updateBranch
+      summary: Update a branch
+      description: Updates properties of a specific branch, such as its cluster configuration.
+      tags:
+      - Branches
+      parameters:
+      - $ref: '#/components/parameters/OrganizationParam'
+      - $ref: '#/components/parameters/DatabaseParam'
+      - $ref: '#/components/parameters/BranchParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                cluster_size:
+                  type: string
+                  description: The new cluster size for the branch.
+      responses:
+        '200':
+          description: Branch updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Branch'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteBranch
+      summary: Delete a branch
+      description: Deletes a database branch. Production branches cannot be deleted.
+      tags:
+      - Branches
+      parameters:
+      - $ref: '#/components/parameters/OrganizationParam'
+      - $ref: '#/components/parameters/DatabaseParam'
+      - $ref: '#/components/parameters/BranchParam'
+      responses:
+        '204':
+          description: Branch deleted successfully
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /organizations/{organization}/databases/{database}/branches/{branch}/schema-lint:
+    get:
+      operationId: lintBranchSchema
+      summary: Lint a branch schema
+      description: Returns schema lint results for the specified branch, identifying potential issues and recommendations.
+      tags:
+      - Branches
+      parameters:
+      - $ref: '#/components/parameters/OrganizationParam'
+      - $ref: '#/components/parameters/DatabaseParam'
+      - $ref: '#/components/parameters/BranchParam'
+      responses:
+        '200':
+          description: Successful response with lint results
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SchemaLintError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  responses:
+    Unauthorized:
+      description: Authentication failed. The service token or OAuth token is missing, invalid, or lacks the required permissions.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    UnprocessableEntity:
+      description: The request was well-formed but contains invalid parameters or violates business rules.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    PageParam:
+      name: page
+      in: query
+      required: false
+      description: The page number for pagination.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+    BranchParam:
+      name: branch
+      in: path
+      required: true
+      description: The name of the branch.
+      schema:
+        type: string
+    PerPageParam:
+      name: per_page
+      in: query
+      required: false
+      description: The number of results per page.
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 25
+    OrganizationParam:
+      name: organization
+      in: path
+      required: true
+      description: The name of the organization.
+      schema:
+        type: string
+    DatabaseParam:
+      name: database
+      in: path
+      required: true
+      description: The name of the database.
+      schema:
+        type: string
+  schemas:
+    Branch:
+      type: object
+      description: A database branch representing an isolated copy of the schema for development, testing, or production use.
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the branch.
+        name:
+          type: string
+          description: The name of the branch.
+        production:
+          type: boolean
+          description: Whether this is a production branch.
+        ready:
+          type: boolean
+          description: Whether the branch is ready for connections.
+        shard_count:
+          type: integer
+          description: The number of shards in the branch.
+        sharded:
+          type: boolean
+          description: Whether the branch is sharded.
+        cluster_rate_name:
+          type: string
+          description: The cluster size identifier for the branch.
+        region:
+          type: object
+          description: The region where the branch is hosted.
+          properties:
+            slug:
+              type: string
+              description: The region slug identifier.
+            display_name:
+              type: string
+              description: The human-readable region name.
+        parent_branch:
+          type: string
+          description: The name of the parent branch this was forked from.
+        schema_last_updated_at:
+          type: string
+          format: date-time
+          description: The timestamp when the schema was last modified.
+        created_at:
+          type: string
+          format: date-time
+          description: The timestamp when the branch was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: The timestamp when the branch was last updated.
+        html_url:
+          type: string
+          format: uri
+          description: The URL to the branch in the PlanetScale dashboard.
+    Error:
+      type: object
+      description: An error response from the PlanetScale API.
+      properties:
+        code:
+          type: string
+          description: A machine-readable error code.
+        message:
+          type: string
+          description: A human-readable error message.
+    SchemaLintError:
+      type: object
+      description: A schema lint error or warning for a database branch.
+      properties:
+        lint_error:
+          type: string
+          description: The lint error identifier.
+        subject_type:
+          type: string
+          description: The type of schema element with the error.
+        table_name:
+          type: string
+          description: The table name associated with the error.
+        column_name:
+          type: string
+          description: The column name associated with the error, if applicable.
+        error_description:
+          type: string
+          description: A human-readable description of the lint error.
+        docs_url:
+          type: string
+          format: uri
+          description: A URL to documentation about the lint error.
+  securitySchemes:
+    serviceToken:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Service token authentication. Use the format 'ServiceToken {token_id}:{token_value}' in the Authorization header.
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 bearer token authentication. Obtain tokens via the PlanetScale OAuth authorization code flow.
+externalDocs:
+  description: PlanetScale API Documentation
+  url: https://planetscale.com/docs/api/reference/getting-started-with-planetscale-api

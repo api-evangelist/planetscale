@@ -1,0 +1,149 @@
+openapi: 3.1.0
+info:
+  title: PlanetScale Platform Backups Roles API
+  description: The PlanetScale Platform API provides programmatic access to manage PlanetScale serverless MySQL-compatible databases. It allows developers to create and manage databases, branches, deploy requests, passwords, backups, service tokens, organization members, teams, bouncers, and billing data. The API supports authentication via service tokens and OAuth, enabling integration into CI/CD pipelines and infrastructure-as-code workflows.
+  version: 1.0.0
+  contact:
+    name: PlanetScale Support
+    url: https://support.planetscale.com
+  termsOfService: https://planetscale.com/legal/tos
+  license:
+    name: Proprietary
+    url: https://planetscale.com/legal/tos
+servers:
+- url: https://api.planetscale.com/v1
+  description: PlanetScale Production API
+security:
+- serviceToken: []
+tags:
+- name: Roles
+  description: Manage role-based credentials for database access.
+paths:
+  /organizations/{organization}/databases/{database}/branches/{branch}/roles:
+    post:
+      operationId: createRole
+      summary: Create role credentials
+      description: Creates role-based credentials for accessing a database branch with specific permissions.
+      tags:
+      - Roles
+      parameters:
+      - $ref: '#/components/parameters/OrganizationParam'
+      - $ref: '#/components/parameters/DatabaseParam'
+      - $ref: '#/components/parameters/BranchParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - name
+              properties:
+                name:
+                  type: string
+                  description: The name of the role.
+                role:
+                  type: string
+                  description: The access level for the role.
+                  enum:
+                  - admin
+                  - reader
+                  - writer
+                  - readwriter
+      responses:
+        '201':
+          description: Role credentials created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleCredentials'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+components:
+  responses:
+    Unauthorized:
+      description: Authentication failed. The service token or OAuth token is missing, invalid, or lacks the required permissions.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    UnprocessableEntity:
+      description: The request was well-formed but contains invalid parameters or violates business rules.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    RoleCredentials:
+      type: object
+      description: Role-based credentials for accessing a database branch.
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the role credentials.
+        name:
+          type: string
+          description: The name of the role.
+        role:
+          type: string
+          description: The access level of the role.
+        username:
+          type: string
+          description: The username for connecting.
+        password:
+          type: string
+          description: The password for connecting. Only returned during creation.
+        hostname:
+          type: string
+          description: The hostname for connecting.
+        created_at:
+          type: string
+          format: date-time
+          description: The timestamp when the role was created.
+    Error:
+      type: object
+      description: An error response from the PlanetScale API.
+      properties:
+        code:
+          type: string
+          description: A machine-readable error code.
+        message:
+          type: string
+          description: A human-readable error message.
+  parameters:
+    BranchParam:
+      name: branch
+      in: path
+      required: true
+      description: The name of the branch.
+      schema:
+        type: string
+    OrganizationParam:
+      name: organization
+      in: path
+      required: true
+      description: The name of the organization.
+      schema:
+        type: string
+    DatabaseParam:
+      name: database
+      in: path
+      required: true
+      description: The name of the database.
+      schema:
+        type: string
+  securitySchemes:
+    serviceToken:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Service token authentication. Use the format 'ServiceToken {token_id}:{token_value}' in the Authorization header.
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 bearer token authentication. Obtain tokens via the PlanetScale OAuth authorization code flow.
+externalDocs:
+  description: PlanetScale API Documentation
+  url: https://planetscale.com/docs/api/reference/getting-started-with-planetscale-api

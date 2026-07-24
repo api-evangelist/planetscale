@@ -1,0 +1,259 @@
+openapi: 3.1.0
+info:
+  title: PlanetScale Platform Backups Service Tokens API
+  description: The PlanetScale Platform API provides programmatic access to manage PlanetScale serverless MySQL-compatible databases. It allows developers to create and manage databases, branches, deploy requests, passwords, backups, service tokens, organization members, teams, bouncers, and billing data. The API supports authentication via service tokens and OAuth, enabling integration into CI/CD pipelines and infrastructure-as-code workflows.
+  version: 1.0.0
+  contact:
+    name: PlanetScale Support
+    url: https://support.planetscale.com
+  termsOfService: https://planetscale.com/legal/tos
+  license:
+    name: Proprietary
+    url: https://planetscale.com/legal/tos
+servers:
+- url: https://api.planetscale.com/v1
+  description: PlanetScale Production API
+security:
+- serviceToken: []
+tags:
+- name: Service Tokens
+  description: Manage service tokens for API authentication, including creating, listing, and deleting tokens and their access grants.
+paths:
+  /organizations/{organization}/service-tokens:
+    get:
+      operationId: listServiceTokens
+      summary: List service tokens
+      description: Returns a list of all service tokens for the specified organization.
+      tags:
+      - Service Tokens
+      parameters:
+      - $ref: '#/components/parameters/OrganizationParam'
+      responses:
+        '200':
+          description: Successful response with list of service tokens
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ServiceToken'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createServiceToken
+      summary: Create a service token
+      description: Creates a new service token for API authentication. The token value is only returned once during creation.
+      tags:
+      - Service Tokens
+      parameters:
+      - $ref: '#/components/parameters/OrganizationParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: A descriptive name for the service token.
+      responses:
+        '201':
+          description: Service token created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceTokenWithPlaintext'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /organizations/{organization}/service-tokens/{service_token_id}:
+    get:
+      operationId: getServiceToken
+      summary: Get a service token
+      description: Returns details about a specific service token. The token value is not included.
+      tags:
+      - Service Tokens
+      parameters:
+      - $ref: '#/components/parameters/OrganizationParam'
+      - $ref: '#/components/parameters/ServiceTokenIdParam'
+      responses:
+        '200':
+          description: Successful response with service token details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceToken'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteServiceToken
+      summary: Delete a service token
+      description: Deletes a service token, revoking all API access associated with it.
+      tags:
+      - Service Tokens
+      parameters:
+      - $ref: '#/components/parameters/OrganizationParam'
+      - $ref: '#/components/parameters/ServiceTokenIdParam'
+      responses:
+        '204':
+          description: Service token deleted successfully
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /organizations/{organization}/service-tokens/{service_token_id}/accesses:
+    get:
+      operationId: listServiceTokenAccesses
+      summary: List service token accesses
+      description: Returns a list of access grants for a specific service token.
+      tags:
+      - Service Tokens
+      parameters:
+      - $ref: '#/components/parameters/OrganizationParam'
+      - $ref: '#/components/parameters/ServiceTokenIdParam'
+      responses:
+        '200':
+          description: Successful response with list of accesses
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ServiceTokenAccess'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    post:
+      operationId: createServiceTokenAccess
+      summary: Grant service token access
+      description: Grants a specific access permission to a service token for a database or organization resource.
+      tags:
+      - Service Tokens
+      parameters:
+      - $ref: '#/components/parameters/OrganizationParam'
+      - $ref: '#/components/parameters/ServiceTokenIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - access
+              properties:
+                access:
+                  type: string
+                  description: The permission to grant.
+                database:
+                  type: string
+                  description: The database to scope the access to. If omitted, access applies to all databases.
+      responses:
+        '201':
+          description: Access granted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceTokenAccess'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  parameters:
+    ServiceTokenIdParam:
+      name: service_token_id
+      in: path
+      required: true
+      description: The ID of the service token.
+      schema:
+        type: string
+    OrganizationParam:
+      name: organization
+      in: path
+      required: true
+      description: The name of the organization.
+      schema:
+        type: string
+  responses:
+    Unauthorized:
+      description: Authentication failed. The service token or OAuth token is missing, invalid, or lacks the required permissions.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    ServiceTokenAccess:
+      type: object
+      description: An access permission granted to a service token.
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the access grant.
+        access:
+          type: string
+          description: The permission that is granted.
+        database:
+          type: string
+          description: The database the access is scoped to. Null for organization-wide access.
+        created_at:
+          type: string
+          format: date-time
+          description: The timestamp when the access was granted.
+    ServiceTokenWithPlaintext:
+      allOf:
+      - $ref: '#/components/schemas/ServiceToken'
+      - type: object
+        properties:
+          token:
+            type: string
+            description: The plaintext token value. Only returned during creation.
+    ServiceToken:
+      type: object
+      description: A service token for authenticating API requests.
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the service token.
+        name:
+          type: string
+          description: The descriptive name of the service token.
+        created_at:
+          type: string
+          format: date-time
+          description: The timestamp when the service token was created.
+    Error:
+      type: object
+      description: An error response from the PlanetScale API.
+      properties:
+        code:
+          type: string
+          description: A machine-readable error code.
+        message:
+          type: string
+          description: A human-readable error message.
+  securitySchemes:
+    serviceToken:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Service token authentication. Use the format 'ServiceToken {token_id}:{token_value}' in the Authorization header.
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 bearer token authentication. Obtain tokens via the PlanetScale OAuth authorization code flow.
+externalDocs:
+  description: PlanetScale API Documentation
+  url: https://planetscale.com/docs/api/reference/getting-started-with-planetscale-api

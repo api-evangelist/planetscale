@@ -1,0 +1,130 @@
+openapi: 3.1.0
+info:
+  title: PlanetScale Platform Backups Schema Recommendations API
+  description: The PlanetScale Platform API provides programmatic access to manage PlanetScale serverless MySQL-compatible databases. It allows developers to create and manage databases, branches, deploy requests, passwords, backups, service tokens, organization members, teams, bouncers, and billing data. The API supports authentication via service tokens and OAuth, enabling integration into CI/CD pipelines and infrastructure-as-code workflows.
+  version: 1.0.0
+  contact:
+    name: PlanetScale Support
+    url: https://support.planetscale.com
+  termsOfService: https://planetscale.com/legal/tos
+  license:
+    name: Proprietary
+    url: https://planetscale.com/legal/tos
+servers:
+- url: https://api.planetscale.com/v1
+  description: PlanetScale Production API
+security:
+- serviceToken: []
+tags:
+- name: Schema Recommendations
+  description: View and manage schema recommendations for optimizing database performance and structure.
+paths:
+  /organizations/{organization}/databases/{database}/schema-recommendations:
+    get:
+      operationId: listSchemaRecommendations
+      summary: List schema recommendations
+      description: Returns a list of schema recommendations for the specified database, identifying potential optimization opportunities.
+      tags:
+      - Schema Recommendations
+      parameters:
+      - $ref: '#/components/parameters/OrganizationParam'
+      - $ref: '#/components/parameters/DatabaseParam'
+      responses:
+        '200':
+          description: Successful response with list of recommendations
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SchemaRecommendation'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  responses:
+    Unauthorized:
+      description: Authentication failed. The service token or OAuth token is missing, invalid, or lacks the required permissions.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    OrganizationParam:
+      name: organization
+      in: path
+      required: true
+      description: The name of the organization.
+      schema:
+        type: string
+    DatabaseParam:
+      name: database
+      in: path
+      required: true
+      description: The name of the database.
+      schema:
+        type: string
+  schemas:
+    SchemaRecommendation:
+      type: object
+      description: A schema optimization recommendation for a database.
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the recommendation.
+        type:
+          type: string
+          description: The type of recommendation.
+        table_name:
+          type: string
+          description: The table the recommendation applies to.
+        description:
+          type: string
+          description: A human-readable description of the recommendation.
+        severity:
+          type: string
+          description: The severity level of the recommendation.
+          enum:
+          - info
+          - warning
+          - critical
+        dismissed:
+          type: boolean
+          description: Whether the recommendation has been dismissed.
+        created_at:
+          type: string
+          format: date-time
+          description: The timestamp when the recommendation was generated.
+    Error:
+      type: object
+      description: An error response from the PlanetScale API.
+      properties:
+        code:
+          type: string
+          description: A machine-readable error code.
+        message:
+          type: string
+          description: A human-readable error message.
+  securitySchemes:
+    serviceToken:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Service token authentication. Use the format 'ServiceToken {token_id}:{token_value}' in the Authorization header.
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 bearer token authentication. Obtain tokens via the PlanetScale OAuth authorization code flow.
+externalDocs:
+  description: PlanetScale API Documentation
+  url: https://planetscale.com/docs/api/reference/getting-started-with-planetscale-api

@@ -1,0 +1,126 @@
+openapi: 3.1.0
+info:
+  title: PlanetScale Platform Backups Query Patterns API
+  description: The PlanetScale Platform API provides programmatic access to manage PlanetScale serverless MySQL-compatible databases. It allows developers to create and manage databases, branches, deploy requests, passwords, backups, service tokens, organization members, teams, bouncers, and billing data. The API supports authentication via service tokens and OAuth, enabling integration into CI/CD pipelines and infrastructure-as-code workflows.
+  version: 1.0.0
+  contact:
+    name: PlanetScale Support
+    url: https://support.planetscale.com
+  termsOfService: https://planetscale.com/legal/tos
+  license:
+    name: Proprietary
+    url: https://planetscale.com/legal/tos
+servers:
+- url: https://api.planetscale.com/v1
+  description: PlanetScale Production API
+security:
+- serviceToken: []
+tags:
+- name: Query Patterns
+  description: Analyze and report on query patterns for database branches.
+paths:
+  /organizations/{organization}/databases/{database}/branches/{branch}/query-patterns-report:
+    get:
+      operationId: getQueryPatternsReportStatus
+      summary: Show the status of a query patterns report
+      description: Returns the status of a query patterns report for the specified branch.
+      tags:
+      - Query Patterns
+      parameters:
+      - $ref: '#/components/parameters/OrganizationParam'
+      - $ref: '#/components/parameters/DatabaseParam'
+      - $ref: '#/components/parameters/BranchParam'
+      responses:
+        '200':
+          description: Successful response with report status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryPatternsReport'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  responses:
+    Unauthorized:
+      description: Authentication failed. The service token or OAuth token is missing, invalid, or lacks the required permissions.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    BranchParam:
+      name: branch
+      in: path
+      required: true
+      description: The name of the branch.
+      schema:
+        type: string
+    OrganizationParam:
+      name: organization
+      in: path
+      required: true
+      description: The name of the organization.
+      schema:
+        type: string
+    DatabaseParam:
+      name: database
+      in: path
+      required: true
+      description: The name of the database.
+      schema:
+        type: string
+  schemas:
+    QueryPatternsReport:
+      type: object
+      description: A report on query patterns for a database branch.
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the report.
+        state:
+          type: string
+          description: The current state of the report.
+          enum:
+          - pending
+          - running
+          - complete
+          - failed
+        created_at:
+          type: string
+          format: date-time
+          description: The timestamp when the report was initiated.
+        completed_at:
+          type: string
+          format: date-time
+          description: The timestamp when the report completed.
+    Error:
+      type: object
+      description: An error response from the PlanetScale API.
+      properties:
+        code:
+          type: string
+          description: A machine-readable error code.
+        message:
+          type: string
+          description: A human-readable error message.
+  securitySchemes:
+    serviceToken:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Service token authentication. Use the format 'ServiceToken {token_id}:{token_value}' in the Authorization header.
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 bearer token authentication. Obtain tokens via the PlanetScale OAuth authorization code flow.
+externalDocs:
+  description: PlanetScale API Documentation
+  url: https://planetscale.com/docs/api/reference/getting-started-with-planetscale-api

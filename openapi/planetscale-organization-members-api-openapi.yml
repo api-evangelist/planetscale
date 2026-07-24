@@ -1,0 +1,216 @@
+openapi: 3.1.0
+info:
+  title: PlanetScale Platform Backups Organization Members API
+  description: The PlanetScale Platform API provides programmatic access to manage PlanetScale serverless MySQL-compatible databases. It allows developers to create and manage databases, branches, deploy requests, passwords, backups, service tokens, organization members, teams, bouncers, and billing data. The API supports authentication via service tokens and OAuth, enabling integration into CI/CD pipelines and infrastructure-as-code workflows.
+  version: 1.0.0
+  contact:
+    name: PlanetScale Support
+    url: https://support.planetscale.com
+  termsOfService: https://planetscale.com/legal/tos
+  license:
+    name: Proprietary
+    url: https://planetscale.com/legal/tos
+servers:
+- url: https://api.planetscale.com/v1
+  description: PlanetScale Production API
+security:
+- serviceToken: []
+tags:
+- name: Organization Members
+  description: Manage members within an organization, including listing, retrieving, updating roles, and removing members.
+paths:
+  /organizations/{organization}/members:
+    get:
+      operationId: listOrganizationMembers
+      summary: List organization members
+      description: Returns a list of all members in the specified organization. Requires the read_organization permission on the service token.
+      tags:
+      - Organization Members
+      parameters:
+      - $ref: '#/components/parameters/OrganizationParam'
+      - $ref: '#/components/parameters/PageParam'
+      - $ref: '#/components/parameters/PerPageParam'
+      responses:
+        '200':
+          description: Successful response with list of organization members
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/OrganizationMember'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /organizations/{organization}/members/{member_id}:
+    get:
+      operationId: getOrganizationMember
+      summary: Get an organization member
+      description: Returns details about a specific member in the organization. Requires the read_organization permission.
+      tags:
+      - Organization Members
+      parameters:
+      - $ref: '#/components/parameters/OrganizationParam'
+      - $ref: '#/components/parameters/MemberIdParam'
+      responses:
+        '200':
+          description: Successful response with member details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationMember'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      operationId: updateOrganizationMember
+      summary: Update an organization member
+      description: Updates the role or properties of a specific member in the organization. Requires the write_organization permission.
+      tags:
+      - Organization Members
+      parameters:
+      - $ref: '#/components/parameters/OrganizationParam'
+      - $ref: '#/components/parameters/MemberIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                role:
+                  type: string
+                  description: The role to assign to the member.
+                  enum:
+                  - admin
+                  - member
+                  - database_admin
+      responses:
+        '200':
+          description: Member updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationMember'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteOrganizationMember
+      summary: Remove an organization member
+      description: Removes a member from the organization. Requires the write_organization permission.
+      tags:
+      - Organization Members
+      parameters:
+      - $ref: '#/components/parameters/OrganizationParam'
+      - $ref: '#/components/parameters/MemberIdParam'
+      responses:
+        '204':
+          description: Member removed successfully
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  responses:
+    Unauthorized:
+      description: Authentication failed. The service token or OAuth token is missing, invalid, or lacks the required permissions.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    PageParam:
+      name: page
+      in: query
+      required: false
+      description: The page number for pagination.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+    MemberIdParam:
+      name: member_id
+      in: path
+      required: true
+      description: The ID of the organization member.
+      schema:
+        type: string
+    OrganizationParam:
+      name: organization
+      in: path
+      required: true
+      description: The name of the organization.
+      schema:
+        type: string
+    PerPageParam:
+      name: per_page
+      in: query
+      required: false
+      description: The number of results per page.
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 25
+  schemas:
+    OrganizationMember:
+      type: object
+      description: A member of a PlanetScale organization with a specific role.
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the member.
+        name:
+          type: string
+          description: The display name of the member.
+        email:
+          type: string
+          format: email
+          description: The email address of the member.
+        role:
+          type: string
+          description: The role of the member within the organization.
+          enum:
+          - admin
+          - member
+          - database_admin
+        created_at:
+          type: string
+          format: date-time
+          description: The timestamp when the member was added.
+    Error:
+      type: object
+      description: An error response from the PlanetScale API.
+      properties:
+        code:
+          type: string
+          description: A machine-readable error code.
+        message:
+          type: string
+          description: A human-readable error message.
+  securitySchemes:
+    serviceToken:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Service token authentication. Use the format 'ServiceToken {token_id}:{token_value}' in the Authorization header.
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: OAuth 2.0 bearer token authentication. Obtain tokens via the PlanetScale OAuth authorization code flow.
+externalDocs:
+  description: PlanetScale API Documentation
+  url: https://planetscale.com/docs/api/reference/getting-started-with-planetscale-api
