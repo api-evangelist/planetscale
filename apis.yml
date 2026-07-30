@@ -1,89 +1,333 @@
 aid: planetscale
+accessModel:
+  pricing: paid
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Paid · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/planetscale.png
 url: https://raw.githubusercontent.com/api-evangelist/planetscale/refs/heads/main/apis.yml
 apis:
-  - aid: planetscale:platform-api
-    name: PlanetScale Platform API
-    tags:
-      - Branching
-      - Cloud
-      - Databases
-      - Deploy Requests
-      - MySQL
-      - Serverless
-    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    baseURL: https://api.planetscale.com/v1
-    humanURL: https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
-    properties:
-      - url: https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
-        type: Documentation
-      - url: openapi/planetscale-platform-api-openapi.yml
-        type: OpenAPI
-      - url: asyncapi/planetscale-webhooks-asyncapi.yml
-        type: AsyncAPI
-    description: >-
-      The PlanetScale Platform API provides programmatic access to manage PlanetScale serverless MySQL databases. It
-      allows developers to create and delete database branches, manage deploy requests, automate password and connection
-      string management, and integrate PlanetScale into CI/CD pipelines and infrastructure-as-code workflows. The API
-      supports authentication via service tokens and OAuth, and its base URL is https://api.planetscale.com/v1 with an
-      OpenAPI 3.0 specification available for download.
-  - aid: planetscale:oauth
-    name: PlanetScale OAuth
-    tags:
-      - Applications
-      - Authentication
-      - Authorization
-      - OAuth
-    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    baseURL: https://api.planetscale.com
-    humanURL: https://planetscale.com/docs/api/planetscale-api-oauth-applications
-    properties:
-      - url: https://planetscale.com/docs/api/planetscale-api-oauth-applications
-        type: Documentation
-    description: >-
-      PlanetScale OAuth allows developers to create OAuth applications that can access users' PlanetScale accounts on
-      their behalf. The implementation supports the Authorization Code grant type, enabling third-party applications to
-      authenticate users and obtain delegated access to PlanetScale resources. This is particularly useful for building
-      integrations and tools that need to interact with organization-level PlanetScale endpoints on behalf of multiple
-      users.
-  - aid: planetscale:serverless-driver
-    name: PlanetScale Serverless Driver for JavaScript
-    tags:
-      - Driver
-      - Edge Computing
-      - JavaScript
-      - MySQL
-      - SDK
-      - Serverless
-    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    baseURL: https://api.example.com
-    humanURL: https://planetscale.com/docs/tutorials/using-the-serverless-driver
-    properties:
-      - url: https://planetscale.com/docs/tutorials/using-the-serverless-driver
-        type: Documentation
-    description: >-
-      The PlanetScale Serverless Driver for JavaScript is a Fetch API-compatible database driver designed for serverless
-      and edge compute platforms such as Cloudflare Workers, Vercel Edge Functions, and Netlify Edge Functions. It
-      enables developers to query PlanetScale databases over HTTP connections, bypassing the TCP restrictions common in
-      edge environments.
-  - aid: planetscale:cli
-    name: PlanetScale CLI
-    tags:
-      - CLI
-      - Command Line
-      - Database Management
-      - Developer Tools
-    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-    baseURL: https://api.example.com
-    humanURL: https://planetscale.com/docs/reference/planetscale-cli
-    properties:
-      - url: https://planetscale.com/docs/reference/planetscale-cli
-        type: Documentation
-    description: >-
-      The PlanetScale CLI (pscale) is a command-line tool that brings PlanetScale database management to the terminal.
-      It allows developers to create, delete, and list databases and branches, open interactive MySQL shells for
-      database branches, and manage deploy requests directly from the command line. The CLI is available via Homebrew
-      and as a downloadable binary, and includes a Model Context Protocol (MCP) server that provides AI tools with
-      direct access to PlanetScale databases.
+- aid: planetscale:oauth
+  name: PlanetScale OAuth
+  tags:
+  - Applications
+  - Authentication
+  - Authorization
+  - OAuth
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  baseURL: https://api.planetscale.com
+  humanURL: https://planetscale.com/docs/api/planetscale-api-oauth-applications
+  properties:
+  - url: https://planetscale.com/docs/api/planetscale-api-oauth-applications
+    type: Documentation
+  description: >-
+    PlanetScale OAuth allows developers to create OAuth applications that can access users' PlanetScale
+    accounts on their behalf. The implementation supports the Authorization Code grant type, enabling
+    third-party applications to authenticate users and obtain delegated access to PlanetScale resources.
+    This is particularly useful for building integrations and tools that need to interact with organization-level
+    PlanetScale endpoints on behalf of multiple users.
+- aid: planetscale:serverless-driver
+  name: PlanetScale Serverless Driver for JavaScript
+  tags:
+  - Driver
+  - Edge Computing
+  - JavaScript
+  - MySQL
+  - SDK
+  - Serverless
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  baseURL: https://api.example.com
+  humanURL: https://planetscale.com/docs/tutorials/using-the-serverless-driver
+  properties:
+  - url: https://planetscale.com/docs/tutorials/using-the-serverless-driver
+    type: Documentation
+  description: >-
+    The PlanetScale Serverless Driver for JavaScript is a Fetch API-compatible database driver designed
+    for serverless and edge compute platforms such as Cloudflare Workers, Vercel Edge Functions, and Netlify
+    Edge Functions. It enables developers to query PlanetScale databases over HTTP connections, bypassing
+    the TCP restrictions common in edge environments.
+- aid: planetscale:cli
+  name: PlanetScale CLI
+  tags:
+  - CLI
+  - Command Line
+  - Database Management
+  - Developer Tools
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  baseURL: https://api.example.com
+  humanURL: https://planetscale.com/docs/reference/planetscale-cli
+  properties:
+  - url: https://planetscale.com/docs/reference/planetscale-cli
+    type: Documentation
+  description: >-
+    The PlanetScale CLI (pscale) is a command-line tool that brings PlanetScale database management to
+    the terminal. It allows developers to create, delete, and list databases and branches, open interactive
+    MySQL shells for database branches, and manage deploy requests directly from the command line. The
+    CLI is available via Homebrew and as a downloadable binary, and includes a Model Context Protocol
+    (MCP) server that provides AI tools with direct access to PlanetScale databases.
+- aid: planetscale:planetscale-backups-api
+  name: planetscale Backups API
+  description: >-
+    Manage database branch backups, including listing, creating, and retrieving backup details.
+  humanURL: https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
+  baseURL: https://api.planetscale.com/v1
+  tags:
+  - Backups
+  properties:
+  - type: OpenAPI
+    url: openapi/planetscale-backups-api-openapi.yml
+  - type: Documentation
+    url: https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
+  - type: AsyncAPI
+    url: asyncapi/planetscale-webhooks-asyncapi.yml
+- aid: planetscale:planetscale-billing-api
+  name: planetscale Billing API
+  description: Access organization billing data and invoices programmatically.
+  humanURL: https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
+  baseURL: https://api.planetscale.com/v1
+  tags:
+  - Billing
+  properties:
+  - type: OpenAPI
+    url: openapi/planetscale-billing-api-openapi.yml
+  - type: Documentation
+    url: https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
+  - type: AsyncAPI
+    url: asyncapi/planetscale-webhooks-asyncapi.yml
+- aid: planetscale:planetscale-bouncers-api
+  name: planetscale Bouncers API
+  description: >-
+    Manage PgBouncer connection pooling instances for database branches, including creating, listing,
+    resizing, and deleting bouncers.
+  humanURL: https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
+  baseURL: https://api.planetscale.com/v1
+  tags:
+  - Bouncers
+  properties:
+  - type: OpenAPI
+    url: openapi/planetscale-bouncers-api-openapi.yml
+  - type: Documentation
+    url: https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
+  - type: AsyncAPI
+    url: asyncapi/planetscale-webhooks-asyncapi.yml
+- aid: planetscale:planetscale-branches-api
+  name: planetscale Branches API
+  description: >-
+    Manage database branches for schema development and safe migrations, including creating, listing,
+    updating, and deleting branches.
+  humanURL: https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
+  baseURL: https://api.planetscale.com/v1
+  tags:
+  - Branches
+  properties:
+  - type: OpenAPI
+    url: openapi/planetscale-branches-api-openapi.yml
+  - type: Documentation
+    url: https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
+  - type: AsyncAPI
+    url: asyncapi/planetscale-webhooks-asyncapi.yml
+- aid: planetscale:planetscale-cluster-sizes-api
+  name: planetscale Cluster Sizes API
+  description: Retrieve available cluster size SKUs for Vitess and Postgres database branches.
+  humanURL: https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
+  baseURL: https://api.planetscale.com/v1
+  tags:
+  - Cluster Sizes
+  properties:
+  - type: OpenAPI
+    url: openapi/planetscale-cluster-sizes-api-openapi.yml
+  - type: Documentation
+    url: https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
+  - type: AsyncAPI
+    url: asyncapi/planetscale-webhooks-asyncapi.yml
+- aid: planetscale:planetscale-databases-api
+  name: planetscale Databases API
+  description: >-
+    Manage PlanetScale databases, including creating, listing, updating settings, and deleting databases.
+  humanURL: https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
+  baseURL: https://api.planetscale.com/v1
+  tags:
+  - Databases
+  properties:
+  - type: OpenAPI
+    url: openapi/planetscale-databases-api-openapi.yml
+  - type: Documentation
+    url: https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
+  - type: AsyncAPI
+    url: asyncapi/planetscale-webhooks-asyncapi.yml
+- aid: planetscale:planetscale-deploy-requests-api
+  name: planetscale Deploy Requests API
+  description: >-
+    Manage deploy requests for applying schema changes from development branches to production, including
+    creating, reviewing, queueing, and completing deployments.
+  humanURL: https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
+  baseURL: https://api.planetscale.com/v1
+  tags:
+  - Deploy Requests
+  properties:
+  - type: OpenAPI
+    url: openapi/planetscale-deploy-requests-api-openapi.yml
+  - type: Documentation
+    url: https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
+  - type: AsyncAPI
+    url: asyncapi/planetscale-webhooks-asyncapi.yml
+- aid: planetscale:planetscale-ip-restrictions-api
+  name: planetscale IP Restrictions API
+  description: Manage IP restriction entries for controlling database access by IP address.
+  humanURL: https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
+  baseURL: https://api.planetscale.com/v1
+  tags:
+  - IP Restrictions
+  properties:
+  - type: OpenAPI
+    url: openapi/planetscale-ip-restrictions-api-openapi.yml
+  - type: Documentation
+    url: https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
+  - type: AsyncAPI
+    url: asyncapi/planetscale-webhooks-asyncapi.yml
+- aid: planetscale:planetscale-organization-members-api
+  name: planetscale Organization Members API
+  description: >-
+    Manage members within an organization, including listing, retrieving, updating roles, and removing
+    members.
+  humanURL: https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
+  baseURL: https://api.planetscale.com/v1
+  tags:
+  - Organization Members
+  properties:
+  - type: OpenAPI
+    url: openapi/planetscale-organization-members-api-openapi.yml
+  - type: Documentation
+    url: https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
+  - type: AsyncAPI
+    url: asyncapi/planetscale-webhooks-asyncapi.yml
+- aid: planetscale:planetscale-organizations-api
+  name: planetscale Organizations API
+  description: >-
+    Manage PlanetScale organizations, including listing organizations and retrieving organization details.
+  humanURL: https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
+  baseURL: https://api.planetscale.com/v1
+  tags:
+  - Organizations
+  properties:
+  - type: OpenAPI
+    url: openapi/planetscale-organizations-api-openapi.yml
+  - type: Documentation
+    url: https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
+  - type: AsyncAPI
+    url: asyncapi/planetscale-webhooks-asyncapi.yml
+- aid: planetscale:planetscale-passwords-api
+  name: planetscale Passwords API
+  description: >-
+    Manage branch passwords and connection credentials for connecting applications to database branches.
+  humanURL: https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
+  baseURL: https://api.planetscale.com/v1
+  tags:
+  - Passwords
+  properties:
+  - type: OpenAPI
+    url: openapi/planetscale-passwords-api-openapi.yml
+  - type: Documentation
+    url: https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
+  - type: AsyncAPI
+    url: asyncapi/planetscale-webhooks-asyncapi.yml
+- aid: planetscale:planetscale-query-patterns-api
+  name: planetscale Query Patterns API
+  description: Analyze and report on query patterns for database branches.
+  humanURL: https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
+  baseURL: https://api.planetscale.com/v1
+  tags:
+  - Query Patterns
+  properties:
+  - type: OpenAPI
+    url: openapi/planetscale-query-patterns-api-openapi.yml
+  - type: Documentation
+    url: https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
+  - type: AsyncAPI
+    url: asyncapi/planetscale-webhooks-asyncapi.yml
+- aid: planetscale:planetscale-roles-api
+  name: planetscale Roles API
+  description: Manage role-based credentials for database access.
+  humanURL: https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
+  baseURL: https://api.planetscale.com/v1
+  tags:
+  - Roles
+  properties:
+  - type: OpenAPI
+    url: openapi/planetscale-roles-api-openapi.yml
+  - type: Documentation
+    url: https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
+  - type: AsyncAPI
+    url: asyncapi/planetscale-webhooks-asyncapi.yml
+- aid: planetscale:planetscale-schema-recommendations-api
+  name: planetscale Schema Recommendations API
+  description: >-
+    View and manage schema recommendations for optimizing database performance and structure.
+  humanURL: https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
+  baseURL: https://api.planetscale.com/v1
+  tags:
+  - Schema Recommendations
+  properties:
+  - type: OpenAPI
+    url: openapi/planetscale-schema-recommendations-api-openapi.yml
+  - type: Documentation
+    url: https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
+  - type: AsyncAPI
+    url: asyncapi/planetscale-webhooks-asyncapi.yml
+- aid: planetscale:planetscale-service-tokens-api
+  name: planetscale Service Tokens API
+  description: >-
+    Manage service tokens for API authentication, including creating, listing, and deleting tokens and
+    their access grants.
+  humanURL: https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
+  baseURL: https://api.planetscale.com/v1
+  tags:
+  - Service Tokens
+  properties:
+  - type: OpenAPI
+    url: openapi/planetscale-service-tokens-api-openapi.yml
+  - type: Documentation
+    url: https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
+  - type: AsyncAPI
+    url: asyncapi/planetscale-webhooks-asyncapi.yml
+- aid: planetscale:planetscale-teams-api
+  name: planetscale Teams API
+  description: >-
+    Manage teams within an organization, including creating teams, adding members, and controlling database
+    access.
+  humanURL: https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
+  baseURL: https://api.planetscale.com/v1
+  tags:
+  - Teams
+  properties:
+  - type: OpenAPI
+    url: openapi/planetscale-teams-api-openapi.yml
+  - type: Documentation
+    url: https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
+  - type: AsyncAPI
+    url: asyncapi/planetscale-webhooks-asyncapi.yml
+- aid: planetscale:planetscale-webhooks-api
+  name: planetscale Webhooks API
+  description: Manage webhook configurations for database event notifications.
+  humanURL: https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
+  baseURL: https://api.planetscale.com/v1
+  tags:
+  - Webhooks
+  properties:
+  - type: OpenAPI
+    url: openapi/planetscale-webhooks-api-openapi.yml
+  - type: Documentation
+    url: https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
+  - type: AsyncAPI
+    url: asyncapi/planetscale-webhooks-asyncapi.yml
 common:
   - type: AgenticAccess
     url: agentic-access/planetscale-agentic-access.yml
