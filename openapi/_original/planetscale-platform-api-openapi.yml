@@ -1,0 +1,2868 @@
+openapi: 3.1.0
+info:
+  title: PlanetScale Platform API
+  description: >-
+    The PlanetScale Platform API provides programmatic access to manage
+    PlanetScale serverless MySQL-compatible databases. It allows developers
+    to create and manage databases, branches, deploy requests, passwords,
+    backups, service tokens, organization members, teams, bouncers, and
+    billing data. The API supports authentication via service tokens and
+    OAuth, enabling integration into CI/CD pipelines and
+    infrastructure-as-code workflows.
+  version: '1.0.0'
+  contact:
+    name: PlanetScale Support
+    url: https://support.planetscale.com
+  termsOfService: https://planetscale.com/legal/tos
+  license:
+    name: Proprietary
+    url: https://planetscale.com/legal/tos
+externalDocs:
+  description: PlanetScale API Documentation
+  url: https://planetscale.com/docs/api/reference/getting-started-with-planetscale-api
+servers:
+  - url: https://api.planetscale.com/v1
+    description: PlanetScale Production API
+tags:
+  - name: Backups
+    description: >-
+      Manage database branch backups, including listing, creating, and
+      retrieving backup details.
+  - name: Billing
+    description: >-
+      Access organization billing data and invoices programmatically.
+  - name: Bouncers
+    description: >-
+      Manage PgBouncer connection pooling instances for database branches,
+      including creating, listing, resizing, and deleting bouncers.
+  - name: Branches
+    description: >-
+      Manage database branches for schema development and safe migrations,
+      including creating, listing, updating, and deleting branches.
+  - name: Cluster Sizes
+    description: >-
+      Retrieve available cluster size SKUs for Vitess and Postgres
+      database branches.
+  - name: Databases
+    description: >-
+      Manage PlanetScale databases, including creating, listing, updating
+      settings, and deleting databases.
+  - name: Deploy Requests
+    description: >-
+      Manage deploy requests for applying schema changes from development
+      branches to production, including creating, reviewing, queueing,
+      and completing deployments.
+  - name: IP Restrictions
+    description: >-
+      Manage IP restriction entries for controlling database access
+      by IP address.
+  - name: Organization Members
+    description: >-
+      Manage members within an organization, including listing, retrieving,
+      updating roles, and removing members.
+  - name: Organizations
+    description: >-
+      Manage PlanetScale organizations, including listing organizations
+      and retrieving organization details.
+  - name: Passwords
+    description: >-
+      Manage branch passwords and connection credentials for connecting
+      applications to database branches.
+  - name: Query Patterns
+    description: >-
+      Analyze and report on query patterns for database branches.
+  - name: Roles
+    description: >-
+      Manage role-based credentials for database access.
+  - name: Schema Recommendations
+    description: >-
+      View and manage schema recommendations for optimizing database
+      performance and structure.
+  - name: Service Tokens
+    description: >-
+      Manage service tokens for API authentication, including creating,
+      listing, and deleting tokens and their access grants.
+  - name: Teams
+    description: >-
+      Manage teams within an organization, including creating teams, adding
+      members, and controlling database access.
+  - name: Webhooks
+    description: >-
+      Manage webhook configurations for database event notifications.
+security:
+  - serviceToken: []
+paths:
+  /organizations:
+    get:
+      operationId: listOrganizations
+      summary: List organizations
+      description: >-
+        Returns a list of all organizations the authenticated user or
+        service token has access to.
+      tags:
+        - Organizations
+      responses:
+        '200':
+          description: Successful response with list of organizations
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Organization'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /organizations/{organization}:
+    get:
+      operationId: getOrganization
+      summary: Get an organization
+      description: >-
+        Returns details about a specific organization by name.
+      tags:
+        - Organizations
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+      responses:
+        '200':
+          description: Successful response with organization details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organization'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /organizations/{organization}/members:
+    get:
+      operationId: listOrganizationMembers
+      summary: List organization members
+      description: >-
+        Returns a list of all members in the specified organization.
+        Requires the read_organization permission on the service token.
+      tags:
+        - Organization Members
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/PerPageParam'
+      responses:
+        '200':
+          description: Successful response with list of organization members
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/OrganizationMember'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /organizations/{organization}/members/{member_id}:
+    get:
+      operationId: getOrganizationMember
+      summary: Get an organization member
+      description: >-
+        Returns details about a specific member in the organization.
+        Requires the read_organization permission.
+      tags:
+        - Organization Members
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+        - $ref: '#/components/parameters/MemberIdParam'
+      responses:
+        '200':
+          description: Successful response with member details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationMember'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      operationId: updateOrganizationMember
+      summary: Update an organization member
+      description: >-
+        Updates the role or properties of a specific member in the
+        organization. Requires the write_organization permission.
+      tags:
+        - Organization Members
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+        - $ref: '#/components/parameters/MemberIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                role:
+                  type: string
+                  description: >-
+                    The role to assign to the member.
+                  enum:
+                    - admin
+                    - member
+                    - database_admin
+      responses:
+        '200':
+          description: Member updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationMember'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteOrganizationMember
+      summary: Remove an organization member
+      description: >-
+        Removes a member from the organization. Requires the
+        write_organization permission.
+      tags:
+        - Organization Members
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+        - $ref: '#/components/parameters/MemberIdParam'
+      responses:
+        '204':
+          description: Member removed successfully
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /organizations/{organization}/teams:
+    get:
+      operationId: listTeams
+      summary: List teams
+      description: >-
+        Returns a list of all teams in the specified organization.
+      tags:
+        - Teams
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/PerPageParam'
+      responses:
+        '200':
+          description: Successful response with list of teams
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Team'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createTeam
+      summary: Create a team
+      description: >-
+        Creates a new team in the specified organization.
+      tags:
+        - Teams
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+              properties:
+                name:
+                  type: string
+                  description: >-
+                    The name of the team.
+                description:
+                  type: string
+                  description: >-
+                    A description of the team.
+      responses:
+        '201':
+          description: Team created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /organizations/{organization}/teams/{team_slug}:
+    get:
+      operationId: getTeam
+      summary: Get a team
+      description: >-
+        Returns details about a specific team in the organization.
+      tags:
+        - Teams
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+        - $ref: '#/components/parameters/TeamSlugParam'
+      responses:
+        '200':
+          description: Successful response with team details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      operationId: updateTeam
+      summary: Update a team
+      description: >-
+        Updates the name or description of a specific team.
+      tags:
+        - Teams
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+        - $ref: '#/components/parameters/TeamSlugParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: >-
+                    The updated name of the team.
+                description:
+                  type: string
+                  description: >-
+                    The updated description of the team.
+      responses:
+        '200':
+          description: Team updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteTeam
+      summary: Delete a team
+      description: >-
+        Deletes a team from the organization.
+      tags:
+        - Teams
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+        - $ref: '#/components/parameters/TeamSlugParam'
+      responses:
+        '204':
+          description: Team deleted successfully
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /organizations/{organization}/databases:
+    get:
+      operationId: listDatabases
+      summary: List databases
+      description: >-
+        Returns a list of all databases in the specified organization.
+      tags:
+        - Databases
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/PerPageParam'
+      responses:
+        '200':
+          description: Successful response with list of databases
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Database'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createDatabase
+      summary: Create a database
+      description: >-
+        Creates a new database in the specified organization.
+      tags:
+        - Databases
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+              properties:
+                name:
+                  type: string
+                  description: >-
+                    The name of the database.
+                plan:
+                  type: string
+                  description: >-
+                    The billing plan for the database.
+                  enum:
+                    - hobby
+                    - scaler
+                    - scaler_pro
+                cluster_size:
+                  type: string
+                  description: >-
+                    The cluster size for the production branch.
+                region:
+                  type: string
+                  description: >-
+                    The region slug where the database will be created.
+      responses:
+        '201':
+          description: Database created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Database'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /organizations/{organization}/databases/{database}:
+    get:
+      operationId: getDatabase
+      summary: Get a database
+      description: >-
+        Returns details about a specific database, including its
+        configuration, state, and production branch information.
+      tags:
+        - Databases
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+        - $ref: '#/components/parameters/DatabaseParam'
+      responses:
+        '200':
+          description: Successful response with database details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Database'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      operationId: updateDatabaseSettings
+      summary: Update database settings
+      description: >-
+        Updates settings for a specific database, such as production
+        branch protection, insights, and default branch.
+      tags:
+        - Databases
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+        - $ref: '#/components/parameters/DatabaseParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                default_branch:
+                  type: string
+                  description: >-
+                    The name of the default branch.
+                production_branch_web_console:
+                  type: boolean
+                  description: >-
+                    Whether the web console is enabled for production branches.
+                insights_enabled:
+                  type: boolean
+                  description: >-
+                    Whether PlanetScale Insights is enabled.
+                migration_framework:
+                  type: string
+                  description: >-
+                    The migration framework used for schema changes.
+                migration_table_name:
+                  type: string
+                  description: >-
+                    The name of the migration tracking table.
+                require_approval_for_deploy:
+                  type: boolean
+                  description: >-
+                    Whether deploy requests require approval before deployment.
+                allow_data_branching:
+                  type: boolean
+                  description: >-
+                    Whether data branching is enabled.
+      responses:
+        '200':
+          description: Database settings updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Database'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteDatabase
+      summary: Delete a database
+      description: >-
+        Deletes a database and all of its branches. This action is
+        irreversible.
+      tags:
+        - Databases
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+        - $ref: '#/components/parameters/DatabaseParam'
+      responses:
+        '204':
+          description: Database deleted successfully
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /organizations/{organization}/databases/{database}/branches:
+    get:
+      operationId: listBranches
+      summary: List branches
+      description: >-
+        Returns a list of all branches for a specific database.
+      tags:
+        - Branches
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+        - $ref: '#/components/parameters/DatabaseParam'
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/PerPageParam'
+      responses:
+        '200':
+          description: Successful response with list of branches
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Branch'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    post:
+      operationId: createBranch
+      summary: Create a branch
+      description: >-
+        Creates a new branch for the specified database. Branches are
+        isolated copies of the database schema used for development
+        and testing.
+      tags:
+        - Branches
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+        - $ref: '#/components/parameters/DatabaseParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+              properties:
+                name:
+                  type: string
+                  description: >-
+                    The name of the branch.
+                parent_branch:
+                  type: string
+                  description: >-
+                    The name of the parent branch to fork from.
+                backup_id:
+                  type: string
+                  description: >-
+                    The ID of a backup to restore the branch from.
+                seed_data:
+                  type: string
+                  description: >-
+                    The seed data configuration for the branch.
+                cluster_size:
+                  type: string
+                  description: >-
+                    The cluster size for the branch.
+                region:
+                  type: string
+                  description: >-
+                    The region where the branch will be created.
+      responses:
+        '201':
+          description: Branch created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Branch'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /organizations/{organization}/databases/{database}/branches/{branch}:
+    get:
+      operationId: getBranch
+      summary: Get a branch
+      description: >-
+        Returns details about a specific branch, including its schema
+        status, cluster configuration, and readiness state.
+      tags:
+        - Branches
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+        - $ref: '#/components/parameters/DatabaseParam'
+        - $ref: '#/components/parameters/BranchParam'
+      responses:
+        '200':
+          description: Successful response with branch details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Branch'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      operationId: updateBranch
+      summary: Update a branch
+      description: >-
+        Updates properties of a specific branch, such as its cluster
+        configuration.
+      tags:
+        - Branches
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+        - $ref: '#/components/parameters/DatabaseParam'
+        - $ref: '#/components/parameters/BranchParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                cluster_size:
+                  type: string
+                  description: >-
+                    The new cluster size for the branch.
+      responses:
+        '200':
+          description: Branch updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Branch'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteBranch
+      summary: Delete a branch
+      description: >-
+        Deletes a database branch. Production branches cannot be deleted.
+      tags:
+        - Branches
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+        - $ref: '#/components/parameters/DatabaseParam'
+        - $ref: '#/components/parameters/BranchParam'
+      responses:
+        '204':
+          description: Branch deleted successfully
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /organizations/{organization}/databases/{database}/branches/{branch}/schema-lint:
+    get:
+      operationId: lintBranchSchema
+      summary: Lint a branch schema
+      description: >-
+        Returns schema lint results for the specified branch, identifying
+        potential issues and recommendations.
+      tags:
+        - Branches
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+        - $ref: '#/components/parameters/DatabaseParam'
+        - $ref: '#/components/parameters/BranchParam'
+      responses:
+        '200':
+          description: Successful response with lint results
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SchemaLintError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /organizations/{organization}/databases/{database}/deploy-requests:
+    get:
+      operationId: listDeployRequests
+      summary: List deploy requests
+      description: >-
+        Returns a list of all deploy requests for a specific database.
+      tags:
+        - Deploy Requests
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+        - $ref: '#/components/parameters/DatabaseParam'
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/PerPageParam'
+      responses:
+        '200':
+          description: Successful response with list of deploy requests
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DeployRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    post:
+      operationId: createDeployRequest
+      summary: Create a deploy request
+      description: >-
+        Creates a new deploy request to merge schema changes from a
+        development branch into the target branch.
+      tags:
+        - Deploy Requests
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+        - $ref: '#/components/parameters/DatabaseParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - branch
+              properties:
+                branch:
+                  type: string
+                  description: >-
+                    The name of the source branch containing schema changes.
+                into_branch:
+                  type: string
+                  description: >-
+                    The name of the target branch to deploy into. Defaults
+                    to the production branch.
+                notes:
+                  type: string
+                  description: >-
+                    Notes or description for the deploy request.
+      responses:
+        '201':
+          description: Deploy request created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeployRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /organizations/{organization}/databases/{database}/deploy-requests/{deploy_request_number}:
+    get:
+      operationId: getDeployRequest
+      summary: Get a deploy request
+      description: >-
+        Returns details about a specific deploy request, including its
+        status, schema changes, and deployment history.
+      tags:
+        - Deploy Requests
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+        - $ref: '#/components/parameters/DatabaseParam'
+        - $ref: '#/components/parameters/DeployRequestNumberParam'
+      responses:
+        '200':
+          description: Successful response with deploy request details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeployRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      operationId: closeDeployRequest
+      summary: Close a deploy request
+      description: >-
+        Closes an open deploy request without deploying the changes.
+      tags:
+        - Deploy Requests
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+        - $ref: '#/components/parameters/DatabaseParam'
+        - $ref: '#/components/parameters/DeployRequestNumberParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                state:
+                  type: string
+                  description: >-
+                    The desired state of the deploy request.
+                  enum:
+                    - closed
+      responses:
+        '200':
+          description: Deploy request closed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeployRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /organizations/{organization}/databases/{database}/deploy-requests/{deploy_request_number}/deploy:
+    post:
+      operationId: queueDeployRequest
+      summary: Queue a deploy request
+      description: >-
+        Queues a deploy request for deployment, applying the schema
+        changes to the target branch.
+      tags:
+        - Deploy Requests
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+        - $ref: '#/components/parameters/DatabaseParam'
+        - $ref: '#/components/parameters/DeployRequestNumberParam'
+      responses:
+        '200':
+          description: Deploy request queued successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeployRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /organizations/{organization}/databases/{database}/deploy-requests/{deploy_request_number}/reviews:
+    get:
+      operationId: listDeployRequestReviews
+      summary: List deploy request reviews
+      description: >-
+        Returns a list of reviews for a specific deploy request.
+      tags:
+        - Deploy Requests
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+        - $ref: '#/components/parameters/DatabaseParam'
+        - $ref: '#/components/parameters/DeployRequestNumberParam'
+      responses:
+        '200':
+          description: Successful response with list of reviews
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DeployRequestReview'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    post:
+      operationId: reviewDeployRequest
+      summary: Review a deploy request
+      description: >-
+        Submits a review for a deploy request, approving or requesting
+        changes.
+      tags:
+        - Deploy Requests
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+        - $ref: '#/components/parameters/DatabaseParam'
+        - $ref: '#/components/parameters/DeployRequestNumberParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - state
+              properties:
+                state:
+                  type: string
+                  description: >-
+                    The review state.
+                  enum:
+                    - approved
+                    - changes_requested
+                    - commented
+                body:
+                  type: string
+                  description: >-
+                    The review comment body.
+      responses:
+        '201':
+          description: Review submitted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeployRequestReview'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /organizations/{organization}/databases/{database}/deploy-requests/{deploy_request_number}/skip-revert:
+    post:
+      operationId: skipDeployRequestRevert
+      summary: Skip revert period
+      description: >-
+        Skips the revert period for a completed deploy request,
+        finalizing the schema changes.
+      tags:
+        - Deploy Requests
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+        - $ref: '#/components/parameters/DatabaseParam'
+        - $ref: '#/components/parameters/DeployRequestNumberParam'
+      responses:
+        '200':
+          description: Revert period skipped successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeployRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /organizations/{organization}/databases/{database}/deploy-requests/{deploy_request_number}/complete-revert:
+    post:
+      operationId: completeDeployRequestRevert
+      summary: Complete a revert
+      description: >-
+        Completes a revert of a deployed schema change, rolling back
+        to the previous schema.
+      tags:
+        - Deploy Requests
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+        - $ref: '#/components/parameters/DatabaseParam'
+        - $ref: '#/components/parameters/DeployRequestNumberParam'
+      responses:
+        '200':
+          description: Revert completed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeployRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /organizations/{organization}/databases/{database}/deploy-queue:
+    get:
+      operationId: getDeployQueue
+      summary: Get the deploy queue
+      description: >-
+        Returns the current deploy queue for a database, showing
+        pending and active deployments.
+      tags:
+        - Deploy Requests
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+        - $ref: '#/components/parameters/DatabaseParam'
+      responses:
+        '200':
+          description: Successful response with deploy queue
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DeployRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /organizations/{organization}/databases/{database}/branches/{branch}/passwords:
+    get:
+      operationId: listPasswords
+      summary: List passwords
+      description: >-
+        Returns a list of all passwords for a specific branch. Passwords
+        are connection credentials used to connect to the branch.
+      tags:
+        - Passwords
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+        - $ref: '#/components/parameters/DatabaseParam'
+        - $ref: '#/components/parameters/BranchParam'
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/PerPageParam'
+      responses:
+        '200':
+          description: Successful response with list of passwords
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Password'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    post:
+      operationId: createPassword
+      summary: Create a password
+      description: >-
+        Creates a new password for a specific branch. The plaintext
+        password is only returned once in the creation response.
+      tags:
+        - Passwords
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+        - $ref: '#/components/parameters/DatabaseParam'
+        - $ref: '#/components/parameters/BranchParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: >-
+                    A descriptive name for the password.
+                role:
+                  type: string
+                  description: >-
+                    The access role for the password.
+                  enum:
+                    - admin
+                    - reader
+                    - writer
+                    - readwriter
+                ttl:
+                  type: number
+                  description: >-
+                    Time to live in minutes. 0 means no expiration.
+      responses:
+        '201':
+          description: Password created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PasswordWithPlaintext'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /organizations/{organization}/databases/{database}/branches/{branch}/passwords/{password_id}:
+    get:
+      operationId: getPassword
+      summary: Get a password
+      description: >-
+        Returns details about a specific password. The plaintext password
+        value is not included.
+      tags:
+        - Passwords
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+        - $ref: '#/components/parameters/DatabaseParam'
+        - $ref: '#/components/parameters/BranchParam'
+        - $ref: '#/components/parameters/PasswordIdParam'
+      responses:
+        '200':
+          description: Successful response with password details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Password'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deletePassword
+      summary: Delete a password
+      description: >-
+        Deletes a password, revoking its access to the branch.
+      tags:
+        - Passwords
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+        - $ref: '#/components/parameters/DatabaseParam'
+        - $ref: '#/components/parameters/BranchParam'
+        - $ref: '#/components/parameters/PasswordIdParam'
+      responses:
+        '204':
+          description: Password deleted successfully
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /organizations/{organization}/databases/{database}/branches/{branch}/passwords/{password_id}/renew:
+    post:
+      operationId: renewPassword
+      summary: Renew a password
+      description: >-
+        Renews a password, extending its expiration time.
+      tags:
+        - Passwords
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+        - $ref: '#/components/parameters/DatabaseParam'
+        - $ref: '#/components/parameters/BranchParam'
+        - $ref: '#/components/parameters/PasswordIdParam'
+      responses:
+        '200':
+          description: Password renewed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Password'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /organizations/{organization}/databases/{database}/branches/{branch}/backups:
+    get:
+      operationId: listBackups
+      summary: List backups
+      description: >-
+        Returns a list of all backups for a specific branch.
+      tags:
+        - Backups
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+        - $ref: '#/components/parameters/DatabaseParam'
+        - $ref: '#/components/parameters/BranchParam'
+        - $ref: '#/components/parameters/PageParam'
+        - $ref: '#/components/parameters/PerPageParam'
+      responses:
+        '200':
+          description: Successful response with list of backups
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Backup'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    post:
+      operationId: createBackup
+      summary: Create a backup
+      description: >-
+        Creates a new backup of the specified branch.
+      tags:
+        - Backups
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+        - $ref: '#/components/parameters/DatabaseParam'
+        - $ref: '#/components/parameters/BranchParam'
+      responses:
+        '201':
+          description: Backup created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Backup'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /organizations/{organization}/databases/{database}/branches/{branch}/backups/{backup_id}:
+    get:
+      operationId: getBackup
+      summary: Get a backup
+      description: >-
+        Returns details about a specific backup.
+      tags:
+        - Backups
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+        - $ref: '#/components/parameters/DatabaseParam'
+        - $ref: '#/components/parameters/BranchParam'
+        - $ref: '#/components/parameters/BackupIdParam'
+      responses:
+        '200':
+          description: Successful response with backup details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Backup'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteBackup
+      summary: Delete a backup
+      description: >-
+        Deletes a specific backup.
+      tags:
+        - Backups
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+        - $ref: '#/components/parameters/DatabaseParam'
+        - $ref: '#/components/parameters/BranchParam'
+        - $ref: '#/components/parameters/BackupIdParam'
+      responses:
+        '204':
+          description: Backup deleted successfully
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /organizations/{organization}/service-tokens:
+    get:
+      operationId: listServiceTokens
+      summary: List service tokens
+      description: >-
+        Returns a list of all service tokens for the specified
+        organization.
+      tags:
+        - Service Tokens
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+      responses:
+        '200':
+          description: Successful response with list of service tokens
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ServiceToken'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createServiceToken
+      summary: Create a service token
+      description: >-
+        Creates a new service token for API authentication. The token
+        value is only returned once during creation.
+      tags:
+        - Service Tokens
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: >-
+                    A descriptive name for the service token.
+      responses:
+        '201':
+          description: Service token created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceTokenWithPlaintext'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /organizations/{organization}/service-tokens/{service_token_id}:
+    get:
+      operationId: getServiceToken
+      summary: Get a service token
+      description: >-
+        Returns details about a specific service token. The token
+        value is not included.
+      tags:
+        - Service Tokens
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+        - $ref: '#/components/parameters/ServiceTokenIdParam'
+      responses:
+        '200':
+          description: Successful response with service token details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceToken'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteServiceToken
+      summary: Delete a service token
+      description: >-
+        Deletes a service token, revoking all API access associated
+        with it.
+      tags:
+        - Service Tokens
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+        - $ref: '#/components/parameters/ServiceTokenIdParam'
+      responses:
+        '204':
+          description: Service token deleted successfully
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /organizations/{organization}/service-tokens/{service_token_id}/accesses:
+    get:
+      operationId: listServiceTokenAccesses
+      summary: List service token accesses
+      description: >-
+        Returns a list of access grants for a specific service token.
+      tags:
+        - Service Tokens
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+        - $ref: '#/components/parameters/ServiceTokenIdParam'
+      responses:
+        '200':
+          description: Successful response with list of accesses
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ServiceTokenAccess'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    post:
+      operationId: createServiceTokenAccess
+      summary: Grant service token access
+      description: >-
+        Grants a specific access permission to a service token for
+        a database or organization resource.
+      tags:
+        - Service Tokens
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+        - $ref: '#/components/parameters/ServiceTokenIdParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - access
+              properties:
+                access:
+                  type: string
+                  description: >-
+                    The permission to grant.
+                database:
+                  type: string
+                  description: >-
+                    The database to scope the access to. If omitted,
+                    access applies to all databases.
+      responses:
+        '201':
+          description: Access granted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceTokenAccess'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /organizations/{organization}/databases/{database}/branches/{branch}/bouncers:
+    get:
+      operationId: listBouncers
+      summary: List bouncers
+      description: >-
+        Returns a list of PgBouncer connection pooling instances for
+        the specified branch.
+      tags:
+        - Bouncers
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+        - $ref: '#/components/parameters/DatabaseParam'
+        - $ref: '#/components/parameters/BranchParam'
+      responses:
+        '200':
+          description: Successful response with list of bouncers
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Bouncer'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    post:
+      operationId: createBouncer
+      summary: Create a bouncer
+      description: >-
+        Creates a new PgBouncer connection pooling instance for
+        the specified branch.
+      tags:
+        - Bouncers
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+        - $ref: '#/components/parameters/DatabaseParam'
+        - $ref: '#/components/parameters/BranchParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+              properties:
+                name:
+                  type: string
+                  description: >-
+                    The name of the bouncer instance.
+                pool_size:
+                  type: integer
+                  description: >-
+                    The connection pool size.
+      responses:
+        '201':
+          description: Bouncer created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bouncer'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /organizations/{organization}/databases/{database}/branches/{branch}/bouncers/{bouncer_name}:
+    get:
+      operationId: getBouncer
+      summary: Get a bouncer
+      description: >-
+        Returns details about a specific PgBouncer instance.
+      tags:
+        - Bouncers
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+        - $ref: '#/components/parameters/DatabaseParam'
+        - $ref: '#/components/parameters/BranchParam'
+        - $ref: '#/components/parameters/BouncerNameParam'
+      responses:
+        '200':
+          description: Successful response with bouncer details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bouncer'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteBouncer
+      summary: Delete a bouncer
+      description: >-
+        Deletes a PgBouncer connection pooling instance.
+      tags:
+        - Bouncers
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+        - $ref: '#/components/parameters/DatabaseParam'
+        - $ref: '#/components/parameters/BranchParam'
+        - $ref: '#/components/parameters/BouncerNameParam'
+      responses:
+        '204':
+          description: Bouncer deleted successfully
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /organizations/{organization}/cluster-size-skus:
+    get:
+      operationId: listClusterSizes
+      summary: List cluster sizes
+      description: >-
+        Returns a list of available cluster size SKUs for Vitess and
+        Postgres database branches in the specified organization.
+      tags:
+        - Cluster Sizes
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+      responses:
+        '200':
+          description: Successful response with list of cluster sizes
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ClusterSize'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /organizations/{organization}/databases/{database}/branches/{branch}/roles:
+    post:
+      operationId: createRole
+      summary: Create role credentials
+      description: >-
+        Creates role-based credentials for accessing a database branch
+        with specific permissions.
+      tags:
+        - Roles
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+        - $ref: '#/components/parameters/DatabaseParam'
+        - $ref: '#/components/parameters/BranchParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+              properties:
+                name:
+                  type: string
+                  description: >-
+                    The name of the role.
+                role:
+                  type: string
+                  description: >-
+                    The access level for the role.
+                  enum:
+                    - admin
+                    - reader
+                    - writer
+                    - readwriter
+      responses:
+        '201':
+          description: Role credentials created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleCredentials'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /organizations/{organization}/databases/{database}/postgres-cidrs:
+    get:
+      operationId: listIpRestrictions
+      summary: List IP restrictions
+      description: >-
+        Returns a list of IP restriction entries for a database.
+      tags:
+        - IP Restrictions
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+        - $ref: '#/components/parameters/DatabaseParam'
+      responses:
+        '200':
+          description: Successful response with list of IP restrictions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/IpRestriction'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createIpRestriction
+      summary: Create an IP restriction entry
+      description: >-
+        Creates a new IP restriction entry to control database access
+        by IP address or CIDR range.
+      tags:
+        - IP Restrictions
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+        - $ref: '#/components/parameters/DatabaseParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - cidr
+              properties:
+                cidr:
+                  type: string
+                  description: >-
+                    The IP address or CIDR range to restrict.
+                  example: '10.0.0.0/24'
+                description:
+                  type: string
+                  description: >-
+                    A description for the IP restriction entry.
+      responses:
+        '201':
+          description: IP restriction created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IpRestriction'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /organizations/{organization}/databases/{database}/branches/{branch}/query-patterns-report:
+    get:
+      operationId: getQueryPatternsReportStatus
+      summary: Show the status of a query patterns report
+      description: >-
+        Returns the status of a query patterns report for the specified
+        branch.
+      tags:
+        - Query Patterns
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+        - $ref: '#/components/parameters/DatabaseParam'
+        - $ref: '#/components/parameters/BranchParam'
+      responses:
+        '200':
+          description: Successful response with report status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryPatternsReport'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /organizations/{organization}/databases/{database}/webhooks:
+    get:
+      operationId: listWebhooks
+      summary: List webhooks
+      description: >-
+        Returns a list of webhook configurations for the specified
+        database. Each database can have up to 5 webhooks.
+      tags:
+        - Webhooks
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+        - $ref: '#/components/parameters/DatabaseParam'
+      responses:
+        '200':
+          description: Successful response with list of webhooks
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Webhook'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createWebhook
+      summary: Create a webhook
+      description: >-
+        Creates a new webhook configuration for the specified database
+        to receive event notifications via HTTP POST callbacks.
+      tags:
+        - Webhooks
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+        - $ref: '#/components/parameters/DatabaseParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - url
+                - events
+              properties:
+                url:
+                  type: string
+                  format: uri
+                  description: >-
+                    The HTTPS URL to receive webhook POST callbacks.
+                events:
+                  type: array
+                  items:
+                    type: string
+                  description: >-
+                    The list of event types to subscribe to.
+                secret:
+                  type: string
+                  description: >-
+                    The shared secret used to sign webhook payloads
+                    for verification.
+      responses:
+        '201':
+          description: Webhook created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Webhook'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+  /organizations/{organization}/invoices:
+    get:
+      operationId: listInvoices
+      summary: List invoices
+      description: >-
+        Returns a list of invoices for the specified organization.
+        Requires OAuth or service token with billing access.
+      tags:
+        - Billing
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+      responses:
+        '200':
+          description: Successful response with list of invoices
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Invoice'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /organizations/{organization}/databases/{database}/schema-recommendations:
+    get:
+      operationId: listSchemaRecommendations
+      summary: List schema recommendations
+      description: >-
+        Returns a list of schema recommendations for the specified
+        database, identifying potential optimization opportunities.
+      tags:
+        - Schema Recommendations
+      parameters:
+        - $ref: '#/components/parameters/OrganizationParam'
+        - $ref: '#/components/parameters/DatabaseParam'
+      responses:
+        '200':
+          description: Successful response with list of recommendations
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SchemaRecommendation'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  securitySchemes:
+    serviceToken:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: >-
+        Service token authentication. Use the format
+        'ServiceToken {token_id}:{token_value}' in the Authorization header.
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: >-
+        OAuth 2.0 bearer token authentication. Obtain tokens via the
+        PlanetScale OAuth authorization code flow.
+  parameters:
+    OrganizationParam:
+      name: organization
+      in: path
+      required: true
+      description: >-
+        The name of the organization.
+      schema:
+        type: string
+    DatabaseParam:
+      name: database
+      in: path
+      required: true
+      description: >-
+        The name of the database.
+      schema:
+        type: string
+    BranchParam:
+      name: branch
+      in: path
+      required: true
+      description: >-
+        The name of the branch.
+      schema:
+        type: string
+    DeployRequestNumberParam:
+      name: deploy_request_number
+      in: path
+      required: true
+      description: >-
+        The number of the deploy request.
+      schema:
+        type: string
+    PasswordIdParam:
+      name: password_id
+      in: path
+      required: true
+      description: >-
+        The ID of the password.
+      schema:
+        type: string
+    BackupIdParam:
+      name: backup_id
+      in: path
+      required: true
+      description: >-
+        The ID of the backup.
+      schema:
+        type: string
+    ServiceTokenIdParam:
+      name: service_token_id
+      in: path
+      required: true
+      description: >-
+        The ID of the service token.
+      schema:
+        type: string
+    BouncerNameParam:
+      name: bouncer_name
+      in: path
+      required: true
+      description: >-
+        The name of the PgBouncer instance.
+      schema:
+        type: string
+    MemberIdParam:
+      name: member_id
+      in: path
+      required: true
+      description: >-
+        The ID of the organization member.
+      schema:
+        type: string
+    TeamSlugParam:
+      name: team_slug
+      in: path
+      required: true
+      description: >-
+        The slug of the team.
+      schema:
+        type: string
+    PageParam:
+      name: page
+      in: query
+      required: false
+      description: >-
+        The page number for pagination.
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+    PerPageParam:
+      name: per_page
+      in: query
+      required: false
+      description: >-
+        The number of results per page.
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 25
+  responses:
+    Unauthorized:
+      description: >-
+        Authentication failed. The service token or OAuth token is
+        missing, invalid, or lacks the required permissions.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: >-
+        The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    UnprocessableEntity:
+      description: >-
+        The request was well-formed but contains invalid parameters
+        or violates business rules.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Organization:
+      type: object
+      description: >-
+        A PlanetScale organization that contains databases, members,
+        and billing configuration.
+      properties:
+        id:
+          type: string
+          description: >-
+            The unique identifier of the organization.
+        name:
+          type: string
+          description: >-
+            The URL-safe name of the organization.
+        display_name:
+          type: string
+          description: >-
+            The human-readable display name of the organization.
+        created_at:
+          type: string
+          format: date-time
+          description: >-
+            The timestamp when the organization was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: >-
+            The timestamp when the organization was last updated.
+        plan:
+          type: string
+          description: >-
+            The billing plan for the organization.
+        billing_email:
+          type: string
+          format: email
+          description: >-
+            The email address used for billing communications.
+    OrganizationMember:
+      type: object
+      description: >-
+        A member of a PlanetScale organization with a specific role.
+      properties:
+        id:
+          type: string
+          description: >-
+            The unique identifier of the member.
+        name:
+          type: string
+          description: >-
+            The display name of the member.
+        email:
+          type: string
+          format: email
+          description: >-
+            The email address of the member.
+        role:
+          type: string
+          description: >-
+            The role of the member within the organization.
+          enum:
+            - admin
+            - member
+            - database_admin
+        created_at:
+          type: string
+          format: date-time
+          description: >-
+            The timestamp when the member was added.
+    Team:
+      type: object
+      description: >-
+        A team within an organization for managing database access
+        at the group level.
+      properties:
+        id:
+          type: string
+          description: >-
+            The unique identifier of the team.
+        name:
+          type: string
+          description: >-
+            The name of the team.
+        slug:
+          type: string
+          description: >-
+            The URL-safe slug of the team.
+        description:
+          type: string
+          description: >-
+            A description of the team.
+        members_count:
+          type: integer
+          description: >-
+            The number of members in the team.
+        created_at:
+          type: string
+          format: date-time
+          description: >-
+            The timestamp when the team was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: >-
+            The timestamp when the team was last updated.
+    Database:
+      type: object
+      description: >-
+        A PlanetScale serverless MySQL-compatible database with
+        branching and deploy request support.
+      properties:
+        id:
+          type: string
+          description: >-
+            The unique identifier of the database.
+        name:
+          type: string
+          description: >-
+            The name of the database.
+        state:
+          type: string
+          description: >-
+            The current state of the database.
+          enum:
+            - pending
+            - ready
+            - sleeping
+            - awaking
+        plan:
+          type: string
+          description: >-
+            The billing plan for the database.
+        cluster_size:
+          type: string
+          description: >-
+            The cluster size of the production branch.
+        region:
+          type: object
+          description: >-
+            The region where the database is hosted.
+          properties:
+            slug:
+              type: string
+              description: >-
+                The region slug identifier.
+            display_name:
+              type: string
+              description: >-
+                The human-readable region name.
+        default_branch:
+          type: string
+          description: >-
+            The name of the default production branch.
+        production_branch_web_console:
+          type: boolean
+          description: >-
+            Whether the web console is enabled on production branches.
+        insights_enabled:
+          type: boolean
+          description: >-
+            Whether PlanetScale Insights analytics is enabled.
+        migration_framework:
+          type: string
+          description: >-
+            The migration framework configured for schema changes.
+        require_approval_for_deploy:
+          type: boolean
+          description: >-
+            Whether deploy requests require approval before deployment.
+        allow_data_branching:
+          type: boolean
+          description: >-
+            Whether data branching is enabled.
+        created_at:
+          type: string
+          format: date-time
+          description: >-
+            The timestamp when the database was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: >-
+            The timestamp when the database was last updated.
+        html_url:
+          type: string
+          format: uri
+          description: >-
+            The URL to the database in the PlanetScale dashboard.
+    Branch:
+      type: object
+      description: >-
+        A database branch representing an isolated copy of the schema
+        for development, testing, or production use.
+      properties:
+        id:
+          type: string
+          description: >-
+            The unique identifier of the branch.
+        name:
+          type: string
+          description: >-
+            The name of the branch.
+        production:
+          type: boolean
+          description: >-
+            Whether this is a production branch.
+        ready:
+          type: boolean
+          description: >-
+            Whether the branch is ready for connections.
+        shard_count:
+          type: integer
+          description: >-
+            The number of shards in the branch.
+        sharded:
+          type: boolean
+          description: >-
+            Whether the branch is sharded.
+        cluster_rate_name:
+          type: string
+          description: >-
+            The cluster size identifier for the branch.
+        region:
+          type: object
+          description: >-
+            The region where the branch is hosted.
+          properties:
+            slug:
+              type: string
+              description: >-
+                The region slug identifier.
+            display_name:
+              type: string
+              description: >-
+                The human-readable region name.
+        parent_branch:
+          type: string
+          description: >-
+            The name of the parent branch this was forked from.
+        schema_last_updated_at:
+          type: string
+          format: date-time
+          description: >-
+            The timestamp when the schema was last modified.
+        created_at:
+          type: string
+          format: date-time
+          description: >-
+            The timestamp when the branch was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: >-
+            The timestamp when the branch was last updated.
+        html_url:
+          type: string
+          format: uri
+          description: >-
+            The URL to the branch in the PlanetScale dashboard.
+    DeployRequest:
+      type: object
+      description: >-
+        A deploy request for applying schema changes from a development
+        branch to a target branch.
+      properties:
+        id:
+          type: string
+          description: >-
+            The unique identifier of the deploy request.
+        number:
+          type: integer
+          description: >-
+            The deploy request number within the database.
+        branch:
+          type: string
+          description: >-
+            The name of the source branch with schema changes.
+        into_branch:
+          type: string
+          description: >-
+            The name of the target branch to deploy into.
+        state:
+          type: string
+          description: >-
+            The current state of the deploy request.
+          enum:
+            - open
+            - closed
+            - pending
+            - queued
+            - in_progress
+            - complete
+            - complete_pending_revert
+            - complete_reverted
+            - complete_error
+        approved:
+          type: boolean
+          description: >-
+            Whether the deploy request has been approved.
+        deployment:
+          type: object
+          description: >-
+            Information about the active or completed deployment.
+          properties:
+            state:
+              type: string
+              description: >-
+                The state of the deployment.
+            started_at:
+              type: string
+              format: date-time
+              description: >-
+                The timestamp when deployment started.
+            finished_at:
+              type: string
+              format: date-time
+              description: >-
+                The timestamp when deployment finished.
+        notes:
+          type: string
+          description: >-
+            Notes or description for the deploy request.
+        created_at:
+          type: string
+          format: date-time
+          description: >-
+            The timestamp when the deploy request was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: >-
+            The timestamp when the deploy request was last updated.
+        closed_at:
+          type: string
+          format: date-time
+          description: >-
+            The timestamp when the deploy request was closed.
+        html_url:
+          type: string
+          format: uri
+          description: >-
+            The URL to the deploy request in the PlanetScale dashboard.
+    DeployRequestReview:
+      type: object
+      description: >-
+        A review submitted for a deploy request.
+      properties:
+        id:
+          type: string
+          description: >-
+            The unique identifier of the review.
+        state:
+          type: string
+          description: >-
+            The review state.
+          enum:
+            - approved
+            - changes_requested
+            - commented
+        body:
+          type: string
+          description: >-
+            The review comment body.
+        actor:
+          type: object
+          description: >-
+            The user who submitted the review.
+          properties:
+            id:
+              type: string
+              description: >-
+                The user ID.
+            display_name:
+              type: string
+              description: >-
+                The display name of the user.
+        created_at:
+          type: string
+          format: date-time
+          description: >-
+            The timestamp when the review was created.
+    Password:
+      type: object
+      description: >-
+        A connection password for a database branch.
+      properties:
+        id:
+          type: string
+          description: >-
+            The unique identifier of the password.
+        name:
+          type: string
+          description: >-
+            The descriptive name of the password.
+        role:
+          type: string
+          description: >-
+            The access role for the password.
+          enum:
+            - admin
+            - reader
+            - writer
+            - readwriter
+        hostname:
+          type: string
+          description: >-
+            The hostname for connecting with this password.
+        username:
+          type: string
+          description: >-
+            The username for connecting with this password.
+        database_branch:
+          type: string
+          description: >-
+            The branch this password is associated with.
+        region:
+          type: object
+          description: >-
+            The region for the connection.
+          properties:
+            slug:
+              type: string
+              description: >-
+                The region slug.
+            display_name:
+              type: string
+              description: >-
+                The region display name.
+        expires_at:
+          type: string
+          format: date-time
+          description: >-
+            The timestamp when the password expires. Null if no expiration.
+        created_at:
+          type: string
+          format: date-time
+          description: >-
+            The timestamp when the password was created.
+        renewable:
+          type: boolean
+          description: >-
+            Whether the password can be renewed.
+    PasswordWithPlaintext:
+      allOf:
+        - $ref: '#/components/schemas/Password'
+        - type: object
+          properties:
+            plain_text:
+              type: string
+              description: >-
+                The plaintext password value. Only returned during creation.
+            connection_strings:
+              type: object
+              description: >-
+                Pre-formatted connection strings for various drivers.
+              properties:
+                general:
+                  type: string
+                  description: >-
+                    A general MySQL connection string.
+                prisma:
+                  type: string
+                  description: >-
+                    A Prisma-formatted connection string.
+                laravel:
+                  type: string
+                  description: >-
+                    A Laravel-formatted connection string.
+                rails:
+                  type: string
+                  description: >-
+                    A Rails-formatted connection string.
+    Backup:
+      type: object
+      description: >-
+        A backup of a database branch.
+      properties:
+        id:
+          type: string
+          description: >-
+            The unique identifier of the backup.
+        name:
+          type: string
+          description: >-
+            The name of the backup.
+        state:
+          type: string
+          description: >-
+            The current state of the backup.
+          enum:
+            - pending
+            - running
+            - success
+            - failed
+        size:
+          type: integer
+          description: >-
+            The size of the backup in bytes.
+        created_at:
+          type: string
+          format: date-time
+          description: >-
+            The timestamp when the backup was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: >-
+            The timestamp when the backup was last updated.
+        completed_at:
+          type: string
+          format: date-time
+          description: >-
+            The timestamp when the backup completed.
+        expires_at:
+          type: string
+          format: date-time
+          description: >-
+            The timestamp when the backup expires.
+    ServiceToken:
+      type: object
+      description: >-
+        A service token for authenticating API requests.
+      properties:
+        id:
+          type: string
+          description: >-
+            The unique identifier of the service token.
+        name:
+          type: string
+          description: >-
+            The descriptive name of the service token.
+        created_at:
+          type: string
+          format: date-time
+          description: >-
+            The timestamp when the service token was created.
+    ServiceTokenWithPlaintext:
+      allOf:
+        - $ref: '#/components/schemas/ServiceToken'
+        - type: object
+          properties:
+            token:
+              type: string
+              description: >-
+                The plaintext token value. Only returned during creation.
+    ServiceTokenAccess:
+      type: object
+      description: >-
+        An access permission granted to a service token.
+      properties:
+        id:
+          type: string
+          description: >-
+            The unique identifier of the access grant.
+        access:
+          type: string
+          description: >-
+            The permission that is granted.
+        database:
+          type: string
+          description: >-
+            The database the access is scoped to. Null for
+            organization-wide access.
+        created_at:
+          type: string
+          format: date-time
+          description: >-
+            The timestamp when the access was granted.
+    Bouncer:
+      type: object
+      description: >-
+        A PgBouncer connection pooling instance for a database branch.
+      properties:
+        id:
+          type: string
+          description: >-
+            The unique identifier of the bouncer.
+        name:
+          type: string
+          description: >-
+            The name of the bouncer instance.
+        state:
+          type: string
+          description: >-
+            The current state of the bouncer.
+          enum:
+            - pending
+            - ready
+            - resizing
+        pool_size:
+          type: integer
+          description: >-
+            The connection pool size.
+        created_at:
+          type: string
+          format: date-time
+          description: >-
+            The timestamp when the bouncer was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: >-
+            The timestamp when the bouncer was last updated.
+    ClusterSize:
+      type: object
+      description: >-
+        An available cluster size SKU for database branches.
+      properties:
+        slug:
+          type: string
+          description: >-
+            The slug identifier for the cluster size.
+        display_name:
+          type: string
+          description: >-
+            The human-readable name of the cluster size.
+        vcpus:
+          type: number
+          description: >-
+            The number of virtual CPUs.
+        memory_gb:
+          type: number
+          description: >-
+            The amount of memory in gigabytes.
+        storage_gb:
+          type: number
+          description: >-
+            The amount of storage in gigabytes.
+        engine:
+          type: string
+          description: >-
+            The database engine type.
+          enum:
+            - vitess
+            - postgres
+    RoleCredentials:
+      type: object
+      description: >-
+        Role-based credentials for accessing a database branch.
+      properties:
+        id:
+          type: string
+          description: >-
+            The unique identifier of the role credentials.
+        name:
+          type: string
+          description: >-
+            The name of the role.
+        role:
+          type: string
+          description: >-
+            The access level of the role.
+        username:
+          type: string
+          description: >-
+            The username for connecting.
+        password:
+          type: string
+          description: >-
+            The password for connecting. Only returned during creation.
+        hostname:
+          type: string
+          description: >-
+            The hostname for connecting.
+        created_at:
+          type: string
+          format: date-time
+          description: >-
+            The timestamp when the role was created.
+    IpRestriction:
+      type: object
+      description: >-
+        An IP restriction entry for controlling database access.
+      properties:
+        id:
+          type: string
+          description: >-
+            The unique identifier of the restriction.
+        cidr:
+          type: string
+          description: >-
+            The IP address or CIDR range.
+        description:
+          type: string
+          description: >-
+            A description of the restriction.
+        created_at:
+          type: string
+          format: date-time
+          description: >-
+            The timestamp when the restriction was created.
+    QueryPatternsReport:
+      type: object
+      description: >-
+        A report on query patterns for a database branch.
+      properties:
+        id:
+          type: string
+          description: >-
+            The unique identifier of the report.
+        state:
+          type: string
+          description: >-
+            The current state of the report.
+          enum:
+            - pending
+            - running
+            - complete
+            - failed
+        created_at:
+          type: string
+          format: date-time
+          description: >-
+            The timestamp when the report was initiated.
+        completed_at:
+          type: string
+          format: date-time
+          description: >-
+            The timestamp when the report completed.
+    SchemaLintError:
+      type: object
+      description: >-
+        A schema lint error or warning for a database branch.
+      properties:
+        lint_error:
+          type: string
+          description: >-
+            The lint error identifier.
+        subject_type:
+          type: string
+          description: >-
+            The type of schema element with the error.
+        table_name:
+          type: string
+          description: >-
+            The table name associated with the error.
+        column_name:
+          type: string
+          description: >-
+            The column name associated with the error, if applicable.
+        error_description:
+          type: string
+          description: >-
+            A human-readable description of the lint error.
+        docs_url:
+          type: string
+          format: uri
+          description: >-
+            A URL to documentation about the lint error.
+    Webhook:
+      type: object
+      description: >-
+        A webhook configuration for receiving event notifications
+        from a PlanetScale database.
+      properties:
+        id:
+          type: string
+          description: >-
+            The unique identifier of the webhook.
+        url:
+          type: string
+          format: uri
+          description: >-
+            The HTTPS URL that receives webhook callbacks.
+        events:
+          type: array
+          items:
+            type: string
+          description: >-
+            The list of event types the webhook subscribes to.
+        active:
+          type: boolean
+          description: >-
+            Whether the webhook is currently active.
+        created_at:
+          type: string
+          format: date-time
+          description: >-
+            The timestamp when the webhook was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: >-
+            The timestamp when the webhook was last updated.
+    SchemaRecommendation:
+      type: object
+      description: >-
+        A schema optimization recommendation for a database.
+      properties:
+        id:
+          type: string
+          description: >-
+            The unique identifier of the recommendation.
+        type:
+          type: string
+          description: >-
+            The type of recommendation.
+        table_name:
+          type: string
+          description: >-
+            The table the recommendation applies to.
+        description:
+          type: string
+          description: >-
+            A human-readable description of the recommendation.
+        severity:
+          type: string
+          description: >-
+            The severity level of the recommendation.
+          enum:
+            - info
+            - warning
+            - critical
+        dismissed:
+          type: boolean
+          description: >-
+            Whether the recommendation has been dismissed.
+        created_at:
+          type: string
+          format: date-time
+          description: >-
+            The timestamp when the recommendation was generated.
+    Invoice:
+      type: object
+      description: >-
+        A billing invoice for an organization.
+      properties:
+        id:
+          type: string
+          description: >-
+            The unique identifier of the invoice.
+        period_start:
+          type: string
+          format: date
+          description: >-
+            The start date of the billing period.
+        period_end:
+          type: string
+          format: date
+          description: >-
+            The end date of the billing period.
+        total:
+          type: number
+          description: >-
+            The total invoice amount in cents.
+        currency:
+          type: string
+          description: >-
+            The currency code for the invoice.
+        status:
+          type: string
+          description: >-
+            The payment status of the invoice.
+          enum:
+            - draft
+            - open
+            - paid
+            - void
+        created_at:
+          type: string
+          format: date-time
+          description: >-
+            The timestamp when the invoice was generated.
+    Error:
+      type: object
+      description: >-
+        An error response from the PlanetScale API.
+      properties:
+        code:
+          type: string
+          description: >-
+            A machine-readable error code.
+        message:
+          type: string
+          description: >-
+            A human-readable error message.
