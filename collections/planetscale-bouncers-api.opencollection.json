@@ -1,0 +1,166 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "PlanetScale Platform Backups Bouncers API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Authorization",
+      "value": "{{Authorization}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Bouncers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List bouncers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database/branches/:branch/bouncers",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              },
+              {
+                "name": "branch",
+                "value": "",
+                "type": "path",
+                "description": "The name of the branch."
+              }
+            ]
+          },
+          "docs": "Returns a list of PgBouncer connection pooling instances for the specified branch."
+        },
+        {
+          "info": {
+            "name": "Create a bouncer",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database/branches/:branch/bouncers",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              },
+              {
+                "name": "branch",
+                "value": "",
+                "type": "path",
+                "description": "The name of the branch."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new PgBouncer connection pooling instance for the specified branch."
+        },
+        {
+          "info": {
+            "name": "Get a bouncer",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database/branches/:branch/bouncers/:bouncer_name",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              },
+              {
+                "name": "branch",
+                "value": "",
+                "type": "path",
+                "description": "The name of the branch."
+              },
+              {
+                "name": "bouncer_name",
+                "value": "",
+                "type": "path",
+                "description": "The name of the PgBouncer instance."
+              }
+            ]
+          },
+          "docs": "Returns details about a specific PgBouncer instance."
+        },
+        {
+          "info": {
+            "name": "Delete a bouncer",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database/branches/:branch/bouncers/:bouncer_name",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              },
+              {
+                "name": "branch",
+                "value": "",
+                "type": "path",
+                "description": "The name of the branch."
+              },
+              {
+                "name": "bouncer_name",
+                "value": "",
+                "type": "path",
+                "description": "The name of the PgBouncer instance."
+              }
+            ]
+          },
+          "docs": "Deletes a PgBouncer connection pooling instance."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

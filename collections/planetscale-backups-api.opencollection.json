@@ -1,0 +1,174 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "PlanetScale Platform Backups API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Authorization",
+      "value": "{{Authorization}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Backups",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List backups",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database/branches/:branch/backups",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              },
+              {
+                "name": "branch",
+                "value": "",
+                "type": "path",
+                "description": "The name of the branch."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page number for pagination."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "The number of results per page."
+              }
+            ]
+          },
+          "docs": "Returns a list of all backups for a specific branch."
+        },
+        {
+          "info": {
+            "name": "Create a backup",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database/branches/:branch/backups",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              },
+              {
+                "name": "branch",
+                "value": "",
+                "type": "path",
+                "description": "The name of the branch."
+              }
+            ]
+          },
+          "docs": "Creates a new backup of the specified branch."
+        },
+        {
+          "info": {
+            "name": "Get a backup",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database/branches/:branch/backups/:backup_id",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              },
+              {
+                "name": "branch",
+                "value": "",
+                "type": "path",
+                "description": "The name of the branch."
+              },
+              {
+                "name": "backup_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the backup."
+              }
+            ]
+          },
+          "docs": "Returns details about a specific backup."
+        },
+        {
+          "info": {
+            "name": "Delete a backup",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database/branches/:branch/backups/:backup_id",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              },
+              {
+                "name": "branch",
+                "value": "",
+                "type": "path",
+                "description": "The name of the branch."
+              },
+              {
+                "name": "backup_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the backup."
+              }
+            ]
+          },
+          "docs": "Deletes a specific backup."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

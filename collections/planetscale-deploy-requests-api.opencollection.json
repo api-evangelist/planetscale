@@ -1,0 +1,342 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "PlanetScale Platform Backups Deploy Requests API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Authorization",
+      "value": "{{Authorization}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Deploy Requests",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List deploy requests",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database/deploy-requests",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page number for pagination."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "The number of results per page."
+              }
+            ]
+          },
+          "docs": "Returns a list of all deploy requests for a specific database."
+        },
+        {
+          "info": {
+            "name": "Create a deploy request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database/deploy-requests",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new deploy request to merge schema changes from a development branch into the target branch."
+        },
+        {
+          "info": {
+            "name": "Get a deploy request",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database/deploy-requests/:deploy_request_number",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              },
+              {
+                "name": "deploy_request_number",
+                "value": "",
+                "type": "path",
+                "description": "The number of the deploy request."
+              }
+            ]
+          },
+          "docs": "Returns details about a specific deploy request, including its status, schema changes, and deployment history."
+        },
+        {
+          "info": {
+            "name": "Close a deploy request",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database/deploy-requests/:deploy_request_number",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              },
+              {
+                "name": "deploy_request_number",
+                "value": "",
+                "type": "path",
+                "description": "The number of the deploy request."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Closes an open deploy request without deploying the changes."
+        },
+        {
+          "info": {
+            "name": "Queue a deploy request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database/deploy-requests/:deploy_request_number/deploy",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              },
+              {
+                "name": "deploy_request_number",
+                "value": "",
+                "type": "path",
+                "description": "The number of the deploy request."
+              }
+            ]
+          },
+          "docs": "Queues a deploy request for deployment, applying the schema changes to the target branch."
+        },
+        {
+          "info": {
+            "name": "List deploy request reviews",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database/deploy-requests/:deploy_request_number/reviews",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              },
+              {
+                "name": "deploy_request_number",
+                "value": "",
+                "type": "path",
+                "description": "The number of the deploy request."
+              }
+            ]
+          },
+          "docs": "Returns a list of reviews for a specific deploy request."
+        },
+        {
+          "info": {
+            "name": "Review a deploy request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database/deploy-requests/:deploy_request_number/reviews",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              },
+              {
+                "name": "deploy_request_number",
+                "value": "",
+                "type": "path",
+                "description": "The number of the deploy request."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Submits a review for a deploy request, approving or requesting changes."
+        },
+        {
+          "info": {
+            "name": "Skip revert period",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database/deploy-requests/:deploy_request_number/skip-revert",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              },
+              {
+                "name": "deploy_request_number",
+                "value": "",
+                "type": "path",
+                "description": "The number of the deploy request."
+              }
+            ]
+          },
+          "docs": "Skips the revert period for a completed deploy request, finalizing the schema changes."
+        },
+        {
+          "info": {
+            "name": "Complete a revert",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database/deploy-requests/:deploy_request_number/complete-revert",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              },
+              {
+                "name": "deploy_request_number",
+                "value": "",
+                "type": "path",
+                "description": "The number of the deploy request."
+              }
+            ]
+          },
+          "docs": "Completes a revert of a deployed schema change, rolling back to the previous schema."
+        },
+        {
+          "info": {
+            "name": "Get the deploy queue",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/databases/:database/deploy-queue",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "path",
+                "description": "The name of the database."
+              }
+            ]
+          },
+          "docs": "Returns the current deploy queue for a database, showing pending and active deployments."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

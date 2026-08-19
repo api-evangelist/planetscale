@@ -1,0 +1,45 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "PlanetScale Platform Backups Cluster Sizes API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Authorization",
+      "value": "{{Authorization}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Cluster Sizes",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List cluster sizes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/cluster-size-skus",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              }
+            ]
+          },
+          "docs": "Returns a list of available cluster size SKUs for Vitess and Postgres database branches in the specified organization."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

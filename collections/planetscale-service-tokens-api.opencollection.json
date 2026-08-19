@@ -1,0 +1,172 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "PlanetScale Platform Backups Service Tokens API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Authorization",
+      "value": "{{Authorization}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Service Tokens",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List service tokens",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/service-tokens",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              }
+            ]
+          },
+          "docs": "Returns a list of all service tokens for the specified organization."
+        },
+        {
+          "info": {
+            "name": "Create a service token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/service-tokens",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new service token for API authentication. The token value is only returned once during creation."
+        },
+        {
+          "info": {
+            "name": "Get a service token",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/service-tokens/:service_token_id",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "service_token_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the service token."
+              }
+            ]
+          },
+          "docs": "Returns details about a specific service token. The token value is not included."
+        },
+        {
+          "info": {
+            "name": "Delete a service token",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/service-tokens/:service_token_id",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "service_token_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the service token."
+              }
+            ]
+          },
+          "docs": "Deletes a service token, revoking all API access associated with it."
+        },
+        {
+          "info": {
+            "name": "List service token accesses",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/service-tokens/:service_token_id/accesses",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "service_token_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the service token."
+              }
+            ]
+          },
+          "docs": "Returns a list of access grants for a specific service token."
+        },
+        {
+          "info": {
+            "name": "Grant service token access",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.planetscale.com/v1/organizations/:organization/service-tokens/:service_token_id/accesses",
+            "params": [
+              {
+                "name": "organization",
+                "value": "",
+                "type": "path",
+                "description": "The name of the organization."
+              },
+              {
+                "name": "service_token_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of the service token."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Grants a specific access permission to a service token for a database or organization resource."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
