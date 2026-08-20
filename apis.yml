@@ -19,6 +19,10 @@ apis:
 - aid: planetscale:oauth
   name: PlanetScale OAuth
   tags:
+  - Application
+  - Authentication
+  - Authorization
+  tags_raw:
   - Applications
   - Authentication
   - Authorization
@@ -217,6 +221,8 @@ apis:
   humanURL: https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
   baseURL: https://api.planetscale.com/v1
   tags:
+  - Organization
+  tags_raw:
   - Organizations
   properties:
   - type: OpenAPI
@@ -307,6 +313,8 @@ apis:
   humanURL: https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
   baseURL: https://api.planetscale.com/v1
   tags:
+  - Team
+  tags_raw:
   - Teams
   properties:
   - type: OpenAPI
@@ -321,6 +329,8 @@ apis:
   humanURL: https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
   baseURL: https://api.planetscale.com/v1
   tags:
+  - Webhook
+  tags_raw:
   - Webhooks
   properties:
   - type: OpenAPI
