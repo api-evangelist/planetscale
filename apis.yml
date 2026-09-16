@@ -342,6 +342,8 @@ apis:
   - type: AsyncAPI
     url: asyncapi/planetscale-webhooks-asyncapi.yml
 common:
+- type: Website
+  url: https://planetscale.com
 - type: AgenticAccess
   url: agentic-access/planetscale-agentic-access.yml
 - type: DomainSecurity
