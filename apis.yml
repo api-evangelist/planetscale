@@ -46,12 +46,11 @@ apis:
   properties:
   - url: https://planetscale.com/docs/api/planetscale-api-oauth-applications
     type: Documentation
-  description: >-
-    PlanetScale OAuth allows developers to create OAuth applications that can access users' PlanetScale
-    accounts on their behalf. The implementation supports the Authorization Code grant type, enabling
-    third-party applications to authenticate users and obtain delegated access to PlanetScale resources.
-    This is particularly useful for building integrations and tools that need to interact with organization-level
-    PlanetScale endpoints on behalf of multiple users.
+  description: PlanetScale OAuth allows developers to create OAuth applications that can access users'
+    PlanetScale accounts on their behalf. The implementation supports the Authorization Code grant type,
+    enabling third-party applications to authenticate users and obtain delegated access to PlanetScale
+    resources. This is particularly useful for building integrations and tools that need to interact with
+    organization-level PlanetScale endpoints on behalf of multiple users.
 - aid: planetscale:serverless-driver
   name: PlanetScale Serverless Driver for JavaScript
   tags:
@@ -67,11 +66,10 @@ apis:
   properties:
   - url: https://planetscale.com/docs/tutorials/using-the-serverless-driver
     type: Documentation
-  description: >-
-    The PlanetScale Serverless Driver for JavaScript is a Fetch API-compatible database driver designed
-    for serverless and edge compute platforms such as Cloudflare Workers, Vercel Edge Functions, and Netlify
-    Edge Functions. It enables developers to query PlanetScale databases over HTTP connections, bypassing
-    the TCP restrictions common in edge environments.
+  description: The PlanetScale Serverless Driver for JavaScript is a Fetch API-compatible database driver
+    designed for serverless and edge compute platforms such as Cloudflare Workers, Vercel Edge Functions,
+    and Netlify Edge Functions. It enables developers to query PlanetScale databases over HTTP connections,
+    bypassing the TCP restrictions common in edge environments.
 - aid: planetscale:cli
   name: PlanetScale CLI
   tags:
@@ -85,16 +83,14 @@ apis:
   properties:
   - url: https://planetscale.com/docs/reference/planetscale-cli
     type: Documentation
-  description: >-
-    The PlanetScale CLI (pscale) is a command-line tool that brings PlanetScale database management to
-    the terminal. It allows developers to create, delete, and list databases and branches, open interactive
+  description: The PlanetScale CLI (pscale) is a command-line tool that brings PlanetScale database management
+    to the terminal. It allows developers to create, delete, and list databases and branches, open interactive
     MySQL shells for database branches, and manage deploy requests directly from the command line. The
     CLI is available via Homebrew and as a downloadable binary, and includes a Model Context Protocol
     (MCP) server that provides AI tools with direct access to PlanetScale databases.
 - aid: planetscale:planetscale-backups-api
   name: planetscale Backups API
-  description: >-
-    Manage database branch backups, including listing, creating, and retrieving backup details.
+  description: Manage database branch backups, including listing, creating, and retrieving backup details.
   humanURL: https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
   baseURL: https://api.planetscale.com/v1
   tags:
@@ -122,9 +118,8 @@ apis:
     url: asyncapi/planetscale-webhooks-asyncapi.yml
 - aid: planetscale:planetscale-bouncers-api
   name: planetscale Bouncers API
-  description: >-
-    Manage PgBouncer connection pooling instances for database branches, including creating, listing,
-    resizing, and deleting bouncers.
+  description: Manage PgBouncer connection pooling instances for database branches, including creating,
+    listing, resizing, and deleting bouncers.
   humanURL: https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
   baseURL: https://api.planetscale.com/v1
   tags:
@@ -138,9 +133,8 @@ apis:
     url: asyncapi/planetscale-webhooks-asyncapi.yml
 - aid: planetscale:planetscale-branches-api
   name: planetscale Branches API
-  description: >-
-    Manage database branches for schema development and safe migrations, including creating, listing,
-    updating, and deleting branches.
+  description: Manage database branches for schema development and safe migrations, including creating,
+    listing, updating, and deleting branches.
   humanURL: https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
   baseURL: https://api.planetscale.com/v1
   tags:
@@ -168,8 +162,8 @@ apis:
     url: asyncapi/planetscale-webhooks-asyncapi.yml
 - aid: planetscale:planetscale-databases-api
   name: planetscale Databases API
-  description: >-
-    Manage PlanetScale databases, including creating, listing, updating settings, and deleting databases.
+  description: Manage PlanetScale databases, including creating, listing, updating settings, and deleting
+    databases.
   humanURL: https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
   baseURL: https://api.planetscale.com/v1
   tags:
@@ -183,9 +177,8 @@ apis:
     url: asyncapi/planetscale-webhooks-asyncapi.yml
 - aid: planetscale:planetscale-deploy-requests-api
   name: planetscale Deploy Requests API
-  description: >-
-    Manage deploy requests for applying schema changes from development branches to production, including
-    creating, reviewing, queueing, and completing deployments.
+  description: Manage deploy requests for applying schema changes from development branches to production,
+    including creating, reviewing, queueing, and completing deployments.
   humanURL: https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
   baseURL: https://api.planetscale.com/v1
   tags:
@@ -213,9 +206,8 @@ apis:
     url: asyncapi/planetscale-webhooks-asyncapi.yml
 - aid: planetscale:planetscale-organization-members-api
   name: planetscale Organization Members API
-  description: >-
-    Manage members within an organization, including listing, retrieving, updating roles, and removing
-    members.
+  description: Manage members within an organization, including listing, retrieving, updating roles, and
+    removing members.
   humanURL: https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
   baseURL: https://api.planetscale.com/v1
   tags:
@@ -229,8 +221,8 @@ apis:
     url: asyncapi/planetscale-webhooks-asyncapi.yml
 - aid: planetscale:planetscale-organizations-api
   name: planetscale Organizations API
-  description: >-
-    Manage PlanetScale organizations, including listing organizations and retrieving organization details.
+  description: Manage PlanetScale organizations, including listing organizations and retrieving organization
+    details.
   humanURL: https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
   baseURL: https://api.planetscale.com/v1
   tags:
@@ -246,8 +238,8 @@ apis:
     url: asyncapi/planetscale-webhooks-asyncapi.yml
 - aid: planetscale:planetscale-passwords-api
   name: planetscale Passwords API
-  description: >-
-    Manage branch passwords and connection credentials for connecting applications to database branches.
+  description: Manage branch passwords and connection credentials for connecting applications to database
+    branches.
   humanURL: https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
   baseURL: https://api.planetscale.com/v1
   tags:
@@ -289,8 +281,7 @@ apis:
     url: asyncapi/planetscale-webhooks-asyncapi.yml
 - aid: planetscale:planetscale-schema-recommendations-api
   name: planetscale Schema Recommendations API
-  description: >-
-    View and manage schema recommendations for optimizing database performance and structure.
+  description: View and manage schema recommendations for optimizing database performance and structure.
   humanURL: https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
   baseURL: https://api.planetscale.com/v1
   tags:
@@ -304,9 +295,8 @@ apis:
     url: asyncapi/planetscale-webhooks-asyncapi.yml
 - aid: planetscale:planetscale-service-tokens-api
   name: planetscale Service Tokens API
-  description: >-
-    Manage service tokens for API authentication, including creating, listing, and deleting tokens and
-    their access grants.
+  description: Manage service tokens for API authentication, including creating, listing, and deleting
+    tokens and their access grants.
   humanURL: https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
   baseURL: https://api.planetscale.com/v1
   tags:
@@ -320,9 +310,8 @@ apis:
     url: asyncapi/planetscale-webhooks-asyncapi.yml
 - aid: planetscale:planetscale-teams-api
   name: planetscale Teams API
-  description: >-
-    Manage teams within an organization, including creating teams, adding members, and controlling database
-    access.
+  description: Manage teams within an organization, including creating teams, adding members, and controlling
+    database access.
   humanURL: https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
   baseURL: https://api.planetscale.com/v1
   tags:
@@ -353,44 +342,47 @@ apis:
   - type: AsyncAPI
     url: asyncapi/planetscale-webhooks-asyncapi.yml
 common:
-  - type: AgenticAccess
-    url: agentic-access/planetscale-agentic-access.yml
-  - type: DomainSecurity
-    url: security/planetscale-domain-security.yml
-  - type: Authentication
-    url: authentication/planetscale-authentication.yml
-  - url: https://planetscale.com/blog
-    type: Blog
-  - type: GitHubOrganization
-    url: https://github.com/planetscale
-  - type: LinkedIn
-    url: https://www.linkedin.com/company/planetscale
-  - type: JSONLD
-    url: json-ld/planetscale-context.jsonld
-  - type: JSONSchema
-    url: json-schema/planetscale-database-schema.json
-  - type: Features
-    data:
-      - Postgres EBS single-node from $5/mo
-      - Postgres EBS HA 3-node from $15/mo
-      - Postgres Metal 3-node from $50/mo
-      - Vitess Non-Metal 3-node from $39/mo
-      - Vitess Metal 3-node from $609/mo
-      - Cluster sizes from 1/16 vCPU to 96 vCPU
-      - arm64 and x86-64 architectures
-      - Multi-region deployment options
-      - Optional PgBouncer for Postgres
-      - Optional read replicas
-      - Branching for safe schema changes
-      - Deploy requests for review-and-merge schema flow
-      - Connection pooling built in
-      - Insights for query performance
-      - Boost for query result caching
-      - Management API at 240 req/min/org
-    sources:
-      - https://planetscale.com/pricing
-    updated: '2026-05-04'
-modified: '2026-05-19'
-description: >-
-  PlanetScale is a serverless MySQL database platform powered by Vitess, providing horizontal scaling, branching
-  workflows, non-blocking schema changes, and other developer-friendly database features.
+- type: AgenticAccess
+  url: agentic-access/planetscale-agentic-access.yml
+- type: DomainSecurity
+  url: security/planetscale-domain-security.yml
+- type: Authentication
+  url: authentication/planetscale-authentication.yml
+- url: https://planetscale.com/blog
+  type: Blog
+- type: GitHubOrganization
+  url: https://github.com/planetscale
+- type: LinkedIn
+  url: https://www.linkedin.com/company/planetscale
+- type: JSONLD
+  url: json-ld/planetscale-context.jsonld
+- type: JSONSchema
+  url: json-schema/planetscale-database-schema.json
+- type: Features
+  data:
+  - Postgres EBS single-node from $5/mo
+  - Postgres EBS HA 3-node from $15/mo
+  - Postgres Metal 3-node from $50/mo
+  - Vitess Non-Metal 3-node from $39/mo
+  - Vitess Metal 3-node from $609/mo
+  - Cluster sizes from 1/16 vCPU to 96 vCPU
+  - arm64 and x86-64 architectures
+  - Multi-region deployment options
+  - Optional PgBouncer for Postgres
+  - Optional read replicas
+  - Branching for safe schema changes
+  - Deploy requests for review-and-merge schema flow
+  - Connection pooling built in
+  - Insights for query performance
+  - Boost for query result caching
+  - Management API at 240 req/min/org
+  sources:
+  - https://planetscale.com/pricing
+  updated: '2026-05-04'
+modified: '2026-09-16'
+description: PlanetScale is a serverless MySQL database platform powered by Vitess, providing horizontal
+  scaling, branching workflows, non-blocking schema changes, and other developer-friendly database features.
+tags:
+- Application
+- Authorization
+- Edge Computing
