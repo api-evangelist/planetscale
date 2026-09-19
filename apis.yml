@@ -167,6 +167,8 @@ apis:
   humanURL: https://api-docs.planetscale.com/reference/getting-started-with-planetscale-api
   baseURL: https://api.planetscale.com/v1
   tags:
+  - Database
+  tags_raw:
   - Databases
   properties:
   - type: OpenAPI
