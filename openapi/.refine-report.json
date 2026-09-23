@@ -1,23 +1,7 @@
 {
   "provider": "planetscale",
   "sources": [
-    "planetscale-backups-api-openapi.yml",
-    "planetscale-billing-api-openapi.yml",
-    "planetscale-bouncers-api-openapi.yml",
-    "planetscale-branches-api-openapi.yml",
-    "planetscale-cluster-sizes-api-openapi.yml",
-    "planetscale-databases-api-openapi.yml",
-    "planetscale-deploy-requests-api-openapi.yml",
-    "planetscale-ip-restrictions-api-openapi.yml",
-    "planetscale-organization-members-api-openapi.yml",
-    "planetscale-organizations-api-openapi.yml",
-    "planetscale-passwords-api-openapi.yml",
-    "planetscale-query-patterns-api-openapi.yml",
-    "planetscale-roles-api-openapi.yml",
-    "planetscale-schema-recommendations-api-openapi.yml",
-    "planetscale-service-tokens-api-openapi.yml",
-    "planetscale-teams-api-openapi.yml",
-    "planetscale-webhooks-api-openapi.yml"
+    "_original/planetscale-platform-api-openapi.yml"
   ],
   "outputs": [
     "planetscale-backups-api-openapi.yml",
@@ -41,6 +25,28 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "planetscale-platform-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "planetscale-backups-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "planetscale-billing-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "planetscale-bouncers-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "planetscale-branches-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "planetscale-cluster-sizes-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "planetscale-databases-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "planetscale-deploy-requests-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "planetscale-ip-restrictions-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "planetscale-organization-members-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "planetscale-organizations-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "planetscale-passwords-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "planetscale-query-patterns-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "planetscale-roles-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "planetscale-schema-recommendations-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "planetscale-service-tokens-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "planetscale-teams-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "planetscale-webhooks-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

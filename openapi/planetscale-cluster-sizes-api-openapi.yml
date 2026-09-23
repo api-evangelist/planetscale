@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: PlanetScale Platform Backups Cluster Sizes API
+  title: PlanetScale Platform Cluster Sizes API
   description: The PlanetScale Platform API provides programmatic access to manage PlanetScale serverless MySQL-compatible databases. It allows developers to create and manage databases, branches, deploy requests, passwords, backups, service tokens, organization members, teams, bouncers, and billing data. The API supports authentication via service tokens and OAuth, enabling integration into CI/CD pipelines and infrastructure-as-code workflows.
   version: 1.0.0
   contact:
@@ -43,21 +43,6 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  parameters:
-    OrganizationParam:
-      name: organization
-      in: path
-      required: true
-      description: The name of the organization.
-      schema:
-        type: string
-  responses:
-    Unauthorized:
-      description: Authentication failed. The service token or OAuth token is missing, invalid, or lacks the required permissions.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
     Error:
       type: object
@@ -94,6 +79,21 @@ components:
           enum:
           - vitess
           - postgres
+  responses:
+    Unauthorized:
+      description: Authentication failed. The service token or OAuth token is missing, invalid, or lacks the required permissions.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    OrganizationParam:
+      name: organization
+      in: path
+      required: true
+      description: The name of the organization.
+      schema:
+        type: string
   securitySchemes:
     serviceToken:
       type: apiKey

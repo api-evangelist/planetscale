@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: PlanetScale Platform Backups IP Restrictions API
+  title: PlanetScale Platform IP Restrictions API
   description: The PlanetScale Platform API provides programmatic access to manage PlanetScale serverless MySQL-compatible databases. It allows developers to create and manage databases, branches, deploy requests, passwords, backups, service tokens, organization members, teams, bouncers, and billing data. The API supports authentication via service tokens and OAuth, enabling integration into CI/CD pipelines and infrastructure-as-code workflows.
   version: 1.0.0
   contact:
@@ -80,6 +80,21 @@ paths:
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
 components:
+  parameters:
+    OrganizationParam:
+      name: organization
+      in: path
+      required: true
+      description: The name of the organization.
+      schema:
+        type: string
+    DatabaseParam:
+      name: database
+      in: path
+      required: true
+      description: The name of the database.
+      schema:
+        type: string
   responses:
     Unauthorized:
       description: Authentication failed. The service token or OAuth token is missing, invalid, or lacks the required permissions.
@@ -94,6 +109,16 @@ components:
           schema:
             $ref: '#/components/schemas/Error'
   schemas:
+    Error:
+      type: object
+      description: An error response from the PlanetScale API.
+      properties:
+        code:
+          type: string
+          description: A machine-readable error code.
+        message:
+          type: string
+          description: A human-readable error message.
     IpRestriction:
       type: object
       description: An IP restriction entry for controlling database access.
@@ -111,31 +136,6 @@ components:
           type: string
           format: date-time
           description: The timestamp when the restriction was created.
-    Error:
-      type: object
-      description: An error response from the PlanetScale API.
-      properties:
-        code:
-          type: string
-          description: A machine-readable error code.
-        message:
-          type: string
-          description: A human-readable error message.
-  parameters:
-    OrganizationParam:
-      name: organization
-      in: path
-      required: true
-      description: The name of the organization.
-      schema:
-        type: string
-    DatabaseParam:
-      name: database
-      in: path
-      required: true
-      description: The name of the database.
-      schema:
-        type: string
   securitySchemes:
     serviceToken:
       type: apiKey
