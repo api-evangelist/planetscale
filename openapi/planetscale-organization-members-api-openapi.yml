@@ -119,13 +119,6 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   parameters:
-    OrganizationParam:
-      name: organization
-      in: path
-      required: true
-      description: The name of the organization.
-      schema:
-        type: string
     PageParam:
       name: page
       in: query
@@ -135,6 +128,20 @@ components:
         type: integer
         minimum: 1
         default: 1
+    OrganizationParam:
+      name: organization
+      in: path
+      required: true
+      description: The name of the organization.
+      schema:
+        type: string
+    MemberIdParam:
+      name: member_id
+      in: path
+      required: true
+      description: The ID of the organization member.
+      schema:
+        type: string
     PerPageParam:
       name: per_page
       in: query
@@ -145,13 +152,6 @@ components:
         minimum: 1
         maximum: 100
         default: 25
-    MemberIdParam:
-      name: member_id
-      in: path
-      required: true
-      description: The ID of the organization member.
-      schema:
-        type: string
   responses:
     Unauthorized:
       description: Authentication failed. The service token or OAuth token is missing, invalid, or lacks the required permissions.
@@ -166,16 +166,6 @@ components:
           schema:
             $ref: '#/components/schemas/Error'
   schemas:
-    Error:
-      type: object
-      description: An error response from the PlanetScale API.
-      properties:
-        code:
-          type: string
-          description: A machine-readable error code.
-        message:
-          type: string
-          description: A human-readable error message.
     OrganizationMember:
       type: object
       description: A member of a PlanetScale organization with a specific role.
@@ -201,6 +191,16 @@ components:
           type: string
           format: date-time
           description: The timestamp when the member was added.
+    Error:
+      type: object
+      description: An error response from the PlanetScale API.
+      properties:
+        code:
+          type: string
+          description: A machine-readable error code.
+        message:
+          type: string
+          description: A human-readable error message.
   securitySchemes:
     serviceToken:
       type: apiKey

@@ -303,18 +303,11 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   parameters:
-    OrganizationParam:
-      name: organization
+    DeployRequestNumberParam:
+      name: deploy_request_number
       in: path
       required: true
-      description: The name of the organization.
-      schema:
-        type: string
-    DatabaseParam:
-      name: database
-      in: path
-      required: true
-      description: The name of the database.
+      description: The number of the deploy request.
       schema:
         type: string
     PageParam:
@@ -326,11 +319,11 @@ components:
         type: integer
         minimum: 1
         default: 1
-    DeployRequestNumberParam:
-      name: deploy_request_number
+    OrganizationParam:
+      name: organization
       in: path
       required: true
-      description: The number of the deploy request.
+      description: The name of the organization.
       schema:
         type: string
     PerPageParam:
@@ -343,6 +336,32 @@ components:
         minimum: 1
         maximum: 100
         default: 25
+    DatabaseParam:
+      name: database
+      in: path
+      required: true
+      description: The name of the database.
+      schema:
+        type: string
+  responses:
+    UnprocessableEntity:
+      description: The request was well-formed but contains invalid parameters or violates business rules.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Authentication failed. The service token or OAuth token is missing, invalid, or lacks the required permissions.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
     DeployRequestReview:
       type: object
@@ -375,6 +394,16 @@ components:
           type: string
           format: date-time
           description: The timestamp when the review was created.
+    Error:
+      type: object
+      description: An error response from the PlanetScale API.
+      properties:
+        code:
+          type: string
+          description: A machine-readable error code.
+        message:
+          type: string
+          description: A human-readable error message.
     DeployRequest:
       type: object
       description: A deploy request for applying schema changes from a development branch to a target branch.
@@ -441,35 +470,6 @@ components:
           type: string
           format: uri
           description: The URL to the deploy request in the PlanetScale dashboard.
-    Error:
-      type: object
-      description: An error response from the PlanetScale API.
-      properties:
-        code:
-          type: string
-          description: A machine-readable error code.
-        message:
-          type: string
-          description: A human-readable error message.
-  responses:
-    Unauthorized:
-      description: Authentication failed. The service token or OAuth token is missing, invalid, or lacks the required permissions.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    UnprocessableEntity:
-      description: The request was well-formed but contains invalid parameters or violates business rules.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   securitySchemes:
     serviceToken:
       type: apiKey

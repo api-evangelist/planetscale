@@ -46,34 +46,6 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
-  parameters:
-    OrganizationParam:
-      name: organization
-      in: path
-      required: true
-      description: The name of the organization.
-      schema:
-        type: string
-    DatabaseParam:
-      name: database
-      in: path
-      required: true
-      description: The name of the database.
-      schema:
-        type: string
-  responses:
-    Unauthorized:
-      description: Authentication failed. The service token or OAuth token is missing, invalid, or lacks the required permissions.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
     SchemaRecommendation:
       type: object
@@ -115,6 +87,34 @@ components:
         message:
           type: string
           description: A human-readable error message.
+  responses:
+    Unauthorized:
+      description: Authentication failed. The service token or OAuth token is missing, invalid, or lacks the required permissions.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    OrganizationParam:
+      name: organization
+      in: path
+      required: true
+      description: The name of the organization.
+      schema:
+        type: string
+    DatabaseParam:
+      name: database
+      in: path
+      required: true
+      description: The name of the database.
+      schema:
+        type: string
   securitySchemes:
     serviceToken:
       type: apiKey

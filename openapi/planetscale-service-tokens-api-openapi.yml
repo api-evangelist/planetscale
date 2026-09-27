@@ -184,6 +184,24 @@ components:
           type: string
           format: date-time
           description: The timestamp when the access was granted.
+    Error:
+      type: object
+      description: An error response from the PlanetScale API.
+      properties:
+        code:
+          type: string
+          description: A machine-readable error code.
+        message:
+          type: string
+          description: A human-readable error message.
+    ServiceTokenWithPlaintext:
+      allOf:
+      - $ref: '#/components/schemas/ServiceToken'
+      - type: object
+        properties:
+          token:
+            type: string
+            description: The plaintext token value. Only returned during creation.
     ServiceToken:
       type: object
       description: A service token for authenticating API requests.
@@ -198,39 +216,6 @@ components:
           type: string
           format: date-time
           description: The timestamp when the service token was created.
-    ServiceTokenWithPlaintext:
-      allOf:
-      - $ref: '#/components/schemas/ServiceToken'
-      - type: object
-        properties:
-          token:
-            type: string
-            description: The plaintext token value. Only returned during creation.
-    Error:
-      type: object
-      description: An error response from the PlanetScale API.
-      properties:
-        code:
-          type: string
-          description: A machine-readable error code.
-        message:
-          type: string
-          description: A human-readable error message.
-  parameters:
-    ServiceTokenIdParam:
-      name: service_token_id
-      in: path
-      required: true
-      description: The ID of the service token.
-      schema:
-        type: string
-    OrganizationParam:
-      name: organization
-      in: path
-      required: true
-      description: The name of the organization.
-      schema:
-        type: string
   responses:
     Unauthorized:
       description: Authentication failed. The service token or OAuth token is missing, invalid, or lacks the required permissions.
@@ -244,6 +229,21 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+  parameters:
+    OrganizationParam:
+      name: organization
+      in: path
+      required: true
+      description: The name of the organization.
+      schema:
+        type: string
+    ServiceTokenIdParam:
+      name: service_token_id
+      in: path
+      required: true
+      description: The ID of the service token.
+      schema:
+        type: string
   securitySchemes:
     serviceToken:
       type: apiKey

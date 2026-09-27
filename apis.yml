@@ -387,6 +387,7 @@ modified: '2026-09-16'
 description: PlanetScale is a serverless MySQL database platform powered by Vitess, providing horizontal
   scaling, branching workflows, non-blocking schema changes, and other developer-friendly database features.
 tags:
-- Application
-- Authorization
-- Edge Computing
+- Database
+- MySQL
+- PostgreSQL
+- Serverless
