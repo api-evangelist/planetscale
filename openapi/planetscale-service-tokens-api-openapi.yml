@@ -166,24 +166,34 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Authentication failed. The service token or OAuth token is missing, invalid, or lacks the required permissions.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
-    ServiceTokenAccess:
+    ServiceToken:
       type: object
-      description: An access permission granted to a service token.
+      description: A service token for authenticating API requests.
       properties:
         id:
           type: string
-          description: The unique identifier of the access grant.
-        access:
+          description: The unique identifier of the service token.
+        name:
           type: string
-          description: The permission that is granted.
-        database:
-          type: string
-          description: The database the access is scoped to. Null for organization-wide access.
+          description: The descriptive name of the service token.
         created_at:
           type: string
           format: date-time
-          description: The timestamp when the access was granted.
+          description: The timestamp when the service token was created.
     Error:
       type: object
       description: An error response from the PlanetScale API.
@@ -202,46 +212,36 @@ components:
           token:
             type: string
             description: The plaintext token value. Only returned during creation.
-    ServiceToken:
+    ServiceTokenAccess:
       type: object
-      description: A service token for authenticating API requests.
+      description: An access permission granted to a service token.
       properties:
         id:
           type: string
-          description: The unique identifier of the service token.
-        name:
+          description: The unique identifier of the access grant.
+        access:
           type: string
-          description: The descriptive name of the service token.
+          description: The permission that is granted.
+        database:
+          type: string
+          description: The database the access is scoped to. Null for organization-wide access.
         created_at:
           type: string
           format: date-time
-          description: The timestamp when the service token was created.
-  responses:
-    Unauthorized:
-      description: Authentication failed. The service token or OAuth token is missing, invalid, or lacks the required permissions.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
+          description: The timestamp when the access was granted.
   parameters:
-    OrganizationParam:
-      name: organization
-      in: path
-      required: true
-      description: The name of the organization.
-      schema:
-        type: string
     ServiceTokenIdParam:
       name: service_token_id
       in: path
       required: true
       description: The ID of the service token.
+      schema:
+        type: string
+    OrganizationParam:
+      name: organization
+      in: path
+      required: true
+      description: The name of the organization.
       schema:
         type: string
   securitySchemes:
