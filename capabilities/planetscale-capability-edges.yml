@@ -1,0 +1,56 @@
+slug: planetscale
+provider: Planetscale
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 4
+edges:
+- tag: Webhooks
+  spec_file: planetscale-webhooks-api-openapi.yml
+  capability_id: BC-4270.80
+  capability_id_l1: BC-4270
+  capability_name: Webhook & Event Subscription Management
+  confidence: 0.8
+  evidence: POST /organizations/{organization}/databases/{database}/webhooks  createWebhook  Create a
+    webhook
+  reason: Operations create and list outbound webhook subscriptions for database events, which is exactly
+    the webhook & event subscription lifecycle capability. Small surface (two operations) hence 0.8 rather
+    than higher.
+- tag: Billing
+  spec_file: planetscale-billing-api-openapi.yml
+  capability_id: BC-4250.30
+  capability_id_l1: BC-4250
+  capability_name: Invoicing & Statement Management
+  confidence: 0.7
+  evidence: 'GET /organizations/{organization}/invoices  listInvoices  List invoices; schemas: Invoice'
+  reason: The single operation exposes subscription invoices for the organization, i.e. invoice/statement
+    access in the SaaS billing lifecycle. Read-only and thin, so not higher than 0.7.
+- tag: Databases
+  spec_file: planetscale-databases-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.7
+  evidence: POST /organizations/{organization}/databases  createDatabase  Create a database; PATCH ...
+    updateDatabaseSettings  Update database settings
+  reason: Operations provision, configure and delete serverless MySQL databases — lifecycle management
+    of data infrastructure, i.e. IT Infrastructure Management for the consuming organisation.
+- tag: Deploy Requests
+  spec_file: planetscale-deploy-requests-api-openapi.yml
+  capability_id: BC-4210.40
+  capability_id_l1: BC-4210
+  capability_name: Deployment Orchestration
+  confidence: 0.7
+  evidence: POST .../deploy-requests/{deploy_request_number}/deploy  queueDeployRequest  Queue a deploy
+    request; POST .../reviews  reviewDeployRequest  Review a deploy request; POST .../complete-revert
+  reason: Deploy requests queue, review, revert and complete schema changes into the production database
+    — controlled promotion of changes to production. Deployment Orchestration fits best, though the review/approval
+    operations also touch Production Change Authorisation.

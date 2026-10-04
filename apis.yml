@@ -344,6 +344,9 @@ apis:
   - type: AsyncAPI
     url: asyncapi/planetscale-webhooks-asyncapi.yml
 common:
+- type: CapabilityMap
+  url: capabilities/planetscale-capability-edges.yml
+  name: Planetscale Business Capability Map
 - type: Website
   url: https://planetscale.com
 - type: AgenticAccess
