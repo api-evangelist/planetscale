@@ -166,52 +166,7 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  responses:
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Authentication failed. The service token or OAuth token is missing, invalid, or lacks the required permissions.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
-    ServiceToken:
-      type: object
-      description: A service token for authenticating API requests.
-      properties:
-        id:
-          type: string
-          description: The unique identifier of the service token.
-        name:
-          type: string
-          description: The descriptive name of the service token.
-        created_at:
-          type: string
-          format: date-time
-          description: The timestamp when the service token was created.
-    Error:
-      type: object
-      description: An error response from the PlanetScale API.
-      properties:
-        code:
-          type: string
-          description: A machine-readable error code.
-        message:
-          type: string
-          description: A human-readable error message.
-    ServiceTokenWithPlaintext:
-      allOf:
-      - $ref: '#/components/schemas/ServiceToken'
-      - type: object
-        properties:
-          token:
-            type: string
-            description: The plaintext token value. Only returned during creation.
     ServiceTokenAccess:
       type: object
       description: An access permission granted to a service token.
@@ -229,6 +184,51 @@ components:
           type: string
           format: date-time
           description: The timestamp when the access was granted.
+    ServiceToken:
+      type: object
+      description: A service token for authenticating API requests.
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the service token.
+        name:
+          type: string
+          description: The descriptive name of the service token.
+        created_at:
+          type: string
+          format: date-time
+          description: The timestamp when the service token was created.
+    ServiceTokenWithPlaintext:
+      allOf:
+      - $ref: '#/components/schemas/ServiceToken'
+      - type: object
+        properties:
+          token:
+            type: string
+            description: The plaintext token value. Only returned during creation.
+    Error:
+      type: object
+      description: An error response from the PlanetScale API.
+      properties:
+        code:
+          type: string
+          description: A machine-readable error code.
+        message:
+          type: string
+          description: A human-readable error message.
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Authentication failed. The service token or OAuth token is missing, invalid, or lacks the required permissions.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   parameters:
     ServiceTokenIdParam:
       name: service_token_id

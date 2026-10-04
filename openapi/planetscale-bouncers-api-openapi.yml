@@ -125,14 +125,14 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   responses:
-    NotFound:
-      description: The requested resource was not found.
+    UnprocessableEntity:
+      description: The request was well-formed but contains invalid parameters or violates business rules.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    UnprocessableEntity:
-      description: The request was well-formed but contains invalid parameters or violates business rules.
+    NotFound:
+      description: The requested resource was not found.
       content:
         application/json:
           schema:
@@ -143,17 +143,36 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+  parameters:
+    BranchParam:
+      name: branch
+      in: path
+      required: true
+      description: The name of the branch.
+      schema:
+        type: string
+    BouncerNameParam:
+      name: bouncer_name
+      in: path
+      required: true
+      description: The name of the PgBouncer instance.
+      schema:
+        type: string
+    DatabaseParam:
+      name: database
+      in: path
+      required: true
+      description: The name of the database.
+      schema:
+        type: string
+    OrganizationParam:
+      name: organization
+      in: path
+      required: true
+      description: The name of the organization.
+      schema:
+        type: string
   schemas:
-    Error:
-      type: object
-      description: An error response from the PlanetScale API.
-      properties:
-        code:
-          type: string
-          description: A machine-readable error code.
-        message:
-          type: string
-          description: A human-readable error message.
     Bouncer:
       type: object
       description: A PgBouncer connection pooling instance for a database branch.
@@ -182,35 +201,16 @@ components:
           type: string
           format: date-time
           description: The timestamp when the bouncer was last updated.
-  parameters:
-    DatabaseParam:
-      name: database
-      in: path
-      required: true
-      description: The name of the database.
-      schema:
-        type: string
-    BouncerNameParam:
-      name: bouncer_name
-      in: path
-      required: true
-      description: The name of the PgBouncer instance.
-      schema:
-        type: string
-    BranchParam:
-      name: branch
-      in: path
-      required: true
-      description: The name of the branch.
-      schema:
-        type: string
-    OrganizationParam:
-      name: organization
-      in: path
-      required: true
-      description: The name of the organization.
-      schema:
-        type: string
+    Error:
+      type: object
+      description: An error response from the PlanetScale API.
+      properties:
+        code:
+          type: string
+          description: A machine-readable error code.
+        message:
+          type: string
+          description: A human-readable error message.
   securitySchemes:
     serviceToken:
       type: apiKey

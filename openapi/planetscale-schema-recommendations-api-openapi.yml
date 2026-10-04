@@ -46,30 +46,7 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
-  responses:
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Authentication failed. The service token or OAuth token is missing, invalid, or lacks the required permissions.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
-    Error:
-      type: object
-      description: An error response from the PlanetScale API.
-      properties:
-        code:
-          type: string
-          description: A machine-readable error code.
-        message:
-          type: string
-          description: A human-readable error message.
     SchemaRecommendation:
       type: object
       description: A schema optimization recommendation for a database.
@@ -100,6 +77,29 @@ components:
           type: string
           format: date-time
           description: The timestamp when the recommendation was generated.
+    Error:
+      type: object
+      description: An error response from the PlanetScale API.
+      properties:
+        code:
+          type: string
+          description: A machine-readable error code.
+        message:
+          type: string
+          description: A human-readable error message.
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Authentication failed. The service token or OAuth token is missing, invalid, or lacks the required permissions.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   parameters:
     DatabaseParam:
       name: database

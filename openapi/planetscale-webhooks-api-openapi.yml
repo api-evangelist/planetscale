@@ -86,6 +86,34 @@ paths:
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
 components:
+  responses:
+    UnprocessableEntity:
+      description: The request was well-formed but contains invalid parameters or violates business rules.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Authentication failed. The service token or OAuth token is missing, invalid, or lacks the required permissions.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    DatabaseParam:
+      name: database
+      in: path
+      required: true
+      description: The name of the database.
+      schema:
+        type: string
+    OrganizationParam:
+      name: organization
+      in: path
+      required: true
+      description: The name of the organization.
+      schema:
+        type: string
   schemas:
     Error:
       type: object
@@ -124,34 +152,6 @@ components:
           type: string
           format: date-time
           description: The timestamp when the webhook was last updated.
-  parameters:
-    DatabaseParam:
-      name: database
-      in: path
-      required: true
-      description: The name of the database.
-      schema:
-        type: string
-    OrganizationParam:
-      name: organization
-      in: path
-      required: true
-      description: The name of the organization.
-      schema:
-        type: string
-  responses:
-    UnprocessableEntity:
-      description: The request was well-formed but contains invalid parameters or violates business rules.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Authentication failed. The service token or OAuth token is missing, invalid, or lacks the required permissions.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   securitySchemes:
     serviceToken:
       type: apiKey

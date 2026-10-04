@@ -80,17 +80,20 @@ paths:
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
 components:
+  responses:
+    UnprocessableEntity:
+      description: The request was well-formed but contains invalid parameters or violates business rules.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Authentication failed. The service token or OAuth token is missing, invalid, or lacks the required permissions.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
-    Error:
-      type: object
-      description: An error response from the PlanetScale API.
-      properties:
-        code:
-          type: string
-          description: A machine-readable error code.
-        message:
-          type: string
-          description: A human-readable error message.
     IpRestriction:
       type: object
       description: An IP restriction entry for controlling database access.
@@ -108,6 +111,16 @@ components:
           type: string
           format: date-time
           description: The timestamp when the restriction was created.
+    Error:
+      type: object
+      description: An error response from the PlanetScale API.
+      properties:
+        code:
+          type: string
+          description: A machine-readable error code.
+        message:
+          type: string
+          description: A human-readable error message.
   parameters:
     DatabaseParam:
       name: database
@@ -123,19 +136,6 @@ components:
       description: The name of the organization.
       schema:
         type: string
-  responses:
-    UnprocessableEntity:
-      description: The request was well-formed but contains invalid parameters or violates business rules.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Authentication failed. The service token or OAuth token is missing, invalid, or lacks the required permissions.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   securitySchemes:
     serviceToken:
       type: apiKey
