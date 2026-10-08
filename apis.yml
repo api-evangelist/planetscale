@@ -344,6 +344,12 @@ apis:
   - type: AsyncAPI
     url: asyncapi/planetscale-webhooks-asyncapi.yml
 common:
+- type: Plans
+  url: plans/planetscale-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/planetscale-rate-limits.yml
+- type: FinOps
+  url: finops/planetscale-finops.yml
 - type: CapabilityMap
   url: capabilities/planetscale-capability-edges.yml
   name: Planetscale Business Capability Map
