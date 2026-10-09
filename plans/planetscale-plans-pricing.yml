@@ -113,3 +113,51 @@ plans:
       - name: Bare metal Vitess
       - name: Largest scale
       - name: Local NVMe
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models:
+  - metered
+  units:
+  - period
+  plans:
+  - name: Postgres EBS (single-node)
+    access: other
+    model: metered
+    model_how: stated
+    units:
+    - period
+    periods:
+    - month
+  - name: Postgres EBS HA (3-node)
+    access: other
+    model: metered
+    model_how: stated
+    units:
+    - period
+    periods:
+    - month
+  - name: Postgres Metal (3-node)
+    access: other
+    model: metered
+    model_how: stated
+    units:
+    - period
+    periods:
+    - month
+  - name: Vitess Non-Metal (3-node)
+    access: other
+    model: metered
+    model_how: stated
+    units:
+    - period
+    periods:
+    - month
+  - name: Vitess Metal (3-node)
+    access: other
+    model: metered
+    model_how: stated
+    units:
+    - period
+    periods:
+    - month
