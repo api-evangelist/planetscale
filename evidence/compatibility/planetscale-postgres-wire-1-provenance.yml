@@ -1,0 +1,13 @@
+fetched: '2026-10-13'
+method: fetched
+source: https://planetscale.com/docs/postgres
+page: https://planetscale.com/docs/postgres
+file: planetscale-postgres-wire-1.md
+bytes: 2230
+sha256: 49ae8870e5e82b72599effe8e1a61986d161b683470c6085edcf1ea52f07ab9c
+anchor: postgresql
+shape: postgres-wire
+classification: declares-compatibility
+quote: PlanetScale Postgres is a fully-managed PostgreSQL-compatible database that brings you scale, performance,
+  and reliability without sacrificing developer experience.
+note: text extracted from the provider's own page (tags stripped), saved for evidence
