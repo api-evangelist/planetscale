@@ -42,8 +42,30 @@ edges:
       status: released
   detected_by: sweep-cdp.py
   first_seen: '2026-10-14'
+- partner_name: GitHub Marketplace (actions)
+  partner: github-actions
+  partner_match: aggregator
+  type: marketplace
+  marketplace: github-actions
+  channel: partner-built
+  relationship: platform-app
+  direction: third-party
+  evidence: https://github.com/marketplace/actions/setup-pscale
+  listing_count: 4
+  apps:
+  - Setup pscale
+  - Deploy a Deploy Request
+  - Create Database Password
+  - Create Deploy Request
+  publisher_name: PlanetScale
+  badges:
+  - Verified creator
+  detected_by: sweep-devtools.py
+  detected: '2026-10-14'
 generated: '2026-10-13'
 method: searched
 checked:
+- https://github.com/marketplace?type=actions
 - https://hightouch.com/docs/destinations/planetscale-destination
 source: https://hightouch.com/docs/destinations/planetscale-destination
+marketplace_apps: []
