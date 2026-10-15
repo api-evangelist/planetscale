@@ -1,20 +1,4 @@
 edges:
-- partner_name: PostgreSQL
-  partner: postgresql
-  partner_match: shape-anchor
-  channel: provider-built
-  relationship: compatible
-  direction: provider-built
-  shape: postgres-wire
-  type: docs
-  degree: declared-unqualified
-  evidence: https://planetscale.com/docs/postgres
-  evidence_kind: own-docs
-  evidence_file: https://github.com/api-evangelist/planetscale/blob/main/evidence/compatibility/planetscale-postgres-wire-1.md
-  quote: PlanetScale Postgres is a fully-managed PostgreSQL-compatible database that brings you scale, performance,
-    and reliability without sacrificing developer experience.
-  detected_by: sweep-shape-compat.py
-  first_seen: '2026-10-13'
 - partner_name: GitHub Marketplace (actions)
   partner: github-actions
   partner_match: aggregator
@@ -79,11 +63,45 @@ edges:
   detected: '2026-10-14'
   detected_by: mirror-platform-listings.py
   category: Data Stores
+- partner_name: Stripe (own)
+  partner: stripe
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: own
+  evidence: https://marketplace.stripe.com/apps/planetscale
+  mirror_of: stripe/integrations/stripe-integration-edges.yml
+  apps:
+  - PlanetScale
+  listing_count: 1
+  detected: '2026-10-15'
+  detected_by: mirror-platform-listings.py
+  category: developer_tools
+- partner_name: PostgreSQL
+  partner: postgresql
+  partner_match: shape-anchor
+  channel: provider-built
+  relationship: compatible
+  direction: provider-built
+  shape: postgres-wire
+  type: docs
+  degree: declared-unqualified
+  evidence: https://planetscale.com/docs/postgres
+  evidence_kind: own-docs
+  evidence_file: https://github.com/api-evangelist/planetscale/blob/main/evidence/compatibility/planetscale-postgres-wire-1.md
+  quote: PlanetScale Postgres is a fully-managed PostgreSQL-compatible database that brings you scale, performance,
+    and reliability without sacrificing developer experience.
+  detected_by: sweep-shape-compat.py
+  first_seen: '2026-10-13'
 generated: '2026-10-13'
 method: searched
 checked:
 - datadog/integrations/datadog-integration-edges.yml
 - https://github.com/marketplace?type=actions
 - https://hightouch.com/docs/destinations/planetscale-destination
+- stripe/integrations/stripe-integration-edges.yml
 source: https://hightouch.com/docs/destinations/planetscale-destination
 marketplace_apps: []
