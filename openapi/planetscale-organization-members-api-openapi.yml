@@ -119,6 +119,13 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   parameters:
+    OrganizationParam:
+      name: organization
+      in: path
+      required: true
+      description: The name of the organization.
+      schema:
+        type: string
     MemberIdParam:
       name: member_id
       in: path
@@ -136,13 +143,6 @@ components:
         minimum: 1
         maximum: 100
         default: 25
-    OrganizationParam:
-      name: organization
-      in: path
-      required: true
-      description: The name of the organization.
-      schema:
-        type: string
     PageParam:
       name: page
       in: query
@@ -152,19 +152,6 @@ components:
         type: integer
         minimum: 1
         default: 1
-  responses:
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Authentication failed. The service token or OAuth token is missing, invalid, or lacks the required permissions.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
     OrganizationMember:
       type: object
@@ -201,6 +188,19 @@ components:
         message:
           type: string
           description: A human-readable error message.
+  responses:
+    Unauthorized:
+      description: Authentication failed. The service token or OAuth token is missing, invalid, or lacks the required permissions.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     serviceToken:
       type: apiKey
