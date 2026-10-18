@@ -97,3 +97,16 @@
     detected: '2026-10-15'
   status: not-a-workflow
   arazzo: null
+- slug: planetscale-fivetran-fivetran-connectors
+  label: Fivetran (fivetran-connectors)
+  partner: fivetran
+  partner_name: Fivetran (fivetran-connectors)
+  category: data integration
+  type: marketplace
+  marketplace: fivetran-connectors
+  channel: partner-built
+  evidence: https://fivetran.com/docs/connectors/databases/planetscale
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
