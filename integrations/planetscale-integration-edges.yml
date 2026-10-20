@@ -19,33 +19,6 @@ edges:
   - Verified creator
   detected_by: sweep-devtools.py
   detected: '2026-10-14'
-- partner_name: Hightouch
-  partner: hightouch
-  partner_match: aggregator
-  marketplace: coverage
-  channel: partner-built
-  direction: partner-built
-  type: coverage
-  relationship: connector-coverage
-  evidence: https://hightouch.com/docs/destinations/planetscale-destination
-  coverage_role:
-  - destination
-  - source
-  cdp_signals:
-    destination:
-      catalog_entries:
-      - planetscale-destination
-      status: released
-      sync_types:
-      - Table
-      sync_modes:
-      - upsert
-    source:
-      catalog_entries:
-      - planetscale
-      status: released
-  detected_by: sweep-cdp.py
-  first_seen: '2026-10-14'
 - partner_name: Datadog (own)
   partner: datadog
   partner_match: mirror
@@ -96,17 +69,61 @@ edges:
     and reliability without sacrificing developer experience.
   detected_by: sweep-shape-compat.py
   first_seen: '2026-10-13'
+- partner_name: Fivetran (fivetran-connectors)
+  partner: fivetran
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: fivetran-connectors
+  evidence: https://fivetran.com/docs/connectors/databases/planetscale
+  mirror_of: fivetran/integrations/fivetran-integration-edges.yml
+  apps:
+  - PlanetScale
+  listing_count: 1
+  detected: '2026-10-18'
+  detected_by: mirror-platform-listings.py
+  category: data integration
+- partner_name: Hightouch
+  partner: hightouch
+  partner_match: aggregator
+  marketplace: coverage
+  channel: partner-built
+  direction: partner-built
+  type: coverage
+  relationship: connector-coverage
+  evidence: https://hightouch.com/docs/destinations/planetscale-destination
+  coverage_role:
+  - destination
+  - source
+  cdp_signals:
+    destination:
+      catalog_entries:
+      - planetscale-destination
+      status: released
+      sync_types:
+      - Table
+      sync_modes:
+      - upsert
+    source:
+      catalog_entries:
+      - planetscale
+      status: released
+  detected_by: sweep-cdp.py
+  first_seen: '2026-10-14'
 - partner_name: CNCF (Cloud Native Landscape)
   partner: cncf
   partner_match: register
   type: register
   direction: partner-built
   category: Cloud native landscape
-  evidence: https://github.com/cncf/landscape/blob/3a7d378b1824b82e729a453bb03fa6f1e37557e1/landscape.yml
+  evidence: https://github.com/cncf/landscape/blob/42dd4cd91dad8ec8558ac02467a43f0805b9957a/landscape.yml
   channel: standard-directory
   relationship: standard-participant
   contract_reference:
-    register: CNCF Cloud Native Landscape (github.com/cncf/landscape landscape.yml @3a7d378b18)
+    register: CNCF Cloud Native Landscape (github.com/cncf/landscape landscape.yml @42dd4cd91d)
     spec_file: null
     standard: Cloud Native (CNCF)
     role: cncf-member (Silver)
@@ -125,26 +142,9 @@ edges:
     signal_note: 'participation only: a landscape listing is standard-participant evidence, not depth. Entries,
       categories, tier and projects are CONTEXT, never read (breadth is not credit)'
     detected_by: sweep-cloud-native.py
-    detected: '2026-10-15'
+    detected: '2026-10-19'
   detected_by: sweep-cloud-native.py
   first_seen: '2026-10-15'
-- partner_name: Fivetran (fivetran-connectors)
-  partner: fivetran
-  partner_match: mirror
-  mirror_match: domain
-  type: marketplace
-  relationship: platform-app
-  direction: third-party
-  channel: partner-built
-  marketplace: fivetran-connectors
-  evidence: https://fivetran.com/docs/connectors/databases/planetscale
-  mirror_of: fivetran/integrations/fivetran-integration-edges.yml
-  apps:
-  - PlanetScale
-  listing_count: 1
-  detected: '2026-10-18'
-  detected_by: mirror-platform-listings.py
-  category: data integration
 generated: '2026-10-13'
 method: searched
 checked:
