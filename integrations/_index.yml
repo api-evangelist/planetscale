@@ -15,32 +15,6 @@
   relationship: platform-app
   status: not-a-workflow
   arazzo: null
-- slug: planetscale-datadog-own
-  label: Datadog (own)
-  partner: datadog
-  partner_name: Datadog (own)
-  category: Data Stores
-  type: marketplace
-  marketplace: own
-  channel: partner-built
-  evidence: https://github.com/DataDog/integrations-extras/tree/master/planetscale
-  source: edge
-  relationship: platform-app
-  status: not-a-workflow
-  arazzo: null
-- slug: planetscale-stripe-own
-  label: Stripe (own)
-  partner: stripe
-  partner_name: Stripe (own)
-  category: developer_tools
-  type: marketplace
-  marketplace: own
-  channel: partner-built
-  evidence: https://marketplace.stripe.com/apps/planetscale
-  source: edge
-  relationship: platform-app
-  status: not-a-workflow
-  arazzo: null
 - slug: planetscale-postgresql
   label: PostgreSQL
   partner: postgresql
@@ -50,19 +24,6 @@
   evidence: https://planetscale.com/docs/postgres
   source: edge
   relationship: compatible
-  status: not-a-workflow
-  arazzo: null
-- slug: planetscale-fivetran-fivetran-connectors
-  label: Fivetran (fivetran-connectors)
-  partner: fivetran
-  partner_name: Fivetran (fivetran-connectors)
-  category: data integration
-  type: marketplace
-  marketplace: fivetran-connectors
-  channel: partner-built
-  evidence: https://fivetran.com/docs/connectors/databases/planetscale
-  source: edge
-  relationship: platform-app
   status: not-a-workflow
   arazzo: null
 - slug: planetscale-hightouch
@@ -227,5 +188,83 @@
     sample_skills: []
     detected_by: sweep-agent-skills.py
     detected: '2026-10-20'
+  status: not-a-workflow
+  arazzo: null
+- slug: planetscale-datadog-own
+  label: Datadog (own)
+  partner: datadog
+  partner_name: Datadog (own)
+  category: Data Stores
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://github.com/DataDog/integrations-extras/tree/master/planetscale
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: planetscale-stripe-own
+  label: Stripe (own)
+  partner: stripe
+  partner_name: Stripe (own)
+  category: developer_tools
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://marketplace.stripe.com/apps/planetscale
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: planetscale-fivetran-fivetran-connectors
+  label: Fivetran (fivetran-connectors)
+  partner: fivetran
+  partner_name: Fivetran (fivetran-connectors)
+  category: data integration
+  type: marketplace
+  marketplace: fivetran-connectors
+  channel: partner-built
+  evidence: https://fivetran.com/docs/connectors/databases/planetscale
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: planetscale-opentofu-opentofu-registry
+  label: OpenTofu (opentofu-registry)
+  partner: opentofu
+  partner_name: OpenTofu (opentofu-registry)
+  category: infrastructure-as-code provider registry listing
+  type: marketplace
+  marketplace: opentofu-registry
+  channel: partner-built
+  evidence: https://search.opentofu.org/provider/planetscale/planetscale
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: planetscale-pulumi-pulumi-registry
+  label: Pulumi (pulumi-registry)
+  partner: pulumi
+  partner_name: Pulumi (pulumi-registry)
+  category: infrastructure-as-code provider registry listing
+  type: marketplace
+  marketplace: pulumi-registry
+  channel: partner-built
+  evidence: https://www.pulumi.com/registry/packages/planetscale/
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: planetscale-terraform-terraform-registry
+  label: Terraform (terraform-registry)
+  partner: terraform
+  partner_name: Terraform (terraform-registry)
+  category: infrastructure-as-code provider registry listing
+  type: marketplace
+  marketplace: terraform-registry
+  channel: partner-built
+  evidence: https://registry.terraform.io/providers/planetscale/planetscale
+  source: edge
+  relationship: platform-app
   status: not-a-workflow
   arazzo: null

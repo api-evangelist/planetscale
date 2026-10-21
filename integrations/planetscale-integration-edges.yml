@@ -19,40 +19,6 @@ edges:
   - Verified creator
   detected_by: sweep-devtools.py
   detected: '2026-10-14'
-- partner_name: Datadog (own)
-  partner: datadog
-  partner_match: mirror
-  mirror_match: domain
-  type: marketplace
-  relationship: platform-app
-  direction: third-party
-  channel: partner-built
-  marketplace: own
-  evidence: https://github.com/DataDog/integrations-extras/tree/master/planetscale
-  mirror_of: datadog/integrations/datadog-integration-edges.yml
-  apps:
-  - PlanetScale
-  listing_count: 1
-  detected: '2026-10-14'
-  detected_by: mirror-platform-listings.py
-  category: Data Stores
-- partner_name: Stripe (own)
-  partner: stripe
-  partner_match: mirror
-  mirror_match: domain
-  type: marketplace
-  relationship: platform-app
-  direction: third-party
-  channel: partner-built
-  marketplace: own
-  evidence: https://marketplace.stripe.com/apps/planetscale
-  mirror_of: stripe/integrations/stripe-integration-edges.yml
-  apps:
-  - PlanetScale
-  listing_count: 1
-  detected: '2026-10-15'
-  detected_by: mirror-platform-listings.py
-  category: developer_tools
 - partner_name: PostgreSQL
   partner: postgresql
   partner_match: shape-anchor
@@ -69,23 +35,6 @@ edges:
     and reliability without sacrificing developer experience.
   detected_by: sweep-shape-compat.py
   first_seen: '2026-10-13'
-- partner_name: Fivetran (fivetran-connectors)
-  partner: fivetran
-  partner_match: mirror
-  mirror_match: domain
-  type: marketplace
-  relationship: platform-app
-  direction: third-party
-  channel: partner-built
-  marketplace: fivetran-connectors
-  evidence: https://fivetran.com/docs/connectors/databases/planetscale
-  mirror_of: fivetran/integrations/fivetran-integration-edges.yml
-  apps:
-  - PlanetScale
-  listing_count: 1
-  detected: '2026-10-18'
-  detected_by: mirror-platform-listings.py
-  category: data integration
 - partner_name: Hightouch
   partner: hightouch
   partner_match: aggregator
@@ -308,6 +257,114 @@ edges:
     detected: '2026-10-20'
   detected_by: sweep-agent-skills.py
   first_seen: '2026-10-20'
+- partner_name: Datadog (own)
+  partner: datadog
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: own
+  evidence: https://github.com/DataDog/integrations-extras/tree/master/planetscale
+  mirror_of: datadog/integrations/datadog-integration-edges.yml
+  apps:
+  - PlanetScale
+  listing_count: 1
+  detected: '2026-10-14'
+  detected_by: mirror-platform-listings.py
+  category: Data Stores
+- partner_name: Stripe (own)
+  partner: stripe
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: own
+  evidence: https://marketplace.stripe.com/apps/planetscale
+  mirror_of: stripe/integrations/stripe-integration-edges.yml
+  apps:
+  - PlanetScale
+  listing_count: 1
+  detected: '2026-10-15'
+  detected_by: mirror-platform-listings.py
+  category: developer_tools
+- partner_name: Fivetran (fivetran-connectors)
+  partner: fivetran
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: fivetran-connectors
+  evidence: https://fivetran.com/docs/connectors/databases/planetscale
+  mirror_of: fivetran/integrations/fivetran-integration-edges.yml
+  apps:
+  - PlanetScale
+  listing_count: 1
+  detected: '2026-10-18'
+  detected_by: mirror-platform-listings.py
+  category: data integration
+- partner_name: OpenTofu (opentofu-registry)
+  partner: opentofu
+  partner_match: mirror
+  mirror_match: register
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: opentofu-registry
+  evidence: https://search.opentofu.org/provider/planetscale/planetscale
+  mirror_of: opentofu/integrations/opentofu-integration-edges.yml
+  apps:
+  - planetscale/planetscale
+  listing_count: 1
+  detected: '2026-10-21'
+  detected_by: mirror-platform-listings.py
+  category: infrastructure-as-code provider registry listing
+  badges:
+  - Verified publisher (GitHub domain-verified organization)
+- partner_name: Pulumi (pulumi-registry)
+  partner: pulumi
+  partner_match: mirror
+  mirror_match: register
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: pulumi-registry
+  evidence: https://www.pulumi.com/registry/packages/planetscale/
+  mirror_of: pulumi/integrations/pulumi-integration-edges.yml
+  apps:
+  - planetscale
+  listing_count: 1
+  detected: '2026-10-21'
+  detected_by: mirror-platform-listings.py
+  category: infrastructure-as-code provider registry listing
+  badges:
+  - Verified publisher (GitHub domain-verified organization)
+- partner_name: Terraform (terraform-registry)
+  partner: terraform
+  partner_match: mirror
+  mirror_match: register
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: terraform-registry
+  evidence: https://registry.terraform.io/providers/planetscale/planetscale
+  mirror_of: terraform/integrations/terraform-integration-edges.yml
+  apps:
+  - planetscale/planetscale
+  listing_count: 1
+  detected: '2026-10-21'
+  detected_by: mirror-platform-listings.py
+  category: infrastructure-as-code provider registry listing
+  badges:
+  - Verified publisher (GitHub domain-verified organization)
 generated: '2026-10-13'
 method: searched
 checked:
@@ -332,5 +389,8 @@ checked:
 - https://officialskills.sh/sitemap.xml
 - https://skillsmp.com/sitemap.xml
 - https://www.skills.sh/sitemap.xml
+- opentofu/integrations/opentofu-integration-edges.yml
+- pulumi/integrations/pulumi-integration-edges.yml
+- terraform/integrations/terraform-integration-edges.yml
 source: https://hightouch.com/docs/destinations/planetscale-destination
 marketplace_apps: []
