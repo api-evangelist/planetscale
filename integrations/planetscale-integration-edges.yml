@@ -484,6 +484,47 @@ edges:
     detected: '2026-10-22'
   detected_by: sweep-obsidian-community-plugins.py
   first_seen: '2026-10-22'
+- partner_name: Red Hat Ecosystem Catalog (certified partners)
+  partner: red-hat
+  partner_match: register
+  type: register
+  channel: standard-directory
+  relationship: standard-participant
+  direction: partner-built
+  evidence: https://catalog.redhat.com/software/containers/search?p=1&vendor_name=Planetscale
+  category: Red Hat OpenShift / RHEL software certification
+  contract_reference:
+    register: 'Red Hat Ecosystem Catalog (catalog.redhat.com/api/containers/v1: repositories, vendors, certified
+      operator bundles)'
+    standard: Red Hat Container Certification (Red Hat Ecosystem Catalog, registry.connect.redhat.com)
+    spec_file: null
+    role: red-hat-certified-partner
+    registered_name: Planetscale
+    register_id: planetscale
+    matched_domain: planetscale.com
+    matched_by: domain
+    identity_source: the register's own company_url for the vendor (no lookup)
+    certified_products:
+    - product: Red Hat certified container image
+      product_type: container-image
+      standard: Red Hat Container Certification (Red Hat Ecosystem Catalog, registry.connect.redhat.com)
+      lapsed: false
+      repositories_listed: 10
+      products_sample:
+      - planetscale/operator
+      - planetscale/planetscale-etcd-operator2
+      - planetscale/planetscale-grafana-operator2
+      - planetscale/planetscale-lite57-operator2
+      - planetscale/planetscale-lite80-operator2
+      - planetscale/planetscale-mysqld-exporter-operator2
+    signal_note: 'certified_products = one entry per certified product TYPE (container image, OpenShift operator),
+      standard named on each; lapsed: true when no certified item of that type is current (containers: all Deprecated
+      / past EOL / unpublished; operators: absent from the three newest certified-operator indexes); repository
+      and package counts are context, never counted'
+    detected_by: sweep-red-hat-certified-ecosystem.py
+    detected: '2026-10-22'
+  detected_by: sweep-red-hat-certified-ecosystem.py
+  first_seen: '2026-10-22'
 generated: '2026-10-13'
 method: searched
 checked:
@@ -529,5 +570,9 @@ checked:
 - https://raw.githubusercontent.com/<repo>/HEAD/manifest.json
 - https://raw.githubusercontent.com/obsidianmd/obsidian-releases/793b52114f54b055b760ef47761ec5c93d689804/community-plugin-stats.json
 - https://raw.githubusercontent.com/obsidianmd/obsidian-releases/793b52114f54b055b760ef47761ec5c93d689804/community-plugins.json
+- https://catalog.redhat.com/api/containers/v1/operators/bundles?filter=organization==certified-operators
+- https://catalog.redhat.com/api/containers/v1/repositories?page_size=100
+- https://catalog.redhat.com/api/containers/v1/vendors/label/
+- https://catalog.redhat.com/software/partners
 source: https://hightouch.com/docs/destinations/planetscale-destination
 marketplace_apps: []
