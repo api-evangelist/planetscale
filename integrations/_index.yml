@@ -506,3 +506,40 @@
     detected: '2026-10-23'
   status: not-a-workflow
   arazzo: null
+- slug: planetscale-buf-schema-registry-bsr-public-modules
+  label: Buf Schema Registry (BSR) public modules
+  partner: buf
+  partner_name: Buf Schema Registry (BSR) public modules
+  category: Protocol Buffers schema publishing (BSR)
+  type: register
+  channel: standard-directory
+  evidence: https://buf.build/planetscale
+  source: edge
+  relationship: standard-participant
+  contract_reference:
+    register: Buf Schema Registry (BSR) public modules
+    spec_file: null
+    standard: Protocol Buffers
+    role: schema-publisher
+    registrations:
+    - registered_name: planetscale
+      register_status: public-modules
+      evidence_url: https://buf.build/planetscale
+      matched_domain: planetscale.com
+      matched_by: domain
+      url_source: owner-url
+    modules:
+    - module: buf.build/planetscale/psdb
+      state: active
+      lapsed: false
+      created: '2023-12-07'
+    - module: buf.build/planetscale/vitess
+      state: active
+      lapsed: false
+      created: '2023-12-07'
+    signal_note: 'participation only: the owner publishes Protocol Buffers schema modules on the public BSR; a listing
+      is not conformance (no certified_products)'
+    detected_by: sweep-buf-schema-registry.py
+    detected: '2026-10-23'
+  status: not-a-workflow
+  arazzo: null
